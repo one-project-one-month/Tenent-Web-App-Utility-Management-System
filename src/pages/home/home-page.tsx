@@ -11,7 +11,7 @@ const Home = () => {
           toast.success("Welcome");
         }}
       >
-        Click Me
+        Click Me Updated
       </Button>
     </div>
   );
