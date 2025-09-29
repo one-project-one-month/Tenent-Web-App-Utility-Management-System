@@ -16,7 +16,7 @@ const customerService = () => {
 
   return (
     <div>
-      <Breadcrumb>
+      <Breadcrumb className="mt-5">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/customer-service">
@@ -33,7 +33,7 @@ const customerService = () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <h1 className="text-h1">Customer Service</h1>
+      <h1 className="text-h1 my-10 text-center">Customer Service</h1>
       <div className="w-65 flex justify-between bg-white rounded-lg p-2 border-1 border-gray-200">
         <Button
           size="sm"
