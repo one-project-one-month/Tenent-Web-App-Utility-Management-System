@@ -115,7 +115,7 @@ const serviceHistory = () => {
             <div className="border border-1 py-3 px-5 mb-4 shadow-sm rounded-sm" key={card.id}>
               <div className="grid grid-cols-3 items-center mb-2">
                 <p className="justify-self-start font-semibold">{card.title}</p>
-                <p className="justify-self-center text-center ext-gray-700">{card.issueDate}</p>
+                <p className="justify-self-center text-center ext-gray-700">Issue date: {card.issueDate}</p>
                 <div className="justify-self-end text-right">
                   <p>{card.status}</p>
                 </div>
