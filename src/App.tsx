@@ -5,6 +5,7 @@ import Login from "./pages/auth/login";
 import CustomerService from "./pages/customerService/customerService";
 import ServiceHistory from "./pages/customerService/serviceHistory/serviceHistory";
 import NewRequest from "./pages/customerService/newRequest/newRequest";
+import ContractDetails from "./pages/contractDetails/contractDetails";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -22,7 +23,10 @@ const App = () => {
             { path: "service-history", element: <ServiceHistory /> },
           ],
         },
-        
+        {
+          path: "contract-details",
+          element: <ContractDetails />,
+        },
       ],
     },
   ]);
