@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 const Home = () => {
   return (
-    <div>
+    <div className="h-screen">
       <h1 className="bg-blue-500 text-white">Home</h1>
       <Button
         className="bg-blue-600 my-2"
