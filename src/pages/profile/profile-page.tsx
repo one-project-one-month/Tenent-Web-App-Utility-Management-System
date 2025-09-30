@@ -1,9 +1,8 @@
-import React from 'react';
 
 const ProfilePage = () => {
   return (
     <div>
-      Hello Profile
+     <h1></h1>
     </div>
   );
 }
