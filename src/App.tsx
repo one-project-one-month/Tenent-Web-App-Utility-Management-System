@@ -5,6 +5,7 @@ import CustomerService from "./pages/customerService/customerService";
 import ServiceHistory from "./pages/customerService/serviceHistory/serviceHistory";
 import NewRequest from "./pages/customerService/newRequest/newRequest";
 import ContractDetails from "./pages/contractDetails/contractDetails";
+import Login from "./pages/auth/login";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -27,6 +28,7 @@ const App = () => {
         },
       ],
     },
+    { path: "/login", element: <Login /> },
   ]);
   return <RouterProvider router={router} />;
 };
