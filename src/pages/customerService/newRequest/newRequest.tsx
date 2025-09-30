@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button"
+
+import { useMutation } from "@tanstack/react-query"
 import {
   Form, FormField, FormItem,
   FormControl, FormMessage
@@ -15,6 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { sumbitServiceForm } from "@/service/customer-service"
+import { toast } from "sonner"
 
 const newRequest = () => {
 
@@ -23,17 +27,31 @@ const newRequest = () => {
     resolver: zodResolver(serviceFormSchema)
   })
 
+
+  const mutation = useMutation({
+    mutationFn: sumbitServiceForm,
+    onSuccess: () => {
+      toast.success("Request submitted successfully!");
+    },
+    onError: () => {
+      toast.error("Something went wrong. Try again.")
+    }
+  })
+
+  //submit form to server
   const onSubmit = (data: serviceFormValue) => {
     console.log(data)
+    mutation.mutate(data)
+    form.reset()
   }
 
   return (
-    <div className="flex gap-4   ">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-h4 font-semibold ">
+    <div className="flex flex-col md:flex-row  items-start w-full gap-10 my-15   ">
+      <div className="flex flex-col gap-2 basis-30 lg:basis-90 ">
+        <h1 className="text-h4  ">
           Report a New Issue
         </h1>
-        <p className="text-body-1">
+        <p className="text-body-1 text-gray-700">
           Please fill out the form below to submit a service request.
         </p>
       </div>
@@ -65,7 +83,7 @@ const newRequest = () => {
               render={({ field }) => (
                 <FormItem>
                   {/* <FormLabel>Name</FormLabel> */}
-                  <FormControl><Input placeholder="Email" className="py-5 px-6 border-2 border-[#E0E0E0] bg-white focus:outline-none focus:ring-0 focus-visible:ring-0" {...field} /></FormControl>
+                  <FormControl><Input type="email" placeholder="Email" className="py-5 px-6 border-2 border-[#E0E0E0] bg-white focus:outline-none focus:ring-0 focus-visible:ring-0" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -114,9 +132,9 @@ const newRequest = () => {
                         : ""}`}>
                       <SelectValue placeholder="Select service" /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="cleaning">Electric</SelectItem>
+                      <SelectItem value="electric">Electric</SelectItem>
                       <SelectItem value="maintenance">Maintenance</SelectItem>
-                      <SelectItem value="roomService">Security and Safety</SelectItem>
+                      <SelectItem value="securtiy and safety">Security and Safety</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -136,7 +154,7 @@ const newRequest = () => {
               </FormItem>
             )}
           />
-          <Button className="w-full bg-[#3E70FF] text-white" size={'lg'}>Submit</Button>
+          <Button disabled={mutation.isPending} className={`w-full bg-[#3E70FF] text-white cursor-pointer ${mutation.isPending ? "bg-[#D4D4D8] text-gray-600 cursor-not-allowed " : ''}`} size={'lg'}>Submit</Button>
         </form>
       </Form>
     </div >
