@@ -1,11 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MainPage from "./layouts/main-page";
 import Home from "./pages/home/home-page";
-import Login from "./pages/auth/login";
 import CustomerService from "./pages/customerService/customerService";
 import ServiceHistory from "./pages/customerService/serviceHistory/serviceHistory";
 import NewRequest from "./pages/customerService/newRequest/newRequest";
 import ContractDetails from "./pages/contractDetails/contractDetails";
+import Login from "./pages/auth/login";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -14,7 +14,6 @@ const App = () => {
       element: <MainPage />,
       children: [
         { index: true, element: <Home /> },
-        { path: "login", element: <Login /> },
         {
           path: "customer-service",
           element: <CustomerService />,
@@ -29,6 +28,7 @@ const App = () => {
         },
       ],
     },
+    { path: "/login", element: <Login /> },
   ]);
   return <RouterProvider router={router} />;
 };
