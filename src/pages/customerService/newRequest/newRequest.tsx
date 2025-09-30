@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-
 import { useMutation } from "@tanstack/react-query"
 import {
   Form, FormField, FormItem,
@@ -19,6 +18,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { sumbitServiceForm } from "@/service/customer-service"
 import { toast } from "sonner"
+
 
 const newRequest = () => {
 
@@ -40,7 +40,6 @@ const newRequest = () => {
 
   //submit form to server
   const onSubmit = (data: serviceFormValue) => {
-    console.log(data)
     mutation.mutate(data)
     form.reset()
   }
@@ -89,7 +88,7 @@ const newRequest = () => {
               )}
             />
           </div>
-
+          {/* phone number and room number field */}
           <div className="grid grid-cols-2 gap-4">
 
             {/* phon number field */}
@@ -130,7 +129,7 @@ const newRequest = () => {
                       className={`py-5 px-6 border-2 border-[#E0E0E0] bg-white w-full  ${form.formState.errors.category
                         ? "border-red-500 focus:ring-red-500"
                         : ""}`}>
-                      <SelectValue placeholder="Select service" /></SelectTrigger>
+                      <SelectValue placeholder="Select service type" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="electric">Electric</SelectItem>
                       <SelectItem value="maintenance">Maintenance</SelectItem>
@@ -154,7 +153,9 @@ const newRequest = () => {
               </FormItem>
             )}
           />
-          <Button disabled={mutation.isPending} className={`w-full bg-[#3E70FF] text-white cursor-pointer ${mutation.isPending ? "bg-[#D4D4D8] text-gray-600 cursor-not-allowed " : ''}`} size={'lg'}>Submit</Button>
+          <Button disabled={mutation.isPending} className={`w-full bg-[#3E70FF] text-white cursor-pointer ${mutation.isPending ? "bg-[#D4D4D8] text-gray-600 cursor-not-allowed " : ''}`} size={'lg'}>
+            {mutation.isPending ? "Submitting..." : "Submit"}
+          </Button>
         </form>
       </Form>
     </div >
