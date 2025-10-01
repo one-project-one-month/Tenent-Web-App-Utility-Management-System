@@ -20,7 +20,7 @@ import { sumbitServiceForm } from "@/service/customer-service"
 import { toast } from "sonner"
 
 
-const newRequest = () => {
+const NewRequest = () => {
 
   //React hook form 
   const form = useForm<serviceFormValue>({
@@ -164,7 +164,7 @@ const newRequest = () => {
   )
 }
 
-export default newRequest
+export default NewRequest
 
 
 
