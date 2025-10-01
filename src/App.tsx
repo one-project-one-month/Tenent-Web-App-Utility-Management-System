@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MainPage from "./layouts/main-page";
-import Home from "./pages/home/home-page";
 import CustomerService from "./pages/customerService/customerService";
 import ServiceHistory from "./pages/customerService/serviceHistory/serviceHistory";
 import NewRequest from "./pages/customerService/newRequest/newRequest";
@@ -9,6 +8,8 @@ import Login from "./pages/auth/login";
 import MyBilling from "./pages/myBilling/myBilling";
 import LatestBill from "./pages/myBilling/latestBill/latestBill";
 import BillingHistory from "./pages/myBilling/billingHistory/billingHistory";
+import OverView from "./pages/overView/overView";
+import Profile from "./pages/profile/profile";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -16,7 +17,7 @@ const App = () => {
       path: "/",
       element: <MainPage />,
       children: [
-        { index: true, element: <Home /> },
+        { index: true, element: <OverView/> },
         {
           path: "customer-service",
           element: <CustomerService />,
@@ -37,6 +38,10 @@ const App = () => {
             { path: "billing-history", element: <BillingHistory /> },
           ],
         },
+        {
+          path: "profile",
+          element: <Profile />,
+        },  
       ],
     },
     { path: "/login", element: <Login /> },

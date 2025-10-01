@@ -6,7 +6,7 @@ type Page = {
 export const pages: Page[] = [
   {
     name: "Overview",
-    path: "/overview",
+    path: "/",
   },
   {
     name: "Customer Service",
@@ -14,7 +14,7 @@ export const pages: Page[] = [
   },
   {
     name: "Contract",
-    path: "/contract",
+    path: "/contract-details",
   },
   {
     name: "My Billing",
