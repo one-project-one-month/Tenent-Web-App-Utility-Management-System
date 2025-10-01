@@ -16,7 +16,7 @@ type cardProps = {
   description: string;
 };
 
-const serviceHistory = () => {
+const ServiceHistory = () => {
   const cards: cardProps[] = [
     {
       id: 1,
@@ -145,4 +145,4 @@ const serviceHistory = () => {
   );
 };
 
-export default serviceHistory;
+export default ServiceHistory;

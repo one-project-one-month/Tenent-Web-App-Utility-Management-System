@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 
-const newRequest = () => {
+const NewRequest = () => {
 
   //React hook form 
   const form = useForm<serviceFormValue>({
@@ -145,7 +145,7 @@ const newRequest = () => {
   )
 }
 
-export default newRequest
+export default NewRequest
 
 
 

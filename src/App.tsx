@@ -6,6 +6,9 @@ import CustomerService from "./pages/customerService/customerService";
 import ServiceHistory from "./pages/customerService/serviceHistory/serviceHistory";
 import NewRequest from "./pages/customerService/newRequest/newRequest";
 import ContractDetails from "./pages/contractDetails/contractDetails";
+import MyBilling from "./pages/myBilling/myBilling";
+import LatestBill from "./pages/myBilling/latestBill/latestBill";
+import BillingHistory from "./pages/myBilling/billingHistory/billingHistory";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -26,6 +29,14 @@ const App = () => {
         {
           path: "contract-details",
           element: <ContractDetails />,
+        },
+        {
+          path: "my-billing",
+          element: <MyBilling />,
+          children: [
+            { index: true, element: <LatestBill /> },
+            { path: "billing-history", element: <BillingHistory /> },
+          ],
         },
       ],
     },
