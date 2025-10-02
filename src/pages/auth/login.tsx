@@ -25,20 +25,20 @@ const Login = () => {
   };
 
   return (
-    <main className="max-w-3xl mx-auto mt-40">
-      <div>
+    <main className="max-w-3xl mx-auto mt-40 mb-10">
+      <div className=" mx-4 md:mx-0">
         <div className="flex items-center justify-start gap-2">
           <img src="logo-final.svg" alt="logo" className="h-12 w-12" />
           <h2 className="text-xl">NestFlow</h2>
         </div>
-        <div className="text-center text-3xl font-bold mt-5">
+        <div className="text-center text-3xl font-bold mt-5 text-wrap">
           <h2>"Simplify Your Utility Management"</h2>
         </div>
-        <div className="flex items-center justify-center gap-4 -mt-10">
+        <div className="flex flex-col md:flex-row  items-center justify-center gap-0 md:gap-4 -mt-10">
           <div>
             <img src="login-illu.svg" alt="login" className="w-120 h-120" />
           </div>
-          <div className="w-1/2">
+          <div className="w-full mx-8 md:mx-0 md:w-1/2">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -77,7 +77,10 @@ const Login = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full bg-blue-500">
+                <Button
+                  type="submit"
+                  className="w-full bg-primary text-secondary hover:bg-primary/90"
+                >
                   Login
                 </Button>
               </form>
