@@ -9,7 +9,7 @@ import MyBilling from "./pages/my-billing/my-billing";
 import LatestBill from "./pages/my-billing/latest-bill/latest-bill";
 import BillingHistory from "./pages/my-billing/billing-history/billing-history";
 import Profile from "./pages/profile/profile";
-import Overview from "./pages/overview/overview";
+import Overview from "./pages/overView/overView";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -17,7 +17,7 @@ const App = () => {
       path: "/",
       element: <MainPage />,
       children: [
-        { index: true, element: <Overview/> },
+        { index: true, element: <Overview /> },
         {
           path: "customer-service",
           element: <CustomerService />,
@@ -41,7 +41,7 @@ const App = () => {
         {
           path: "profile",
           element: <Profile />,
-        },  
+        },
       ],
     },
     { path: "/login", element: <Login /> },
