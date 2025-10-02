@@ -1,14 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MainPage from "./layouts/main-page";
-import Home from "./pages/home/home-page";
-import CustomerService from "./pages/customerService/customerService";
-import ServiceHistory from "./pages/customerService/serviceHistory/serviceHistory";
-import NewRequest from "./pages/customerService/newRequest/newRequest";
-import ContractDetails from "./pages/contractDetails/contractDetails";
+import CustomerService from "./pages/customer-service/customer-service";
+import ServiceHistory from "./pages/customer-service/service-history/service-history";
+import NewRequest from "./pages/customer-service/new-request/new-request";
+import ContractDetails from "./pages/contract-details/contract-details";
 import Login from "./pages/auth/login";
-import MyBilling from "./pages/myBilling/myBilling";
-import LatestBill from "./pages/myBilling/latestBill/latestBill";
-import BillingHistory from "./pages/myBilling/billingHistory/billingHistory";
+import MyBilling from "./pages/my-billing/my-billing";
+import LatestBill from "./pages/my-billing/latest-bill/latest-bill";
+import BillingHistory from "./pages/my-billing/billing-history/billing-history";
+import Profile from "./pages/profile/profile";
+import Overview from "./pages/overView/over-view";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -16,7 +17,7 @@ const App = () => {
       path: "/",
       element: <MainPage />,
       children: [
-        { index: true, element: <Home /> },
+        { index: true, element: <Overview/> },
         {
           path: "customer-service",
           element: <CustomerService />,
@@ -37,6 +38,10 @@ const App = () => {
             { path: "billing-history", element: <BillingHistory /> },
           ],
         },
+        {
+          path: "profile",
+          element: <Profile />,
+        },  
       ],
     },
     { path: "/login", element: <Login /> },
