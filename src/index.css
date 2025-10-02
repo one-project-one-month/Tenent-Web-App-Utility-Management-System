@@ -125,7 +125,7 @@
 }
 
 @layer components {
-  /* Mobile Styles (<= 768px) */
+  /* Mobile Styles (< 768px) */
   .text-h1 {
     font-size: 2.25rem; /* 36px */
     font-weight: 700;
@@ -167,7 +167,7 @@
     line-height: 1.75; /* 24px */
   }
 
-  /* Mobile Display Styles (<= 768px) */
+  /* Mobile Display Styles (< 768px) */
   .text-display-1 {
     font-size: 3.25rem; /* 52px */
     font-weight: 800;
@@ -199,8 +199,8 @@
     letter-spacing: 0.05em;
   }
 
-  /* Tablet Styles (769px - 1024px) */
-  @media (min-width: 769px) {
+  /* Tablet Styles (768px - 1024px) */
+  @media (min-width: 768px) {
     .text-h1 {
       font-size: 3rem; /* 48px */
       line-height: 1.5; /* 72px */

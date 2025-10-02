@@ -8,8 +8,8 @@ import Login from "./pages/auth/login";
 import MyBilling from "./pages/my-billing/my-billing";
 import LatestBill from "./pages/my-billing/latest-bill/latest-bill";
 import BillingHistory from "./pages/my-billing/billing-history/billing-history";
-import Overview from "./pages/overview/overView";
 import Profile from "./pages/profile/profile";
+import Overview from "./pages/overView/over-view";
 
 const App = () => {
   const router = createBrowserRouter([
