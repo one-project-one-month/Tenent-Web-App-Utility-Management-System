@@ -7,7 +7,7 @@ import {
 import { serviceFormSchema, type serviceFormValue } from "@/lib/validation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Input } from "@/components/ui/input"
+
 import {
   Select,
   SelectContent,
@@ -18,35 +18,60 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { sumbitServiceForm } from "@/service/customer-service"
 import { toast } from "sonner"
+import { useEffect } from "react"
+import axios from "axios"
+import { Loader2Icon } from "lucide-react"
 
 
 const NewRequest = () => {
-
+  const tenantId = "tenantid";
   //React hook form 
   const form = useForm<serviceFormValue>({
-    resolver: zodResolver(serviceFormSchema)
+    resolver: zodResolver(serviceFormSchema),
+    defaultValues: {
+      "description": "",
+      "category": "Other",
+      "room_id": "",
+      "status": "Pending",
+      "priority_level": "Low"
+    }
   })
 
+  //Get room_id by tenant id
+  useEffect(() => {
+    const fetchRoomId = async () => {
+      const res = await axios.get(`/api/v1/tenants/${tenantId}`)
+      form.setValue("room_id", res.data.content.room_id)
+    }
+    //check tenant id exits
+    if (tenantId) fetchRoomId
 
+  }, [tenantId])
+
+
+  console.log(form.getValues)
   const mutation = useMutation({
     mutationFn: sumbitServiceForm,
     onSuccess: () => {
-      toast.success("Request submitted successfully!");
+      toast.success("Request submitted successfully.");
     },
     onError: () => {
       toast.error("Something went wrong. Try again.")
     }
   })
 
+  const isLoading = mutation.isPending; //Track loading
+
   //submit form to server
   const onSubmit = (data: serviceFormValue) => {
-    mutation.mutate(data)
+    console.log(data)
     form.reset()
+    mutation.mutate(data)
   }
 
   return (
-    <div className="flex flex-col md:flex-row  items-start w-full gap-10 my-15   ">
-      <div className="flex flex-col gap-2 basis-30 lg:basis-90 ">
+    <div className="flex flex-col md:flex-row  items-center md:items-start w-full gap-6 md:gap-8 lg:gap-10 my-15   ">
+      <div className="flex flex-col gap-2 items-center md:items-start min-w-sm">
         <h1 className="text-h4  ">
           Report a New Issue
         </h1>
@@ -57,65 +82,10 @@ const NewRequest = () => {
 
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 w-2xl ">
-
-          <div className="grid grid-cols-2 gap-4">
-
-            {/* Name filed */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>Name</FormLabel> */}
-                  <FormControl><Input placeholder="Name" className="py-5 px-6  border-2 border-[#E0E0E0] bg-white focus:outline-none focus:ring-0 focus-visible:ring-0" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-
-            />
-
-            {/* email field */}
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>Name</FormLabel> */}
-                  <FormControl><Input type="email" placeholder="Email" className="py-5 px-6 border-2 border-[#E0E0E0] bg-white focus:outline-none focus:ring-0 focus-visible:ring-0" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          {/* phone number and room number field */}
-          <div className="grid grid-cols-2 gap-4">
-
-            {/* phon number field */}
-
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>Name</FormLabel> */}
-                  <FormControl><Input placeholder="Phone No" className="py-5 px-6  border-2 border-[#E0E0E0] bg-white focus:outline-none focus:ring-0 focus-visible:ring-0" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="roomNo"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>Name</FormLabel> */}
-                  <FormControl><Input placeholder="Room No" className="py-5 px-6 border-2 border-[#E0E0E0] bg-white focus:outline-none focus:ring-0 focus-visible:ring-0" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-4 min-w-sm w-full max-w-2xl"
+        >
 
           {/* category select box */}
           <FormField
@@ -124,16 +94,28 @@ const NewRequest = () => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value} >
+                  <Select onValueChange={field.onChange}  >
                     <SelectTrigger
-                      className={`py-5 px-6 border-2 border-[#E0E0E0] bg-white w-full  ${form.formState.errors.category
-                        ? "border-red-500 focus:ring-red-500"
-                        : ""}`}>
-                      <SelectValue placeholder="Select service type" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="electric">Electric</SelectItem>
-                      <SelectItem value="maintenance">Maintenance</SelectItem>
-                      <SelectItem value="securtiy and safety">Security and Safety</SelectItem>
+                      className={`py-5 px-6 border-2 border-border bg-input w-full  
+                        ${form.formState.errors.category
+                          ? "border-red-500 focus:ring-red-500"
+                          : ""
+                        }`
+                      }>
+                      <SelectValue placeholder="Select service type" defaultValue={"Complain"} /></SelectTrigger>
+                    <SelectContent className="bg-input ">
+                      <SelectItem
+                        value="Complain">
+                        Complain
+                      </SelectItem>
+                      <SelectItem
+                        value="Maintenance">
+                        Maintenance
+                      </SelectItem>
+                      <SelectItem
+                        value="Other">
+                        Other
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -148,13 +130,28 @@ const NewRequest = () => {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormControl><Textarea placeholder="Describe your request..." className="py-2 px-4 text-xl border-2 border-[#E0E0E0] bg-white focus:outline-none focus:ring-0 focus-visible:ring-0" {...field} /></FormControl>
+                <FormControl>
+                  <Textarea
+                    placeholder="Describe your request..."
+                    className="py-2 px-4 min-h-40 border-2 border-border bg-input focus:outline-none focus:ring-0 focus-visible:ring-0"
+                    {...field}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button disabled={mutation.isPending} className={`w-full bg-[#3E70FF] text-white cursor-pointer ${mutation.isPending ? "bg-[#D4D4D8] text-gray-600 cursor-not-allowed " : ''}`} size={'lg'}>
-            {mutation.isPending ? "Submitting..." : "Submit"}
+          <Button
+            disabled={isLoading}
+            className={`w-full bg-primary text-white cursor-pointer ring-0 
+          ${isLoading ? "bg-input text-accent-foreground cursor-not-allowed " : ''}
+          `} size={'lg'}
+          >
+            {
+              isLoading ?
+                <><Loader2Icon className="animate-spin" /> Submitting... </>
+                : "Submit"
+            }
           </Button>
         </form>
       </Form>
