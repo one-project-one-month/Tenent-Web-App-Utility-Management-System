@@ -33,10 +33,6 @@ const NewRequest = () => {
       "priority_level": "Low"
     }
   })
-
-
-
-
   const mutation = useMutation({
     mutationFn: sumbitServiceForm,
     onSuccess: () => {
