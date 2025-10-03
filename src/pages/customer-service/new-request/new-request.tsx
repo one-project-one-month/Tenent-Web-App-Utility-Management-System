@@ -18,13 +18,10 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { sumbitServiceForm } from "@/service/customer-service"
 import { toast } from "sonner"
-import { useEffect } from "react"
-import axios from "axios"
 import { Loader2Icon } from "lucide-react"
 
 
 const NewRequest = () => {
-  const tenantId = "tenantid";
   //React hook form 
   const form = useForm<serviceFormValue>({
     resolver: zodResolver(serviceFormSchema),
@@ -37,19 +34,9 @@ const NewRequest = () => {
     }
   })
 
-  //Get room_id by tenant id
-  useEffect(() => {
-    const fetchRoomId = async () => {
-      const res = await axios.get(`/api/v1/tenants/${tenantId}`)
-      form.setValue("room_id", res.data.content.room_id)
-    }
-    //check tenant id exits
-    if (tenantId) fetchRoomId
-
-  }, [tenantId])
 
 
-  console.log(form.getValues)
+
   const mutation = useMutation({
     mutationFn: sumbitServiceForm,
     onSuccess: () => {
@@ -64,7 +51,6 @@ const NewRequest = () => {
 
   //submit form to server
   const onSubmit = (data: serviceFormValue) => {
-    console.log(data)
     form.reset()
     mutation.mutate(data)
   }
