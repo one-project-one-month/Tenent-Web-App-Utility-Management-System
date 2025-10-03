@@ -14,7 +14,7 @@ export const pages: Page[] = [
   },
   {
     name: "Contract",
-    path: "/contract-details",
+    path: "/contract",
   },
   {
     name: "My Billing",

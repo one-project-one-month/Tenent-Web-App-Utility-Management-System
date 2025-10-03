@@ -27,7 +27,7 @@ const App = () => {
           ],
         },
         {
-          path: "contract-details",
+          path: "contract",
           element: <ContractDetails />,
         },
         {
