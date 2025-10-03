@@ -1,13 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import BreadCrumb from "@/components/common/bread-crumb";
 
 const MyBilling = () => {
   const location = useLocation();
@@ -16,19 +9,7 @@ const MyBilling = () => {
 
   return (
     <div>
-      <Breadcrumb className="mt-5">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/my-billing">My Billing</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage className="text-primary">
-              {pathName === "/my-billing" ? "Latest Bill" : "Billing History"}
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadCrumb />
       <h1 className="text-h1 my-10 text-center">{pathName === "/my-billing" ? "Latest Bill" : "Billing History"}</h1>
       <div className="w-55 flex justify-between bg-white rounded-lg p-2 border-1 border-gray-200">
         <Button
