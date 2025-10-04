@@ -7,11 +7,22 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-// import props
-
 export default function ContractDetails() {
+  // const [contractData, setContractData] = useState(null);
+
+  // useEffect(() => {
+  //   fetch("/api/contracts/123") // example endpoint
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setContractData(data);
+  //     })
+  //     .catch((err) => console.error("Error fetching contract:", err));
+  // }, []);
+
+  // if (!contractData) return <p>Loading...</p>; // example handle loading state
+
   const contractFields = [
-    { label: "Name", value: "Jenny Wilson" },
+    { label: "Name", value: "Jenny Wilson" }, // value: contractData.name
     { label: "Your Id", value: "T-0001" },
     { label: "Email", value: "Jenny4207@gmail.com" },
     { label: "Ph Number", value: "09 123 456 789" },
@@ -61,9 +72,9 @@ export default function ContractDetails() {
           <article className="bg-[#FFFAFA] rounded-[8px] px-3 lg:px-5 py-4 w-full lg:w-[45vw] lg:max-w-[550px]">
             {/* Fields */}
             <div className="border-b border-b-[#E0E0E0] pb-3">
-              {contractFields.map((field) => (
+              {contractFields.map((field, index) => (
                 <dl
-                  key={field.label}
+                  key={index}
                   className="flex justify-between items-center py-2"
                 >
                   <dt className="text-xl md:text-2xl text-[#828282]">
@@ -89,6 +100,8 @@ export default function ContractDetails() {
                 className="text-xl md:text-2xl font-medium text-[#4F4F4F]"
               >
                 600,000 MMK
+                {/* Currently the amount is hardcoded as a string for display purposes.
+                  Once this connects with real API data, I’ll replace it with {contractData.totalAmount.toLocaleString()} MMK for proper number formatting */}
               </dd>
             </dl>
           </article>
