@@ -5,6 +5,28 @@ import { LogOut, MoveLeft } from "lucide-react"
 import type { FormEvent } from "react"
 import { Link } from "react-router"
 
+const PROFILE_DATA = new Map([
+  ['Name', 'John Doe'],
+  ['Email', 'lGQ5I@example.com'],
+  ['Room Number', '503'],
+  ['Phone Number', '123-456-7890'],
+])
+
+type ProfileFieldType = {
+  field: string;
+  value: string;
+}
+
+const ProfileField = ({ field, value }: ProfileFieldType) => {
+  console.log("KEY: ", field, "VALUE: ", value);
+  return (
+    <div className="mb-6">
+      <p className="text-h6 text-secondary-foreground">{field}:</p>
+      <p className="text-muted-foreground">{value}</p>
+    </div>
+  )
+}
+
 const profile = () => {
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -24,25 +46,13 @@ const profile = () => {
             <div>
               <img src="profile.png" alt="Profile Image" className="-translate-y-2/3 w-32 sm:w-40 md:w-50" />
               <div className="-translate-y-1/3">
-                <div className="mb-6">
-                  <p className="text-h6 text-secondary-foreground">Name:</p>
-                  <p className="text-muted-foreground">John Doe</p>
-                </div>
-                <div className="mb-6">
-                  <p className="text-h6">Email: </p>
-                  <p className="text-muted-foreground">john@gmail.com</p>
-                </div>
+                <ProfileField field="Name" value={PROFILE_DATA.get('Name') ?? ""} />
+                <ProfileField field="Email" value={PROFILE_DATA.get('Email') ?? ""} />
               </div>
             </div>
             <div className="-translate-y-1/3 sm:translate-y-0">
-              <div className="mb-6">
-                <p className="text-h6">Room Number: </p>
-                <p className="text-muted-foreground">005</p>
-              </div>
-              <div className="mb-6">
-                <p className="text-h6">Phone Number: </p>
-                <p className="text-muted-foreground">1234567890</p>
-              </div>
+              <ProfileField field="Room Number" value={PROFILE_DATA.get('Room Number') ?? ""} />
+              <ProfileField field="Phone Number" value={PROFILE_DATA.get('Phone Number') ?? ""} />
               <Dialog>
                 <form onSubmit={handleFormSubmit}>
                   <DialogTrigger asChild>
