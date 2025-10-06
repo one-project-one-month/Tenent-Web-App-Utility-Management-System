@@ -10,8 +10,13 @@ import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginSchema } from "@/types/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useLogin from "@/hooks/auth/useLogin";
+import { useNavigate } from "react-router";
 
 const Login = () => {
+  const { mutate: login } = useLogin();
+  const navigate = useNavigate();
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -21,7 +26,13 @@ const Login = () => {
   });
 
   const onSubmit = (data: LoginSchema) => {
-    console.log(data);
+
+    try {
+      login(data);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
