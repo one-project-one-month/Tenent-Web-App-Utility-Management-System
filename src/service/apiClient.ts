@@ -1,3 +1,4 @@
+import store from "@/store/store";
 import axios from "axios";
 
 const BASE_URL = import.meta.env.API_BASE_URL || "http://localhost:3000/api/v1/";
@@ -10,7 +11,9 @@ const apiClient = axios.create({
 	withCredentials: true, // This is crucial for sending HttpOnly cookies (for refresh token)
 });
 
+// retrieve the access token from the auth store
 let ACCESS_TOKEN: string | null = null;
+
 let isRefreshing = false;
 // Varible to queue requests while the token is being refreshed
 const failedQueue: any = [];
@@ -29,9 +32,12 @@ const processQueue = ((error: any, token: null | string = null) => {
 })
 
 apiClient.interceptors.request.use((config) => {
+  ACCESS_TOKEN = store.getState().auth.accessToken;
 	if (ACCESS_TOKEN) {
 		config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
-	}
+	} else {
+    alert("Token is missing")
+  }
 
 	return config;
 });

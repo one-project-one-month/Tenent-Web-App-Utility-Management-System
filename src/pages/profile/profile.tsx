@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { LogOut, MoveLeft } from "lucide-react"
+import useLogout from "@/hooks/auth/useLogout"
+import { AlertTriangle, LogOut, MoveLeft } from "lucide-react"
 import type { FormEvent } from "react"
-import { Link } from "react-router"
+import { Link, Navigate, useNavigate } from "react-router"
 
 const PROFILE_DATA = new Map([
   ['Name', 'John Doe'],
@@ -28,8 +29,16 @@ const ProfileField = ({ field, value }: ProfileFieldType) => {
 }
 
 const profile = () => {
+  const navigate = useNavigate();
+  const { mutate: logout } = useLogout();
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
+    try {
+      logout();
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -54,7 +63,7 @@ const profile = () => {
               <ProfileField field="Room Number" value={PROFILE_DATA.get('Room Number') ?? ""} />
               <ProfileField field="Phone Number" value={PROFILE_DATA.get('Phone Number') ?? ""} />
               <Dialog>
-                <form onSubmit={handleFormSubmit}>
+                <form>
                   <DialogTrigger asChild>
                     <Button variant={"destructive"} className="text-gray-100 cursor-pointer hover:bg-chart-1 transition-all active:scale-95">
                       Logout <LogOut strokeWidth={3} />
@@ -71,7 +80,7 @@ const profile = () => {
                       <DialogClose asChild>
                         <Button variant="secondary" className="cursor-pointer">Cancel</Button>
                       </DialogClose>
-                      <Button variant="destructive" type="submit" className="cursor-pointer">Confirm</Button>
+                      <Button variant="destructive" type="submit" className="cursor-pointer" onClick={handleFormSubmit}>Confirm</Button>
                     </DialogFooter>
                   </DialogContent>
                 </form>
