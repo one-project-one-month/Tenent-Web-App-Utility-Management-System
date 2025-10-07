@@ -17,7 +17,7 @@ const App = () => {
       path: "/",
       element: <MainPage />,
       children: [
-        { index: true, element: <Overview/> },
+        { index: true, element: <Overview /> },
         {
           path: "customer-service",
           element: <CustomerService />,
@@ -41,7 +41,7 @@ const App = () => {
         {
           path: "profile",
           element: <Profile />,
-        },  
+        },
       ],
     },
     { path: "/login", element: <Login /> },
