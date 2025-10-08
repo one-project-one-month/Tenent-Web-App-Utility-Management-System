@@ -1,13 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import BreadCrumb from "@/components/common/bread-crumb";
 
 const CustomerService = () => {
   const location = useLocation();
@@ -16,23 +9,7 @@ const CustomerService = () => {
 
   return (
     <div>
-      <Breadcrumb className="mt-5">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/customer-service">
-              Customer Service
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage className="text-primary">
-              {pathName === "/customer-service"
-                ? "New Request"
-                : "Service History"}
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadCrumb />
       <h1 className="text-h1 my-10 text-center">Customer Service</h1>
       <div className="w-65 flex justify-between bg-white rounded-lg p-2 border-1 border-gray-200">
         <Button
