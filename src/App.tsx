@@ -10,6 +10,7 @@ import LatestBill from "./pages/my-billing/latest-bill/latest-bill";
 import BillingHistory from "./pages/my-billing/billing-history/billing-history";
 import Profile from "./pages/profile/profile";
 import Overview from "./pages/overView/over-view";
+import Receipt from "./pages/receipt/receipt";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -41,6 +42,10 @@ const App = () => {
         {
           path: "profile",
           element: <Profile />,
+        },
+        {
+          path: "receipt",
+          element: <Receipt />,
         },
       ],
     },
