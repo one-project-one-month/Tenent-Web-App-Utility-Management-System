@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,8 +8,15 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
+interface ContractField {
+  label: string;
+  value: string;
+}
+
 export default function ContractDetails() {
-  // const [contractData, setContractData] = useState(null);
+  const navigate = useNavigate();
+
+  // const [contractData, setContractData] = useState<ContractField[] | null>(null);
 
   // useEffect(() => {
   //   fetch("/api/contracts/123") // example endpoint
@@ -21,7 +29,7 @@ export default function ContractDetails() {
 
   // if (!contractData) return <p>Loading...</p>; // example handle loading state
 
-  const contractFields = [
+  const contractFields: ContractField[] = [
     { label: "Name", value: "Jenny Wilson" }, // value: contractData.name
     { label: "Your Id", value: "T-0001" },
     { label: "Email", value: "Jenny4207@gmail.com" },
@@ -33,12 +41,19 @@ export default function ContractDetails() {
 
   return (
     <div className="px-4 lg:px-0 flex flex-col gap-1 lg:gap-0">
-      <section className="flex flex-col pt-9 gap-11 lg:gap-14 py-0 lg:py-14 lg:px-8 xl:px-0">
+      <section className="flex flex-col pt-9 gap-11 lg:gap-14 py-14 lg:px-8 xl:px-0">
         {/* Breadcrumb */}
         <Breadcrumb aria-label="Breadcrumb navigation">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/" className="hover:text-blue-500">
+              <BreadcrumbLink
+                href="/"
+                onClick={(e: React.MouseEvent) => {
+                  e.preventDefault();
+                  navigate("/");
+                }}
+                className="hover:text-blue-500"
+              >
                 Contract
               </BreadcrumbLink>
             </BreadcrumbItem>
