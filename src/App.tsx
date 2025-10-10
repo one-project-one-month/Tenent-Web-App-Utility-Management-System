@@ -9,8 +9,8 @@ import MyBilling from "./pages/my-billing/my-billing";
 import LatestBill from "./pages/my-billing/latest-bill/latest-bill";
 import BillingHistory from "./pages/my-billing/billing-history/billing-history";
 import Profile from "./pages/profile/profile";
-import Overview from "./pages/overView/over-view";
-import Receipt from "./pages/receipt/receipt";
+import Overview from "./pages/overview/overview";
+
 
 const App = () => {
   const router = createBrowserRouter([
