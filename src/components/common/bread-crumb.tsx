@@ -1,13 +1,13 @@
-import { useMemo } from 'react';
-import { useLocation } from 'react-router';
+import { useMemo } from "react";
+import { useLocation } from "react-router";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator
-} from '../ui/breadcrumb';
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
 
 interface PageItem {
   rootName?: string;
@@ -35,7 +35,7 @@ const PAGE_MAP: PageMapType = {
     {
       title: "Wifi Usage",
       path: "/wifi-usage",
-    }
+    },
   ],
   "customer-service": [
     {
@@ -47,14 +47,14 @@ const PAGE_MAP: PageMapType = {
       rootName: "Services History",
       title: "Services History",
       path: "/service-history",
-    }
+    },
   ],
-  "contract-details": [
+  contract: [
     {
       rootName: "Contract",
       title: "Contract Details",
-      path: "/contract-details",
-    }
+      path: "/contract",
+    },
   ],
   "my-billing": [
     {
@@ -65,8 +65,8 @@ const PAGE_MAP: PageMapType = {
     {
       title: "Billing History",
       path: "/billing-history",
-    }
-  ]
+    },
+  ],
 };
 
 const BreadCrumb = () => {
@@ -74,7 +74,7 @@ const BreadCrumb = () => {
   const pathname = location.pathname;
 
   const { rootItem, currentItem } = useMemo(() => {
-    const segments = pathname.split('/').filter(Boolean);
+    const segments = pathname.split("/").filter(Boolean);
     const rootSegment = segments[0];
     const currentSegment = segments[segments.length - 1];
 
@@ -84,7 +84,9 @@ const BreadCrumb = () => {
     }
 
     const root = pageItems[0];
-    const current = pageItems.find(item => item.path === `/${currentSegment}`);
+    const current = pageItems.find(
+      (item) => item.path === `/${currentSegment}`
+    );
 
     return { rootItem: root, currentItem: current };
   }, [pathname]);
@@ -93,9 +95,10 @@ const BreadCrumb = () => {
     return null;
   }
 
-  const displayTitle = pathname === rootItem.path 
-    ? rootItem.title 
-    : currentItem?.title || rootItem.title;
+  const displayTitle =
+    pathname === rootItem.path
+      ? rootItem.title
+      : currentItem?.title || rootItem.title;
 
   return (
     <Breadcrumb className="mt-5">
