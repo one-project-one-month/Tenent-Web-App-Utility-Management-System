@@ -45,8 +45,10 @@ const App = () => {
         },
         {
           path: "receipt",
-          element: <Receipt />,
-        },
+          element: <Receipt />
+
+        }
+
       ],
     },
     { path: "/login", element: <Login /> },
