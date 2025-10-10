@@ -1,12 +1,4 @@
-import { useNavigate } from "react-router";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import BreadCrumb from "@/components/common/bread-crumb";
 
 interface ContractField {
   label: string;
@@ -14,8 +6,6 @@ interface ContractField {
 }
 
 export default function ContractDetails() {
-  const navigate = useNavigate();
-
   // const [contractData, setContractData] = useState<ContractField[] | null>(null);
 
   // useEffect(() => {
@@ -43,28 +33,7 @@ export default function ContractDetails() {
     <div className="px-4 lg:px-0 flex flex-col gap-1 lg:gap-0">
       <section className="flex flex-col pt-9 gap-11 lg:gap-14 py-14 lg:px-8 xl:px-0">
         {/* Breadcrumb */}
-        <Breadcrumb aria-label="Breadcrumb navigation">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                href="/"
-                onClick={(e: React.MouseEvent) => {
-                  e.preventDefault();
-                  navigate("/");
-                }}
-                className="hover:text-blue-500"
-              >
-                Contract
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="text-blue-500">
-                Contract Details
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <BreadCrumb />
 
         {/* Title */}
         <h1 className="text-center text-h1 font-bold text-[#333333]">
@@ -92,7 +61,7 @@ export default function ContractDetails() {
                   key={index}
                   className="flex justify-between items-center py-2"
                 >
-                  <dt className="text-xl md:text-2xl text-[#828282]">
+                  <dt className="text-xl md:text-2xl font-medium text-[#828282]">
                     {field.label}:
                   </dt>
                   <dd
@@ -107,7 +76,7 @@ export default function ContractDetails() {
 
             {/* Total Amount */}
             <dl className="flex justify-between items-center pt-3 pb-2">
-              <dt className="text-xl md:text-2xl text-[#828282]">
+              <dt className="text-xl md:text-2xl font-medium text-[#828282]">
                 Total Amount:
               </dt>
               <dd
