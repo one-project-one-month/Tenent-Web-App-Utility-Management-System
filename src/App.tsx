@@ -10,7 +10,9 @@ import LatestBill from "./pages/my-billing/latest-bill/latest-bill";
 import BillingHistory from "./pages/my-billing/billing-history/billing-history";
 import Profile from "./pages/profile/profile";
 import Overview from "./pages/overview/overview";
-
+import ElectricUsagePage from "./pages/monthly-pages/pages/Electric-usage-page";
+import WaterUsagePage from "./pages/monthly-pages/pages/water-usage-page";
+import WifiUsagePage from "./pages/monthly-pages/pages/wifi-usage-page";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -46,9 +48,10 @@ const App = () => {
         {
           path: "receipt",
           element: <Receipt />
-
-        }
-
+        },
+        { path: "electric-usage", element: <ElectricUsagePage /> },
+        { path: "water-usage", element: <WaterUsagePage /> },
+        { path: "wifi-usage", element: <WifiUsagePage /> },
       ],
     },
     { path: "/login", element: <Login /> },

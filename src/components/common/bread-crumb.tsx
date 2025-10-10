@@ -37,6 +37,15 @@ const PAGE_MAP: PageMapType = {
       path: "/wifi-usage",
     },
   ],
+  "electric-usage": [
+    { rootName: "Overview", title: "Electric Usage", path: "/electric-usage" },
+  ],
+  "water-usage": [
+    { rootName: "Overview", title: "Water Usage", path: "/water-usage" },
+  ],
+  "wifi-usage": [
+    { rootName: "Overview", title: "Wifi Usage", path: "/wifi-usage" },
+  ],
   "customer-service": [
     {
       rootName: "Customer Service",
