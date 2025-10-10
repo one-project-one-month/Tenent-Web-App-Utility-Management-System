@@ -75,7 +75,15 @@ const PAGE_MAP: PageMapType = {
       title: "Billing History",
       path: "/billing-history",
     },
+
   ],
+  receipt: [
+    {
+      rootName: "My Billing",
+      title: "Receipt",
+      path: "/receipt",
+    }
+  ]
 };
 
 const BreadCrumb = () => {
