@@ -7,7 +7,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "../ui/breadcrumb";
+} from "@/components/ui/breadcrumb";
 
 interface PageItem {
   rootName?: string;
@@ -75,15 +75,14 @@ const PAGE_MAP: PageMapType = {
       title: "Billing History",
       path: "/billing-history",
     },
-
   ],
   receipt: [
     {
       rootName: "My Billing",
       title: "Receipt",
       path: "/receipt",
-    }
-  ]
+    },
+  ],
 };
 
 const BreadCrumb = () => {
