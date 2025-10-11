@@ -1,3 +1,6 @@
+import { useState, useMemo, useEffect } from "react";
+import { Download, Eye } from "lucide-react";
+import { useSearchParams, useNavigate } from "react-router";
 import {
   Table,
   TableBody,
@@ -15,10 +18,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Eye } from "lucide-react";
-import { useSearchParams } from "react-router";
 
 type Status = "Paid" | "Pending";
 
@@ -150,10 +150,11 @@ const statusColors: Record<Status, string> = {
 
 const itemsPerPage = 4;
 
-const BillingHistory: React.FC = () => {
+const BillingHistory = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPage = parseInt(searchParams.get("page") || "1", 10);
   const [currentPage, setCurrentPage] = useState(initialPage);
+  const navigate = useNavigate();
 
   const sortedHistory = useMemo(() => {
     return [...historyField].sort((a, b) => {
@@ -284,6 +285,7 @@ const BillingHistory: React.FC = () => {
                         size="sm"
                         aria-label={`View receipt ${item.ID}`}
                         title="View Receipt"
+                        onClick={() => navigate("/receipt")}
                       >
                         <Eye />
                       </Button>

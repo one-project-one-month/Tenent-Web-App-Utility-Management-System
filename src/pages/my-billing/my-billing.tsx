@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from "react-router";
 import BreadCrumb from "@/components/common/bread-crumb";
 import { useMemo } from "react";
 
-const MyBilling: React.FC = () => {
+const MyBilling = () => {
   const location = useLocation();
   const pathName = location.pathname;
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const MyBilling: React.FC = () => {
           </h1>
         </header>
         <div
-          className="w-55 flex justify-between bg-white rounded-lg p-2 xl:mx-26 border border-gray-200"
+          className="w-fit flex justify-between bg-white rounded-lg p-2 xl:mx-26 border border-gray-200"
           role="tablist"
         >
           <Button

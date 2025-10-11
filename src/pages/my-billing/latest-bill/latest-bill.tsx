@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
-import billEmpty from "../../../assets/bill-empty-state-ill.png";
+import billEmpty from "@/assets/bill-empty-state-ill.png";
 
 interface BillingField {
   label: string;
@@ -23,7 +23,7 @@ const billingFields: BillingField[] = [
 
 // const billingFields: BillingField[] = []; // Empty for demo; replace with actual data source
 
-const LatestBill: React.FC = () => {
+const LatestBill = () => {
   const memoizedFields = useMemo(() => billingFields, []);
   const navigate = useNavigate();
 
@@ -78,7 +78,7 @@ const LatestBill: React.FC = () => {
         </>
       ) : (
         <div className="flex flex-col gap-10 py-8 max-w-[590px] mx-auto">
-          <img src={billEmpty} alt="Bill is Empty" />
+          <img src={billEmpty} alt="Bill is Empty" className="w-fit mx-auto" />
           <div className="flex flex-col gap-9">
             <header className="flex flex-col gap-3 text-center">
               <h2 className="text-[28px] lg:text-3xl font-semibold text-[#333333]">
