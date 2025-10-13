@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Badge } from "@/components/ui/badge"
 
 type cardProps = {
   id: number;
@@ -101,26 +102,24 @@ const ServiceHistory = () => {
   ];
 
   return (
-    <div>
-      <div className="flex items-start w-full gap-10 my-15">
-        <div className="basis-30 lg:basis-90 ">
+    <div >
+      <div className="flex flex-col md:flex-row items-start w-full gap-10 my-15">
+        <div className="basis-30 lg:basis-90  text-center md:text-start">
           <h3 className="text-h4">My Service History</h3>
           <p className="text-body-1 text-gray-700 mt-2">
             Hello, Jenny! Here you can view the status and history of all your
             past and current service requests.
           </p>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col gap-4">
           {cards.map((card) => (
-            <div className="border border-1 py-3 px-5 mb-4 shadow-sm rounded-sm" key={card.id}>
-              <div className="grid grid-cols-3 items-center mb-2">
-                <p className="justify-self-start font-semibold">{card.title}</p>
-                <p className="justify-self-center text-center ext-gray-700">Issue date: {card.issueDate}</p>
-                <div className="justify-self-end text-right">
-                  <p>{card.status}</p>
-                </div>
+            <div className=" border-1 py-3 px-5  shadow-sm rounded-sm" key={card.id}>
+              <div className="flex justify-between items-center gap-2 mb-2">
+                <p className=" font-semibold">{card.title}</p>
+                <p className=" text-gray-700">Issue date: {card.issueDate}</p>
+                <Badge className="text-accent">{card.status}</Badge>
               </div>
-               <p className="text-gray-700">{card.description} </p>
+              <p className="text-balance text-sm ">{card.description} </p>
             </div>
           ))}
         </div>
