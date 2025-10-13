@@ -8,7 +8,7 @@ const CustomerService = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <section className="space-y-6 my-6 px-4">
       <BreadCrumb />
       <h1 className="text-h1 my-10 text-center">Customer Service</h1>
       <div className="w-65 flex justify-between bg-white rounded-lg p-2 border-1 border-gray-200">
@@ -36,7 +36,7 @@ const CustomerService = () => {
         </Button>
       </div>
       <Outlet />
-    </div>
+    </section>
   );
 };
 
