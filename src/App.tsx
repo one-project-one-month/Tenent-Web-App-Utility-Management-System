@@ -14,49 +14,59 @@ import Receipt from "@/pages/receipt/receipt";
 import ElectricUsagePage from "@/pages/monthly-pages/pages/electric-usage-page";
 import WaterUsagePage from "@/pages/monthly-pages/pages/water-usage-page";
 import WifiUsagePage from "@/pages/monthly-pages/pages/wifi-usage-page";
+import ProtectedRoute from "@/components/protected-route";
 
 const App = () => {
-  const router = createBrowserRouter([
+
+  const routes = [
     {
-      path: "/",
-      element: <MainPage />,
+      path: "",
+      element: <ProtectedRoute />,
       children: [
-        { index: true, element: <Overview /> },
         {
-          path: "customer-service",
-          element: <CustomerService />,
+          path: "/",
+          element: <MainPage />,
           children: [
-            { index: true, element: <NewRequest /> },
-            { path: "service-history", element: <ServiceHistory /> },
+            { index: true, element: <Overview /> },
+            {
+              path: "customer-service",
+              element: <CustomerService />,
+              children: [
+                { index: true, element: <NewRequest /> },
+                { path: "service-history", element: <ServiceHistory /> },
+              ],
+            },
+            {
+              path: "contract",
+              element: <ContractDetails />,
+            },
+            {
+              path: "my-billing",
+              element: <MyBilling />,
+              children: [
+                { index: true, element: <LatestBill /> },
+                { path: "billing-history", element: <BillingHistory /> },
+              ],
+            },
+            {
+              path: "profile",
+              element: <Profile />,
+            },
+            {
+              path: "receipt",
+              element: <Receipt />,
+            },
+            { path: "electric-usage", element: <ElectricUsagePage /> },
+            { path: "water-usage", element: <WaterUsagePage /> },
+            { path: "wifi-usage", element: <WifiUsagePage /> },
           ],
         },
-        {
-          path: "contract",
-          element: <ContractDetails />,
-        },
-        {
-          path: "my-billing",
-          element: <MyBilling />,
-          children: [
-            { index: true, element: <LatestBill /> },
-            { path: "billing-history", element: <BillingHistory /> },
-          ],
-        },
-        {
-          path: "profile",
-          element: <Profile />,
-        },
-        {
-          path: "receipt",
-          element: <Receipt />,
-        },
-        { path: "electric-usage", element: <ElectricUsagePage /> },
-        { path: "water-usage", element: <WaterUsagePage /> },
-        { path: "wifi-usage", element: <WifiUsagePage /> },
-      ],
+      ]
     },
     { path: "/login", element: <Login /> },
-  ]);
+  ]
+
+  const router = createBrowserRouter(routes);
   return <RouterProvider router={router} />;
 };
 

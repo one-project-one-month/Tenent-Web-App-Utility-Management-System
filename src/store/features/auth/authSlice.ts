@@ -4,11 +4,13 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface AuthStateType {
   user: AuthUser | null;
   accessToken: string;
+  isAuthenticated: boolean;
 }
 
 const initialState: AuthStateType = {
   user: null,
   accessToken: localStorage.getItem("accessToken") || "",
+  isAuthenticated: false
 };
 
 export const authSlice = createSlice({
@@ -18,6 +20,7 @@ export const authSlice = createSlice({
     login: (state, action) => {
       state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
+      state.isAuthenticated = true;
 
       localStorage.setItem("accessToken", action.payload.accessToken);
     },
