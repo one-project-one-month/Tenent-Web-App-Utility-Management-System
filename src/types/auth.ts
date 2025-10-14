@@ -8,3 +8,19 @@ export const loginSchema = z.object({
 });
 
 export type LoginSchema = z.infer<typeof loginSchema>;
+
+export interface LoginResponse {
+  accessToken: string;
+  user: AuthUser | null;
+}
+
+export interface AuthUser {
+  id: string;
+  user_name: string;
+  email: string;
+  role: string;
+  tenent_id?: string;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
