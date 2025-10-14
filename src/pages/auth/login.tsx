@@ -10,10 +10,11 @@ import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginSchema } from "@/types/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useLogin from "@/hooks/auth/useLogin";
+import { useLogin } from "@/hooks/useAuth";
 import { useNavigate } from "react-router";
 
 const Login = () => {
+  // const { mutate: login } = useLogin();
   const { mutate: login } = useLogin();
   const navigate = useNavigate();
 
@@ -25,14 +26,12 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (data: LoginSchema) => {
-
-    try {
-      login(data);
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
+  const onSubmit = async (data: LoginSchema) => {
+    login(data, {
+      onSuccess: () => {
+        navigate("/");
+      },
+    });
   };
 
   return (

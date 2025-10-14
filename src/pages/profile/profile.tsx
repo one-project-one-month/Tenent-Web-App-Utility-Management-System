@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import useLogout from "@/hooks/auth/useLogout"
+import { useLogout } from "@/hooks/useAuth"
 import { AlertTriangle, LogOut, MoveLeft } from "lucide-react"
 import type { FormEvent } from "react"
 import { Link, Navigate, useNavigate } from "react-router"
@@ -33,12 +33,11 @@ const profile = () => {
   const { mutate: logout } = useLogout();
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    try {
-      logout();
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
-    }
+    logout(undefined,{
+      onSuccess: () => {
+        navigate("/login");
+      }
+    })
   }
 
   return (
