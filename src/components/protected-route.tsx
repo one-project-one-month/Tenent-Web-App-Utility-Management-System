@@ -3,6 +3,7 @@ import type { RootState } from "@/store/store";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
+import ErrorBoundary from "./error-boundary";
 
 const ProtectedRoute = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
@@ -30,7 +31,7 @@ const ProtectedRoute = () => {
     )
   }
 
-  return <Outlet />
+  return <ErrorBoundary><Outlet /></ErrorBoundary>
 }
 
 export default ProtectedRoute;
