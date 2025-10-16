@@ -3,8 +3,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link, NavLink } from "react-router";
 import { ChevronRight, LogOut, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
 
 const MobileNavlink = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <>
       <Sheet>
@@ -18,11 +22,11 @@ const MobileNavlink = () => {
               <Avatar className="w-12 h-12 ring-2 ring-gray-300 shadow-sm">
                 <AvatarImage src={""} />
                 <AvatarFallback className="bg-gray-200 text-black font-bold">
-                  JW
+                  {user?.user_name?.charAt(0)}{user?.user_name?.charAt(1)}
                 </AvatarFallback>
               </Avatar>
               <h3 className="text-blue-500">
-                Hi, <span className="text-black">Jenny Wilson</span>
+                Hi, <span className="text-black">{user?.user_name}</span>
               </h3>
             </div>
 
