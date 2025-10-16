@@ -8,9 +8,9 @@ export interface AuthStateType {
 }
 
 const initialState: AuthStateType = {
-  user: null,
+  user:  localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null,
   accessToken: localStorage.getItem("accessToken") || "",
-  isAuthenticated: !!localStorage.getItem("accessToken"),
+  isAuthenticated: localStorage.getItem("accessToken") ? true : false,
 };
 
 export const authSlice = createSlice({
@@ -23,11 +23,15 @@ export const authSlice = createSlice({
       state.isAuthenticated = true;
 
       localStorage.setItem("accessToken", action.payload.accessToken);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
     },
-    logout: () => {
-      localStorage.removeItem("accessToken");
+    logout: (state) => {
+      state.user = null;
+      state.accessToken = "";
+      state.isAuthenticated = false;
 
-      return initialState
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
     },
   },
 });

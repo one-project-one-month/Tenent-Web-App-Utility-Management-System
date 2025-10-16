@@ -12,11 +12,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin } from "@/hooks/useAuth";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
 
 const Login = () => {
   // const { mutate: login } = useLogin();
   const { mutate: login } = useLogin();
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated, navigate])
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -27,11 +35,7 @@ const Login = () => {
   });
 
   const onSubmit = async (data: LoginSchema) => {
-    login(data, {
-      onSuccess: () => {
-        navigate("/");
-      },
-    });
+    login(data);
   };
 
   return (

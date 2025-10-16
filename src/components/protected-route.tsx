@@ -11,6 +11,7 @@ const ProtectedRoute = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
+
       const timer = setTimeout(() => {
         navigate("/login");
       }, 2000);

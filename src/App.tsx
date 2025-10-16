@@ -15,7 +15,6 @@ import ElectricUsagePage from "@/pages/monthly-pages/pages/electric-usage-page";
 import WaterUsagePage from "@/pages/monthly-pages/pages/water-usage-page";
 import WifiUsagePage from "@/pages/monthly-pages/pages/wifi-usage-page";
 import ProtectedRoute from "@/components/protected-route";
-
 const App = () => {
 
   const routes = [
@@ -64,6 +63,7 @@ const App = () => {
       ]
     },
     { path: "/login", element: <Login /> },
+    { path: "*", element: <div>404</div> },
   ]
 
   const router = createBrowserRouter(routes);

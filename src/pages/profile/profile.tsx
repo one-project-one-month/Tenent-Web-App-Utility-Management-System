@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useLogout } from "@/hooks/useAuth"
-import { AlertTriangle, LogOut, MoveLeft } from "lucide-react"
-import type { FormEvent } from "react"
-import { Link, Navigate, useNavigate } from "react-router"
+import type { RootState } from "@/store/store"
+import { LogOut, MoveLeft } from "lucide-react"
+import { useEffect, type FormEvent } from "react"
+import { useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router"
 
 const PROFILE_DATA = new Map([
   ['Name', 'John Doe'],
@@ -19,7 +21,6 @@ type ProfileFieldType = {
 }
 
 const ProfileField = ({ field, value }: ProfileFieldType) => {
-  console.log("KEY: ", field, "VALUE: ", value);
   return (
     <div className="mb-6">
       <p className="text-h6 text-secondary-foreground">{field}:</p>
@@ -31,13 +32,15 @@ const ProfileField = ({ field, value }: ProfileFieldType) => {
 const profile = () => {
   const navigate = useNavigate();
   const { mutate: logout } = useLogout();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (!isAuthenticated) navigate("/login");
+  }, [isAuthenticated, navigate]);
+
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    logout(undefined,{
-      onSuccess: () => {
-        navigate("/login");
-      }
-    })
+    logout();
   }
 
   return (
