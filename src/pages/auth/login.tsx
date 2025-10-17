@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginSchema } from "@/types/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLogin } from "@/hooks/useAuth";
+import { useLogin } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
