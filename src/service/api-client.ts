@@ -35,7 +35,7 @@ const processQueue = (error: any, token: null | string = null) => {
 apiClient.interceptors.request.use((config) => {
 	ACCESS_TOKEN = store.getState().auth.accessToken;
 
-	console.log("Access Token: ", ACCESS_TOKEN)
+	console.log("Access Token: ", ACCESS_TOKEN);
 
 	if (ACCESS_TOKEN) {
 		config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
@@ -53,12 +53,11 @@ apiClient.interceptors.response.use(
 
 		if (error.response.status === 401 && !originalRequest._retry) {
 			if (
-				originalRequest.url.includes("/auth/refresh-token") ||
-				originalRequest.url.includes("/auth/login") ||
-				originalRequest.url.includes("/auth/logout")
-
-			){
-        return Promise.reject(error);
+				originalRequest.url.includes("auth/refresh-token") ||
+				originalRequest.url.includes("auth/login") ||
+				originalRequest.url.includes("auth/logout")
+			) {
+				return Promise.reject(error);
 			}
 
 			if (isRefreshing) {

@@ -18,7 +18,7 @@ import type { RootState } from "@/store/store";
 
 const Login = () => {
   // const { mutate: login } = useLogin();
-  const { mutate: login } = useLogin();
+  const { mutate: login, isPending } = useLogin();
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
@@ -94,6 +94,7 @@ const Login = () => {
                 <Button
                   type="submit"
                   className="w-full bg-primary text-secondary hover:bg-primary/90"
+                  disabled={isPending}
                 >
                   Login
                 </Button>
