@@ -1,5 +1,5 @@
 import type { LoginSchema } from "@/types/auth";
-import apiClient from "./apiClient";
+import apiClient from "./api-client";
 
 export const loginService = async (payload: LoginSchema) => {
 	const { data } = await apiClient.post("auth/login", payload);

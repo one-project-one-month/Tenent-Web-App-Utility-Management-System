@@ -19,7 +19,7 @@ export interface AuthUser {
   user_name: string;
   email: string;
   role: string;
-  tenent_id?: string;
+  tenant_id?: string;
   is_active?: boolean;
   created_at?: string;
   updated_at?: string;

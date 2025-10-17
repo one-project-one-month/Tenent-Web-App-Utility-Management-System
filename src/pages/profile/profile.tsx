@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { useLogout } from "@/hooks/useAuth"
+import { useLogout } from "@/hooks/use-auth"
+import { useTenantQuery } from "@/hooks/use-tenant"
 import type { RootState } from "@/store/store"
 import { LogOut, MoveLeft } from "lucide-react"
 import { useEffect, type FormEvent } from "react"
@@ -30,9 +31,12 @@ const ProfileField = ({ field, value }: ProfileFieldType) => {
 }
 
 const profile = () => {
-  const navigate = useNavigate();
-  const { mutate: logout } = useLogout();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const tenant_id = useSelector((state: RootState) => state.auth.user?.tenant_id);
+  const navigate = useNavigate();
+
+  const { mutate: logout } = useLogout();
+  const { data: profile } = useTenantQuery(tenant_id);
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/login");
@@ -57,13 +61,13 @@ const profile = () => {
             <div>
               <img src="profile.png" alt="Profile Image" className="-translate-y-2/3 w-32 sm:w-40 md:w-50" />
               <div className="-translate-y-1/3">
-                <ProfileField field="Name" value={PROFILE_DATA.get('Name') ?? ""} />
-                <ProfileField field="Email" value={PROFILE_DATA.get('Email') ?? ""} />
+                <ProfileField field="Name" value={profile?.name} />
+                <ProfileField field="Email" value={profile?.email} />
               </div>
             </div>
             <div className="-translate-y-1/3 sm:translate-y-0">
-              <ProfileField field="Room Number" value={PROFILE_DATA.get('Room Number') ?? ""} />
-              <ProfileField field="Phone Number" value={PROFILE_DATA.get('Phone Number') ?? ""} />
+              <ProfileField field="Room Number" value={profile?.room_no} />
+              <ProfileField field="Phone Number" value={profile?.phone_no} />
               <Dialog>
                 <form>
                   <DialogTrigger asChild>

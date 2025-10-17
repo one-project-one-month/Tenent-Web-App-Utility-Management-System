@@ -9,7 +9,7 @@ import { Link } from "react-router";
 import { ChevronRight, LogOut } from "lucide-react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import { useLogout } from "@/hooks/useAuth";
+import { useLogout } from "@/hooks/use-auth";
 
 const ProfileDropdown = () => {
   const user = useSelector((state: RootState) => state.auth.user);
