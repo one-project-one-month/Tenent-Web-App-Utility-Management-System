@@ -9,13 +9,6 @@ import { useEffect, type FormEvent } from "react"
 import { useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
 
-const PROFILE_DATA = new Map([
-  ['Name', 'John Doe'],
-  ['Email', 'lGQ5I@example.com'],
-  ['Room Number', '503'],
-  ['Phone Number', '123-456-7890'],
-])
-
 type ProfileFieldType = {
   field: string;
   value: string;
