@@ -16,11 +16,11 @@ export interface LoginResponse {
 
 export interface AuthUser {
   id: string;
-  user_name: string;
+  userName: string;
   email: string;
   role: string;
-  tenant_id?: string;
-  is_active?: boolean;
-  created_at?: string;
-  updated_at?: string;
+  tenantId: string;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }

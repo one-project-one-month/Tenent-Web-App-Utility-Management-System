@@ -7,7 +7,7 @@ import type { RootState } from "@/store/store"
 import { LogOut, MoveLeft } from "lucide-react"
 import { useEffect, type FormEvent } from "react"
 import { useSelector } from "react-redux"
-import { Link, useNavigate } from "react-router"
+import { data, Link, useNavigate } from "react-router"
 
 type ProfileFieldType = {
   field: string;
@@ -25,11 +25,11 @@ const ProfileField = ({ field, value }: ProfileFieldType) => {
 
 const profile = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const tenant_id = useSelector((state: RootState) => state.auth.user?.tenant_id);
+  const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
   const navigate = useNavigate();
 
   const { mutate: logout } = useLogout();
-  const { data: profile } = useTenantQuery(tenant_id);
+  const { data: profile, isLoading } = useTenantQuery(tenantId as string);
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/login");
@@ -39,6 +39,8 @@ const profile = () => {
     e.preventDefault();
     logout();
   }
+
+  if (isLoading) return <h1>Loading...</h1>
 
   return (
     <div className="min-h-[85vh] my-10">
@@ -59,8 +61,8 @@ const profile = () => {
               </div>
             </div>
             <div className="-translate-y-1/3 sm:translate-y-0">
-              <ProfileField field="Room Number" value={profile?.room_no} />
-              <ProfileField field="Phone Number" value={profile?.phone_no} />
+              <ProfileField field="Room Number" value={profile?.roomNo} />
+              <ProfileField field="Phone Number" value={profile?.phoneNo} />
               <Dialog>
                 <form>
                   <DialogTrigger asChild>
