@@ -4,7 +4,7 @@ import ProfileDropdown from "@/components/navbar/profile-dropdown";
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center justify-between max-w-7xl mx-auto my-4 px-4">
+    <nav className="flex items-center justify-between w-full mx-auto my-4 px-4">
       {/* Logo */}
       <div className="flex items-center gap-2">
         <img src="logo-final.svg" alt="logo" className="h-12 w-12" />

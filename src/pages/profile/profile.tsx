@@ -1,13 +1,15 @@
+import { useEffect, type FormEvent } from "react"
+import { useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router"
+import { LogOut, MoveLeft } from "lucide-react"
+import { FourSquare } from "react-loading-indicators";
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useLogout } from "@/hooks/use-auth"
 import { useTenantQuery } from "@/hooks/use-tenant"
 import type { RootState } from "@/store/store"
-import { LogOut, MoveLeft } from "lucide-react"
-import { useEffect, type FormEvent } from "react"
-import { useSelector } from "react-redux"
-import { data, Link, useNavigate } from "react-router"
 
 type ProfileFieldType = {
   field: string;
@@ -40,7 +42,13 @@ const profile = () => {
     logout();
   }
 
-  if (isLoading) return <h1>Loading...</h1>
+  if (isLoading) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <FourSquare color="#2563eb" size="medium" text="Loading Profile..." textColor="" />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-[85vh] my-10">
