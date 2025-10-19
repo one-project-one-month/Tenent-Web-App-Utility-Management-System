@@ -9,7 +9,7 @@ import MyBilling from "@/pages/my-billing/my-billing";
 import LatestBill from "@/pages/my-billing/latest-bill/latest-bill";
 import BillingHistory from "@/pages/my-billing/billing-history/billing-history";
 import Profile from "@/pages/profile/profile";
-import Overview from "@/pages/overView/over-view";
+import Overview from "@/pages/overview/overview";
 import Receipt from "@/pages/receipt/receipt";
 import ElectricUsagePage from "@/pages/monthly-pages/pages/electric-usage-page";
 import WaterUsagePage from "@/pages/monthly-pages/pages/water-usage-page";
