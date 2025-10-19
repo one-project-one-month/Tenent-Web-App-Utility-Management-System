@@ -1,17 +1,15 @@
+import { useEffect, type FormEvent } from "react"
+import { useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router"
+import { LogOut, MoveLeft } from "lucide-react"
+import { FourSquare } from "react-loading-indicators";
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import useLogout from "@/hooks/auth/useLogout"
-import { AlertTriangle, LogOut, MoveLeft } from "lucide-react"
-import type { FormEvent } from "react"
-import { Link, Navigate, useNavigate } from "react-router"
-
-const PROFILE_DATA = new Map([
-  ['Name', 'John Doe'],
-  ['Email', 'lGQ5I@example.com'],
-  ['Room Number', '503'],
-  ['Phone Number', '123-456-7890'],
-])
+import { useLogout } from "@/hooks/use-auth"
+import { useTenantQuery } from "@/hooks/use-tenant"
+import type { RootState } from "@/store/store"
 
 type ProfileFieldType = {
   field: string;
@@ -19,7 +17,6 @@ type ProfileFieldType = {
 }
 
 const ProfileField = ({ field, value }: ProfileFieldType) => {
-  console.log("KEY: ", field, "VALUE: ", value);
   return (
     <div className="mb-6">
       <p className="text-h6 text-secondary-foreground">{field}:</p>
@@ -29,16 +26,28 @@ const ProfileField = ({ field, value }: ProfileFieldType) => {
 }
 
 const profile = () => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
   const navigate = useNavigate();
+
   const { mutate: logout } = useLogout();
+  const { data: profile, isLoading } = useTenantQuery(tenantId as string);
+
+  useEffect(() => {
+    if (!isAuthenticated) navigate("/login");
+  }, [isAuthenticated, navigate]);
+
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    try {
-      logout();
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
-    }
+    logout();
+  }
+
+  if (isLoading) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <FourSquare color="#2563eb" size="medium" text="Loading Profile..." textColor="" />
+      </div>
+    )
   }
 
   return (
@@ -51,17 +60,17 @@ const profile = () => {
         <h1 className="text-h1 my-10 text-center">Profile</h1>
         <Card className="mt-30 inline-block min-w-[300px] sm:w-[55vw] md:w-[60vw] lg:w-1/2 ml-[50%] translate-x-[-50%] bg-white">
 
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 sm:gap-10 whitespace-nowrap">
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 sm:gap-10 py-4 whitespace-nowrap">
             <div>
-              <img src="profile.png" alt="Profile Image" className="-translate-y-2/3 w-32 sm:w-40 md:w-50" />
-              <div className="-translate-y-1/3">
-                <ProfileField field="Name" value={PROFILE_DATA.get('Name') ?? ""} />
-                <ProfileField field="Email" value={PROFILE_DATA.get('Email') ?? ""} />
+              <img src="profile.png" alt="Profile Image" className="w-32 sm:w-40 md:w-50 -mt-30 mb-4" />
+              <div>
+                <ProfileField field="Name" value={profile?.name} />
+                <ProfileField field="Email" value={profile?.email} />
               </div>
             </div>
-            <div className="-translate-y-1/3 sm:translate-y-0">
-              <ProfileField field="Room Number" value={PROFILE_DATA.get('Room Number') ?? ""} />
-              <ProfileField field="Phone Number" value={PROFILE_DATA.get('Phone Number') ?? ""} />
+            <div>
+              <ProfileField field="Room Number" value={profile?.roomNo} />
+              <ProfileField field="Phone Number" value={profile?.phoneNo} />
               <Dialog>
                 <form>
                   <DialogTrigger asChild>
