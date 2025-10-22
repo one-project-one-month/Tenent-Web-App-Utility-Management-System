@@ -11,6 +11,6 @@ export const getTenantContractService = async (
     throw new Error(data.message);
   }
 
-  const contract = data.content.contract;
+  const contract = data.content.data;
   return { ...data, content: contract };
 };

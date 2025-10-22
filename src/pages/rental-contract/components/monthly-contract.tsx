@@ -3,16 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
 type MonthlyContractProp = {
-  contractTypeName: string;
   startDate: string;
   expiryDate: string;
 };
 
-const MonthlyContract = ({
-  contractTypeName,
-  startDate,
-  expiryDate,
-}: MonthlyContractProp) => {
+const MonthlyContract = ({ startDate, expiryDate }: MonthlyContractProp) => {
   const start = new Date(startDate);
   const end = new Date(expiryDate);
   const today = new Date();
@@ -29,6 +24,8 @@ const MonthlyContract = ({
     ((totalDays - remainingDays) / totalDays) * 100
   );
 
+  const isActive = remainingDays > 0;
+
   return (
     <Card className="border-2 border-chart-2 p-2 mb-5">
       <CardHeader>
@@ -38,12 +35,12 @@ const MonthlyContract = ({
           </div>
           <div className="flex flex-col gap-3">
             <span className="text-muted-foreground text-sm">Contract Type</span>
-            <h2>{contractTypeName}</h2>
+            <h2>Monthly Contract</h2>
           </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="w-full flex flex-wrap gap-3">
-        <div className="w-7/8">
+        <div className="w-6/7">
           <div className="flex justify-between items-center mb-2">
             <span className="text-muted-foreground text-sm">
               Contract Period
@@ -58,9 +55,15 @@ const MonthlyContract = ({
             <span>{end.toLocaleDateString()}</span>
           </div>
         </div>
-        <Button className="bg-chart-2/30 text-sm">
+        <Button
+          className={`text-sm flex items-center gap-2 ${
+            isActive
+              ? "bg-chart-2/30 hover:bg-chart-2/20 text-white"
+              : "bg-destructive/30 hover:bg-destructive/20 text-white"
+          }`}
+        >
           <img src="src/assets/Check Circle.svg" alt="checkCircle" />
-          Active
+          {isActive ? "Active" : "Overdue"}
         </Button>
       </CardContent>
     </Card>

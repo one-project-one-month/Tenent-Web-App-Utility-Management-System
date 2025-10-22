@@ -6,8 +6,10 @@ type ImportantDatesProps = {
 };
 const ImportantDates = ({ startDate, expiryDate }: ImportantDatesProps) => {
   const start = new Date(startDate).toLocaleDateString();
-  const end = new Date(expiryDate).toLocaleDateString();
-  const renewalNotice = end + 10 * 24 * 60 * 60 * 1000;
+  const end = new Date(expiryDate);
+  const renewalDate = new Date(
+    end.getTime() + 10 * 24 * 60 * 60 * 1000
+  ).toLocaleDateString();
 
   return (
     <Card className="mb-7">
@@ -24,11 +26,11 @@ const ImportantDates = ({ startDate, expiryDate }: ImportantDatesProps) => {
         </div>
         <div className="bg-chart-4/40 p-4 rounded-2xl">
           <h3>Contract End</h3>
-          <span>{end}</span>
+          <span>{end.toLocaleDateString()}</span>
         </div>
         <div className="bg-chart-4/40 p-4 rounded-2xl">
-          <h3>Renewal Notice Due Start</h3>
-          <span>{renewalNotice}</span>
+          <h3>Renewal Notice Due</h3>
+          <span>{renewalDate}</span>
         </div>
       </CardContent>
     </Card>

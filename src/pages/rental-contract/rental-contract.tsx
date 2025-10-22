@@ -61,11 +61,7 @@ const RentalContract = () => {
           Download PDF
         </Button>
       </div>
-      <MonthlyContract
-        contractTypeName={contractType.name}
-        startDate={createdDate}
-        expiryDate={expiryDate}
-      />
+      <MonthlyContract startDate={createdDate} expiryDate={expiryDate} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
         <TenantInformation
           tenant={tenant}
@@ -82,7 +78,7 @@ const RentalContract = () => {
         />
         <Facilities facilities={contractType.facilities} />
       </div>
-      <UtilitiesServices />
+      <UtilitiesServices facilities={contractType.facilities} />
       <TermsandConditions />
       <ImportantDates startDate={createdDate} expiryDate={expiryDate} />
     </section>

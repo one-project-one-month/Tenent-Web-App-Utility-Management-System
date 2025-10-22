@@ -24,7 +24,7 @@ const Facilities = ({ facilities }: FacilitiesProps) => {
             <Label htmlFor={facility} className="text-md font-bold">
               {facility}
             </Label>
-            <Checkbox id={facility} />
+            <Checkbox id={facility} checked />
           </div>
         ))}
       </CardContent>

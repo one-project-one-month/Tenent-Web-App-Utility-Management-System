@@ -26,7 +26,7 @@ const FinancialTerms = ({
           <h2 className="font-bold">{price} MMK</h2>
         </div>
         <hr />
-        <div className="p-4 bg-chart-2/30 rounded-2xl">
+        <div className="p-4">
           <span>Month Duration</span>
           <h2 className="font-bold">{duration} Month</h2>
         </div>
