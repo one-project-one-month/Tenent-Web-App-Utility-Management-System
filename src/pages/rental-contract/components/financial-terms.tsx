@@ -1,6 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const FinancialTerms = () => {
+type FinancialTermsProps = {
+  price: string;
+  duration: number;
+  expiryDate: string;
+};
+
+const FinancialTerms = ({
+  price,
+  duration,
+  expiryDate,
+}: FinancialTermsProps) => {
+  const renewalDate = new Date(expiryDate);
   return (
     <Card>
       <CardHeader>
@@ -12,7 +23,12 @@ const FinancialTerms = () => {
       <CardContent className="space-y-2">
         <div className="p-4 bg-chart-2/30 rounded-2xl">
           <span>Monthly Rent</span>
-          <h2 className="font-bold">600,000 MMK</h2>
+          <h2 className="font-bold">{price} MMK</h2>
+        </div>
+        <hr />
+        <div className="p-4 bg-chart-2/30 rounded-2xl">
+          <span>Month Duration</span>
+          <h2 className="font-bold">{duration} Month</h2>
         </div>
         <hr />
         <div className="p-4">
@@ -22,7 +38,7 @@ const FinancialTerms = () => {
         <hr />
         <div className="p-4">
           <span>Contract Renewal Date</span>
-          <h2 className="font-bold"> 01/10/2025</h2>
+          <h2 className="font-bold"> {renewalDate.toLocaleDateString()}</h2>
         </div>
       </CardContent>
     </Card>

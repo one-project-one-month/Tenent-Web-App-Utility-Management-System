@@ -30,25 +30,25 @@ const UtilitiesServices = () => {
         </div>
         <div className="p-4 bg-muted-foreground/5 rounded-2xl flex justify-between gap-2">
           <div className="text-sm text-muted-foreground space-y-1">
-            <h3 className="text-foreground text-lg font-bold">Electricity</h3>
-            <p>Average: 15,000 MMK/per month</p>
-            <p>Meter No: YC-12345</p>
+            <h3 className="text-foreground text-lg font-bold">Water</h3>
+            <p>Average: 1,000 MMK/per month</p>
+            <p>Frequency: Monthly</p>
           </div>
           <Button className="bg-chart-2/40">Included</Button>
         </div>
         <div className="p-4 bg-muted-foreground/5 rounded-2xl flex justify-between gap-2">
           <div className="text-sm text-muted-foreground space-y-1">
-            <h3 className="text-foreground text-lg font-bold">Electricity</h3>
-            <p>Average: 15,000 MMK/per month</p>
-            <p>Meter No: YC-12345</p>
+            <h3 className="text-foreground text-lg font-bold">Wifi/Internet</h3>
+            <p>Average: 250,000 MMK/per month</p>
+            <p>Service Number: YGNX 1234789</p>
           </div>
           <Button className="bg-chart-2/40">Included</Button>
         </div>
         <div className="p-4 bg-muted-foreground/5 rounded-2xl flex justify-between gap-2">
           <div className="text-sm text-muted-foreground space-y-1">
-            <h3 className="text-foreground text-lg font-bold">Electricity</h3>
-            <p>Average: 15,000 MMK/per month</p>
-            <p>Meter No: YC-12345</p>
+            <h3 className="text-foreground text-lg font-bold">Cleaning</h3>
+            <p>Average: 1,000 MMK/per month</p>
+            <p>Frequency: Monthly</p>
           </div>
           <Button className="bg-destructive/40">Not Included</Button>
         </div>
