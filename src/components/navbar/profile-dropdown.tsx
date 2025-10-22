@@ -19,12 +19,12 @@ const ProfileDropdown = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer flex items-center gap-2 outline-none md:mr-4">
         <h3 className="text-primary">
-          Hi, <span className="text-foreground">{user?.user_name}</span>
+          Hi, <span className="text-foreground">{user?.userName}</span>
         </h3>
         <Avatar className="w-9 h-9 ring-2 ring-ring shadow-sm hover:scale-105 transition">
           <AvatarImage src={""} />
           <AvatarFallback className="bg-gray-200 text-foreground font-bold">
-            {user?.user_name?.charAt(0)}{user?.user_name?.charAt(1)}
+            {user?.userName?.charAt(0)}{user?.userName?.charAt(1)}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

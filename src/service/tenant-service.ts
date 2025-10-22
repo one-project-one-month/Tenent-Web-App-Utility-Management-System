@@ -10,17 +10,17 @@ export const getTenantService = async (tenant_id: string): Promise<ApiResponse<T
     throw new Error(data.message);
   }
 
-  const { id, name, email, phone_no, emergency_no, room } = data.content.tenant;
-  const { room_no } = room;
+  const { id, name, email, phoneNo, emergency_no, room } = data.content.tenant;
+  const { roomNo } = room;
 
   // Create a new object with only the required fields
   const content = {
     id,
     name,
     email,
-    phone_no,
+    phoneNo,
     emergency_no,
-    room_no
+    roomNo
   };
 
   return {...data, content };
