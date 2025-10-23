@@ -11,6 +11,13 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
 import { useTenantContractQuery } from "@/hooks/use-tenant-contract";
 import { FourSquare } from "react-loading-indicators";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ContractPDF from "./contract-pdf/contract-pdf";
 
 const RentalContract = () => {
   const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
@@ -34,7 +41,7 @@ const RentalContract = () => {
     );
   }
 
-  if (isError || !contract) {
+  if (!contract) {
     return (
       <div className="h-full w-full flex items-center justify-center">
         <h2 className="text-2xl font-bold text-primary">
@@ -44,7 +51,16 @@ const RentalContract = () => {
     );
   }
 
-  console.log(contract);
+  if (isError) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <h2 className="text-2xl font-bold text-destructive">
+          Database Response Error
+        </h2>
+      </div>
+    );
+  }
+
   const { tenant, room, contractType, createdDate, expiryDate } = contract;
 
   return (
@@ -56,10 +72,22 @@ const RentalContract = () => {
             View your lease agreement and contract details
           </p>
         </div>
-        <Button className="text-white text-sm w-full md:w-auto">
-          <img src="src/assets/download.svg" alt="contract" />
-          Download PDF
-        </Button>
+        <PDFDownloadLink
+          document={<ContractPDF contract={contract} />}
+          fileName={`${tenant.name}-contract.pdf`}
+        >
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className="text-white text-sm w-full md:w-auto">
+                <img src="src/assets/download.svg" alt="contract" />
+                Download PDF
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Download Contract PDF</p>
+            </TooltipContent>
+          </Tooltip>
+        </PDFDownloadLink>
       </div>
       <MonthlyContract startDate={createdDate} expiryDate={expiryDate} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
