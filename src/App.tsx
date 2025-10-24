@@ -3,7 +3,6 @@ import MainPage from "@/layouts/main-page";
 import CustomerService from "@/pages/customer-service";
 import ServiceHistory from "@/pages/customer-service/service-history/index";
 import NewRequest from "@/pages/customer-service/new-request";
-import ContractDetails from "@/pages/contract-details/contract-details";
 import Login from "@/pages/auth/login";
 import MyBilling from "@/pages/my-billing";
 import Profile from "@/pages/profile/profile";
@@ -13,6 +12,7 @@ import WaterUsagePage from "@/pages/monthly-pages/pages/water-usage-page";
 import WifiUsagePage from "@/pages/monthly-pages/pages/wifi-usage-page";
 import ProtectedRoute from "@/components/protected-route";
 import NotFoundPage from "@/pages/not-found";
+import RentalContract from "./pages/rental-contract/rental-contract";
 const App = () => {
   const routes = [
     {
@@ -24,6 +24,7 @@ const App = () => {
           element: <MainPage />,
           children: [
             { index: true, element: <Overview /> },
+            { path: "rental-contract", element: <RentalContract /> },
             {
               path: "customer-service",
               element: <CustomerService />,
@@ -31,10 +32,6 @@ const App = () => {
                 { index: true, element: <NewRequest /> },
                 { path: "service-history", element: <ServiceHistory /> },
               ],
-            },
-            {
-              path: "contract",
-              element: <ContractDetails />,
             },
             {
               path: "my-billing",
