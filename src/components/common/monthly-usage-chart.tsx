@@ -39,7 +39,7 @@ const MonthlyUsageChart = ({
 
   return (
     <div className="w-full">
-      <Card className="shadow-sm border-1 border-gray-200 rounded-sm">
+      <Card className="bg-card shadow-sm border-1 border-gray-200 rounded-sm">
         <CardHeader>
           <CardTitle className="text-base font-medium">
              {title} 

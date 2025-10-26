@@ -1,0 +1,7 @@
+
+
+const NewBillAlert = () => (
+    <div>
+        
+    </div>
+)

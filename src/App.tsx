@@ -1,8 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MainPage from "@/layouts/main-page";
-import CustomerService from "@/pages/customer-service";
-import ServiceHistory from "@/pages/customer-service/service-history/index";
-import NewRequest from "@/pages/customer-service/new-request";
+import CustomerService from "@/pages/customer-service/customer-service";
 import ContractDetails from "@/pages/contract-details/contract-details";
 import Login from "@/pages/auth/login";
 import MyBilling from "@/pages/my-billing/my-billing";
@@ -25,10 +23,6 @@ const App = () => {
         {
           path: "customer-service",
           element: <CustomerService />,
-          children: [
-            { index: true, element: <NewRequest /> },
-            { path: "service-history", element: <ServiceHistory /> },
-          ],
         },
         {
           path: "contract",

@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 
 const Overview = () => {
   return (
-    <div className="h-screen-[100px]">
-      <div className="flex justify-between items-center my-10">
+    <div className="h-full text-text-primary">
+      <div className="flex justify-between items-center my-10 ">
         <div>
           <h1 className="text-h2 text-gray-700 font-semibold">Overview</h1>
           <h3 className="text-h6 text-gray-700 font-medium">
@@ -15,14 +15,14 @@ const Overview = () => {
           </h3>
         </div>
         <Badge
-          variant="secondary"
+          variant="default"
           className="bg-secondary text-black font-light text-sm font-normal px-4 py-2"
         >
           <BadgeCheckIcon style={{width:"15px", height:"15px"}} />
           All Payment Current
         </Badge>
       </div>
-      <div className="flex justify-between items-center border-1 border-gray-200 p-4 mb-10 rounded-sm shadow-sm w-full bg-white">
+      <div className="flex justify-between items-center border-1 border-gray-200 p-4 mb-10 rounded-sm shadow-sm w-full bg-card">
         <div className="flex flex-col gap-2">
           <p className="text-md text-gray-500">Total Amount Due</p>
           <p className="text-body-1">642,000 MMK</p>

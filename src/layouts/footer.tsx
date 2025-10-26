@@ -2,7 +2,7 @@ import NavLinkPages from "@/components/navbar/navlink-page";
 
 const Footer = () => {
   return (
-    <footer className="max-w-7xl mx-auto">
+    <footer className="max-w-7xl mx-auto my-20">
       <div className="flex flex-col md:flex-row items-center justify-between flex-wrap gap-2 md:mx-4">
         <div className="flex items-center gap-2">
           <img src="logo-final.svg" alt="logo" className="h-12 w-12" />
