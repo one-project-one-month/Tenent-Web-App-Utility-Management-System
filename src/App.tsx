@@ -4,12 +4,12 @@ import CustomerService from "@/pages/customer-service";
 import ServiceHistory from "@/pages/customer-service/service-history/index";
 import NewRequest from "@/pages/customer-service/new-request";
 import Login from "@/pages/auth/login";
-import MyBilling from "@/pages/my-billing/my-billing";
-import LatestBill from "@/pages/my-billing/latest-bill/latest-bill";
-import BillingHistory from "@/pages/my-billing/billing-history/billing-history";
+import MyBilling from "@/pages/my-billing";
 import Profile from "@/pages/profile/profile";
 import Overview from "@/pages/overView/over-view";
-import Receipt from "@/pages/receipt/receipt";
+import ElectricUsagePage from "@/pages/monthly-pages/pages/electric-usage-page";
+import WaterUsagePage from "@/pages/monthly-pages/pages/water-usage-page";
+import WifiUsagePage from "@/pages/monthly-pages/pages/wifi-usage-page";
 import ProtectedRoute from "@/components/protected-route";
 import NotFoundPage from "@/pages/not-found";
 import RentalContract from "./pages/rental-contract/rental-contract";
@@ -36,19 +36,14 @@ const App = () => {
             {
               path: "my-billing",
               element: <MyBilling />,
-              children: [
-                { index: true, element: <LatestBill /> },
-                { path: "billing-history", element: <BillingHistory /> },
-              ],
             },
             {
               path: "profile",
               element: <Profile />,
             },
-            {
-              path: "receipt",
-              element: <Receipt />,
-            },
+            { path: "electric-usage", element: <ElectricUsagePage /> },
+            { path: "water-usage", element: <WaterUsagePage /> },
+            { path: "wifi-usage", element: <WifiUsagePage /> },
           ],
         },
       ],
