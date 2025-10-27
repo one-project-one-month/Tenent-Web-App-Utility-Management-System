@@ -68,7 +68,7 @@ const RentalContract = () => {
       <div className="flex justify-between items-center flex-wrap gap-3 mb-5 mt-6 w-full">
         <div>
           <h2 className="text-2xl font-bold">Rental Contract</h2>
-          <p className="text-md font-bold">
+          <p className="text-md">
             View your lease agreement and contract details
           </p>
         </div>
