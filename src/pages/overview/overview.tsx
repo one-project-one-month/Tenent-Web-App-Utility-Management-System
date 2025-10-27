@@ -3,10 +3,12 @@ import MonthlyUsageChart from "@/components/common/monthly-usage-chart";
 import { Button } from "@/components/ui/button";
 import { BadgeCheckIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import NewBillAlert from "@/components/overview/new-bill-alert";
 
 const Overview = () => {
   return (
     <div className="h-full text-text-primary">
+      <NewBillAlert />
       <div className="flex justify-between items-center my-10 ">
         <div>
           <h1 className="text-h2 text-gray-700 font-semibold">Overview</h1>
