@@ -6,7 +6,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import StatusBadge from "@/components/common/status-badge";
+import StatusBadge, { type Status } from "@/components/common/status-badge";
 import { Badge } from "../ui/badge";
 import { useMemo, useState } from "react";
 
@@ -150,7 +150,7 @@ const ServiceHistory = () => {
                   <p className=" font-semibold">{card.title}</p>
                   <StatusBadge
                     className="px-2 py-1"
-                    status={card.status as any}
+                    status={card.status as Status}
                   />
                   <Badge
                     className="text-badge-text"
@@ -161,7 +161,7 @@ const ServiceHistory = () => {
                 </div>
                 <p className=" text-gray-700">{card.issueDate}</p>
               </div>
-              <p className="text-balance text-sm bg-background rounded-sm p-2 mb-2 ">
+              <p className="text-balance text-slate-600 text-sm bg-background rounded-sm px-2 py-4 mb-2 ">
                 {card.description}{" "}
               </p>
             </div>

@@ -30,7 +30,7 @@ const TermsandConditions = () => {
       </CardHeader>
       <CardContent>
         {TermsandConditions.map((item, index) => (
-          <h3 key={index} className="m-2 p-3 bg-muted-foreground/5 rounded-2xl">
+          <h3 key={index} className="m-2 p-3 bg-muted-foreground/5 rounded-md">
             {item}
           </h3>
         ))}

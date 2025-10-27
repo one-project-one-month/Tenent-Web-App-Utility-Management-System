@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 
 type MonthlyContractProp = {
   startDate: string;
@@ -39,7 +40,7 @@ const MonthlyContract = ({ startDate, expiryDate }: MonthlyContractProp) => {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="w-full flex flex-wrap gap-3">
+      <CardContent className="flex flex-wrap md:flex-nowrap items-center gap-3">
         <div className="w-6/7">
           <div className="flex justify-between items-center mb-2">
             <span className="text-muted-foreground text-sm">
@@ -56,13 +57,14 @@ const MonthlyContract = ({ startDate, expiryDate }: MonthlyContractProp) => {
           </div>
         </div>
         <Button
-          className={`text-sm flex items-center gap-2 ${
+          className={cn(
+            "text-sm flex items-center gap-2 w-32 justify-center",
             isActive
-              ? "bg-chart-2/30 hover:bg-chart-2/20 text-white"
-              : "bg-destructive/30 hover:bg-destructive/20 text-white"
-          }`}
+              ? "bg-green-600 hover:bg-chart-2/20 text-white"
+              : "bg-destructive hover:bg-destructive/20 text-white"
+          )}
         >
-          <img src="src/assets/Check Circle.svg" alt="checkCircle" />
+          <img src="src/assets/check_circle.svg" alt="checkCircle" />
           {isActive ? "Active" : "Overdue"}
         </Button>
       </CardContent>

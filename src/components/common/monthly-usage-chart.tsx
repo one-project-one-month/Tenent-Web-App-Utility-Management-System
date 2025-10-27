@@ -50,7 +50,7 @@ const MonthlyUsageChart = ({
         </CardHeader>
 
         <CardContent>
-          <ChartContainer config={chartConfig} className=" h-[250px] w-[500px]">
+          <ChartContainer config={chartConfig} className=" h-[300px] w-[500px]">
             <BarChart accessibilityLayer data={chartData}>
               <CartesianGrid vertical={false} />
               <XAxis dataKey="month" />

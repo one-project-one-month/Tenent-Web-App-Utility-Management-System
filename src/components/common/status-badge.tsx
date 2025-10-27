@@ -3,7 +3,7 @@ import { Loader } from "lucide-react";
 import { CircleEllipsis } from "lucide-react";
 import { CircleCheck } from "lucide-react";
 
-type Status = "Pending" | "In-progress" | "Resolved";
+export type Status = "Pending" | "In-progress" | "Resolved";
 
 type StatusBadgeProps = {
   status: Status;

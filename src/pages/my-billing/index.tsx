@@ -97,7 +97,7 @@ const Billing = () => {
 
   return (
     <section>
-      <div className="flex flex-col gap-8 lg:gap-10 xl:gap-14 py-5 lg:py-7 lg:px-4">
+      <div className="flex flex-col gap-6 py-5 lg:py-7 lg:px-4">
         <header className="flex gap-24 items-center lg:gap-0 md:justify-between">
           <div className="flex flex-col gap-3">
             <h1 className="text-h2 text-[#333333]">My Billing</h1>
