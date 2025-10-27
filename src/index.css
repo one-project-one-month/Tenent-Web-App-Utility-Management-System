@@ -141,6 +141,12 @@
 }
 
 @layer components {
+
+  /* Card Shadow */
+  .shadow-double {
+    box-shadow: 0px 1px 4px rgba(12, 12, 13, 0.05), 0px 1px 4px rgba(12, 12, 13, 0.1);
+  }
+
   /* Mobile Styles (< 768px) */
   .text-h1 {
     font-size: 2.25rem;

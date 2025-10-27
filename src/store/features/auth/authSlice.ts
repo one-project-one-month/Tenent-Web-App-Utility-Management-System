@@ -1,27 +1,16 @@
+import type { AuthUser } from "@/types/auth";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface AuthStateType {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    tenent_id?: string;
-  };
-  isAuthenticated?: Boolean;
+  user: AuthUser | null;
   accessToken: string;
+  isAuthenticated: boolean;
 }
 
 const initialState: AuthStateType = {
-  user: {
-    id: "",
-    name: "",
-    email: "",
-    role: "",
-    tenent_id: "",
-  },
-  isAuthenticated: false,
-  accessToken: "",
+  user:  localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null,
+  accessToken: localStorage.getItem("accessToken") || "",
+  isAuthenticated: localStorage.getItem("accessToken") ? true : false,
 };
 
 export const authSlice = createSlice({
@@ -32,9 +21,17 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
       state.isAuthenticated = true;
+
+      localStorage.setItem("accessToken", action.payload.accessToken);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
     },
     logout: (state) => {
-      state = initialState;
+      state.user = null;
+      state.accessToken = "";
+      state.isAuthenticated = false;
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
     },
   },
 });
