@@ -5,13 +5,14 @@ import Login from "@/pages/auth/login";
 import MyBilling from "@/pages/my-billing";
 import Profile from "@/pages/profile/profile";
 import Overview from "@/pages/overview/overview";
-import Receipt from "@/pages/receipt/receipt";
 import ElectricUsagePage from "@/pages/monthly-pages/pages/electric-usage-page";
 import WaterUsagePage from "@/pages/monthly-pages/pages/water-usage-page";
 import WifiUsagePage from "@/pages/monthly-pages/pages/wifi-usage-page";
 import ProtectedRoute from "@/components/protected-route";
 import NotFoundPage from "@/pages/not-found";
 import RentalContract from "./pages/rental-contract/rental-contract";
+import NewRequest from "./components/customer-service/new-request";
+import ServiceHistory from "./components/customer-service/service-history";
 const App = () => {
   const routes = [
     {
