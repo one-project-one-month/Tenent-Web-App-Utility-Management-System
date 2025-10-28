@@ -94,7 +94,7 @@ const Receipt = ({
         <div className="flex gap-8">
           <Button
             variant="outline"
-            className="bg-secondary flex-1 flex items-center px-8 py-6"
+            className=" flex-1 flex items-center px-8 py-6"
             aria-label="Save receipt as text"
             onClick={() =>
               generateReceiptText({
@@ -112,7 +112,7 @@ const Receipt = ({
           </Button>
 
           <Button
-            className="bg-primary flex-1 flex items-center text-secondary px-8 py-6"
+            className="bg-primary flex-1 flex items-center text-white px-8 py-6"
             aria-label="Download receipt as PDF"
             onClick={() =>
               generateReceiptPDF({
