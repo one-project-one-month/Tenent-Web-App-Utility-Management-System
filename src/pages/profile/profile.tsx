@@ -1,24 +1,40 @@
-import { useEffect, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { LogOut, MoveLeft } from "lucide-react";
+import { CircleUser, Contact, LogOut, LogOutIcon, MoveLeft, Pencil, Shield, User, UserCog } from "lucide-react";
 import { FourSquare } from "react-loading-indicators";
+import { useForm, Controller } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { useLogout } from "@/hooks/use-auth";
 import { useTenantQuery } from "@/hooks/use-tenant";
 import type { RootState } from "@/store/store";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+
+interface profileFormFields {
+  fullName: string
+  email: string
+  phoneNo: string
+  location: string
+  roomNo: string
+  role: string
+  memberSince: Date
+  status: string
+}
 
 type ProfileFieldType = {
   field: string;
@@ -35,14 +51,27 @@ const ProfileField = ({ field, value }: ProfileFieldType) => {
 };
 
 const profile = () => {
+  const navigate = useNavigate();
+  const { handleSubmit, control } = useForm<profileFormFields>({
+    defaultValues: {
+      fullName: "Jenny Wilson",
+      email: "Jenny4207@gmail.com",
+      phoneNo: "09 123 456 789",
+      location: "456 Riverside Apartment, Unit 3B San Francisco, CA 94102",
+      roomNo: "A-104",
+      role: "Tenant",
+      memberSince: new Date(),
+      status: "Active",
+    },
+  });
+  const [editMode, setEditMode] = useState<boolean>(false);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
   const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
-  const navigate = useNavigate();
 
   const { mutate: logout } = useLogout();
-  const { data: profile, isLoading } = useTenantQuery(tenantId as string);
+  // const { data: profile, isLoading } = useTenantQuery(tenantId as string);
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/login");
@@ -53,91 +82,185 @@ const profile = () => {
     logout();
   };
 
-  if (isLoading) {
+  const renderActionButtons = () => {
     return (
-      <div className="h-full w-full flex items-center justify-center">
-        <FourSquare
-          color="#2563eb"
-          size="medium"
-          text="Loading Profile..."
-          textColor=""
-        />
+      <div className="mb-6">
+        {
+          editMode ? (
+            <div className="grid grid-cols-2 gap-4">
+              <Button
+                className="text-white p-6 font-light"
+              >
+                Update
+              </Button>
+              <Button
+                className="p-6 font-light border-primary"
+                variant="outline"
+                onClick={() => setEditMode(false)}
+              >Cancel</Button>
+            </div>
+          ) : (
+            <Button
+              className="w-full text-white p-6 font-light"
+              onClick={() => setEditMode(true)}
+            >
+              <UserCog /> Edit Profile
+            </Button>
+          )
+        }
       </div>
-    );
+    )
   }
 
+  // if (isLoading) {
+  //   return (
+  //     <div className="h-full w-full flex items-center justify-center">
+  //       <FourSquare
+  //         color="#2563eb"
+  //         size="medium"
+  //         text="Loading Profile..."
+  //         textColor=""
+  //       />
+  //     </div>
+  //   );
+  // }
+
   return (
-    <div className="min-h-[85vh] my-10">
-      <Link
-        to="/my-billing"
-        className="flex items-center gap-2 hover:font-medium transition-all group"
-      >
-        <MoveLeft
-          size={18}
-          strokeWidth={1.3}
-          className="group-hover:[stroke-width:2]"
-        />
-        Back
-      </Link>
-      <div>
-        <h1 className="text-h1 my-10 text-center">Profile</h1>
-        <Card className="mt-30 inline-block min-w-[300px] sm:w-[55vw] md:w-[60vw] lg:w-1/2 ml-[50%] translate-x-[-50%] bg-white">
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 sm:gap-10 py-4 whitespace-nowrap">
-            <div>
-              <img
-                src="profile.png"
-                alt="Profile Image"
-                className="w-32 sm:w-40 md:w-50 -mt-30 mb-4"
-              />
-              <div>
-                <ProfileField field="Name" value={profile?.name} />
-                <ProfileField field="Email" value={profile?.email} />
+    <div>
+      <Card className="mb-6">
+        <CardContent className="flex flex-col sm:flex-row justify-between align-start">
+          <div className="flex gap-4 justify-start items-end">
+            <Avatar className="w-2/5 h-auto sm:w-40 rounded-sm">
+              <AvatarImage src="https://github.com/shadcn.png" alt="Tenant" />
+              <AvatarFallback><User /></AvatarFallback>
+            </Avatar>
+            <CardTitle>
+              <h1 className="text-h3">Jenny Wilson</h1>
+              <h3 className="text-h4 text-[#4F4F4F] mb-2">T-0001</h3>
+              <Badge className="bg-secondary py-2 px-4">Active</Badge>
+            </CardTitle>
+          </div>
+          <CardAction className="mt-6 w-full sm:w-auto">
+            <Button className="w-full bg-destructive/70 flex items-center justify-center p-6 text-background gap-2 hover:bg-destructive focus:bg-destructive"><LogOutIcon /> Logout</Button>
+          </CardAction>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent>
+          <Tabs defaultValue="account" className="w-full">
+            <TabsList className="w-full mb-10">
+              <TabsTrigger value="account"><CircleUser />Profile</TabsTrigger>
+              <TabsTrigger value="password"><Shield />Security</TabsTrigger>
+            </TabsList>
+            <TabsContent value="account">
+              <div className="mb-6">
+                <h4 className="text-sub-heading flex gap-2 text-[#333333] mb-2"><Contact /> Personal Information</h4>
+                <p className="text-muted-foreground text-body-1">Update your personal details and contact information</p>
               </div>
-            </div>
-            <div>
-              <ProfileField field="Room Number" value={profile?.roomNo} />
-              <ProfileField field="Phone Number" value={profile?.phoneNo} />
-              <Dialog>
-                <form>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant={"destructive"}
-                      className="text-gray-100 cursor-pointer hover:bg-chart-1 transition-all active:scale-95"
-                    >
-                      Logout <LogOut strokeWidth={3} />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px] py-8">
-                    <DialogHeader>
-                      <DialogTitle className="text-center">
-                        Are you sure you want to log out?
-                      </DialogTitle>
-                      <DialogDescription className="text-center my-3">
-                        We’ll keep your data safe. You can log back in anytime.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter className="flex flex-row gap-2 justify-center sm:justify-center">
-                      <DialogClose asChild>
-                        <Button variant="secondary" className="cursor-pointer">
-                          Cancel
-                        </Button>
-                      </DialogClose>
-                      <Button
-                        variant="destructive"
-                        type="submit"
-                        className="cursor-pointer"
-                        onClick={handleFormSubmit}
-                      >
-                        Confirm
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </form>
-              </Dialog>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+
+              <form action="" className="flex flex-col gap-4 my-4">
+                {/* Action Buttons */}
+                {renderActionButtons()}
+
+                {/* Editable Form Fields */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2 md:gap-4">
+                  <fieldset>
+                    <Label htmlFor="fullName" className="text-[20px]">Full Name</Label>
+                    <div className="relative">
+                      <Controller
+                        name="fullName"
+                        control={control}
+                        render={({ field }) => <Input {...field} disabled={!editMode} className="shadow border-foreground/40 py-6" />}
+                      />
+                      {editMode && (<Pencil className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5" />)}
+                    </div>
+                  </fieldset>
+
+                  <fieldset>
+                    <Label htmlFor="email" className="text-[20px]">Email</Label>
+                    <div className="relative">
+                      <Controller
+                        name="email"
+                        control={control}
+                        render={({ field }) => <Input {...field} disabled={!editMode} className="shadow border-foreground/40 py-6" />}
+                      />
+                      {editMode && (<Pencil className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5" />)}
+                    </div>
+                  </fieldset>
+
+                  <fieldset>
+                    <Label htmlFor="phoneNo" className="text-[20px]">Phone Number</Label>
+                    <div className="relative">
+                      <Controller
+                        name="phoneNo"
+                        control={control}
+                        render={({ field }) => <Input {...field} disabled={!editMode} className="shadow border-foreground/40 py-6" />}
+                      />
+                      {editMode && (<Pencil className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5" />)}
+                    </div>
+                  </fieldset>
+                </div>
+
+                <div>
+                  <Label htmlFor="location" className="text-[20px]">Location</Label>
+                  <Controller
+                    name="location"
+                    control={control}
+                    render={({ field }) => <Textarea {...field} disabled className="shadow border-foreground/40 py-6" />}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="roomNo" className="text-[20px]">Room No</Label>
+                  <Controller
+                    name="roomNo"
+                    control={control}
+                    render={({ field }) => <Input {...field} disabled className="shadow border-foreground/40 py-6" />}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="role" className="text-[20px]">Role</Label>
+                  <Controller
+                    name="role"
+                    control={control}
+                    render={({ field }) => <Input {...field} disabled className="shadow border-foreground/40 py-6" />}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="memberSince" className="text-[20px]">Member Since</Label>
+                  <Controller
+                    name="memberSince"
+                    control={control}
+                    render={({ field }) =>
+                      <Input type="date" {...field}
+                        value={field.value ? field.value.toISOString().split("T")[0] : ""}
+                        disabled
+                        className="shadow border-foreground/40 py-6"
+                      />
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="status" className="text-[20px]">Account Status</Label>
+                  <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => <Input {...field} disabled className="shadow border-foreground/40 py-6" />}
+                  />
+                </div>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="password">
+              Change your password here.
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 };
