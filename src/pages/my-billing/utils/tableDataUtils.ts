@@ -1,6 +1,5 @@
 import type { Bill } from "@/types/bill";
-
-type Status = "Paid" | "Pending" | "Overdue";
+import type { Status } from "@/pages/my-billing";
 
 interface InvoiceField {
   ID: string;

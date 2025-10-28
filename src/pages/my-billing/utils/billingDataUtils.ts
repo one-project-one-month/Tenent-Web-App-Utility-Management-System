@@ -76,20 +76,24 @@ export const getUtilityDataFromBills = (bills: Bill[]): UtilityData => {
   ];
 
   const chart = {
-    electricUsage: lastFourMonths.map((bill) => ({
-      month: bill.createdAt
-        ? new Date(bill.createdAt).toLocaleString("en-US", { month: "short" })
-        : "Unknown",
-      value: Number(bill.totalUnit?.electricityUnits ?? 0),
-      unit: "Units",
-    })),
-    waterUsage: lastFourMonths.map((bill) => ({
-      month: bill.createdAt
-        ? new Date(bill.createdAt).toLocaleString("en-US", { month: "short" })
-        : "Unknown",
-      value: Number(bill.totalUnit?.waterUnits ?? 0),
-      unit: "Liters(L)",
-    })),
+    electricUsage: lastFourMonths
+      .map((bill) => ({
+        month: bill.createdAt
+          ? new Date(bill.createdAt).toLocaleString("en-US", { month: "short" })
+          : "Unknown",
+        value: Number(bill.totalUnit?.electricityUnits ?? 0),
+        unit: "Units",
+      }))
+      .reverse(),
+    waterUsage: lastFourMonths
+      .map((bill) => ({
+        month: bill.createdAt
+          ? new Date(bill.createdAt).toLocaleString("en-US", { month: "short" })
+          : "Unknown",
+        value: Number(bill.totalUnit?.waterUnits ?? 0),
+        unit: "Liters(L)",
+      }))
+      .reverse(),
   };
 
   return { electricData, waterData, chart, currentBill };

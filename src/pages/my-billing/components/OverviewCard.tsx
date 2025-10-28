@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
+import type { Status } from "@/pages/my-billing";
 
-type Status = "Paid" | "Pending" | "Overdue";
 const statusColors: Record<Status, string> = {
   Paid: "bg-[#58DA8F80] text-[#11321F]",
   Pending: "bg-[#F5D47080] text-[#605020]",
