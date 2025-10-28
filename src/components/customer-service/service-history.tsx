@@ -134,34 +134,37 @@ const ServiceHistory = () => {
 
   return (
     <div className="text-text-primary">
-      <div className="flex-1 flex flex-col items-start w-full border-1 border-gray-300 bg-card rounded-sm shadow-sm p-5">
-        <h3 className="text-2xl font-semibold mb-3">Submit New Request</h3>
+      <div className="flex-1 flex flex-col items-start w-full border border-gray-300 bg-card rounded-sm shadow-sm p-5">
+        <h3 className="text-2xl font-semibold mb-3">My Service History</h3>
         <p className="mb-10">
-          Fill out the form below and we'll get back to you as soon as possible
+          The status of your submitted requests
         </p>
         <div className=" flex flex-col gap-4 ">
           {currentCards.map((card) => (
             <div
-              className=" flex flex-col gap-3 border-b-1 border-gray-500 "
+              className=" flex flex-col gap-3 border-b border-gray-500 "
               key={card.id}
             >
-              <div className="flex justify-between items-center gap-2">
-                <div className="flex gap-2">
+              <div className="flex justify-between items-start md:items-center gap-2">
+                <div className="flex flex-col sm:flex-row gap-2 ">
                   <p className=" font-semibold">{card.title}</p>
-                  <StatusBadge
-                    className="px-2 py-1"
-                    status={card.status as Status}
-                  />
-                  <Badge
-                    className="text-badge-text"
-                    variant={priorityToVariant[card.priority]}
-                  >
-                    {card.priority}
-                  </Badge>
+                  <div className="flex items-center gap-2">
+
+                    <StatusBadge
+                      className="px-2 py-1"
+                      status={card.status as Status}
+                    />
+                    <Badge
+                      className="text-badge-text"
+                      variant={priorityToVariant[card.priority]}
+                    >
+                      {card.priority}
+                    </Badge>
+                  </div>
                 </div>
                 <p className=" text-gray-700">{card.issueDate}</p>
               </div>
-              <p className="text-balance text-slate-600 text-sm bg-background rounded-sm px-2 py-4 mb-2 ">
+              <p className="text-balance text-slate-500 text-sm bg-background rounded-sm px-2 py-4 mb-2 ">
                 {card.description}{" "}
               </p>
             </div>

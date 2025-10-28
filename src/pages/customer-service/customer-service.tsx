@@ -8,30 +8,23 @@ const CustomerService = () => {
     <section className="mt-10 text-text-primary">
       <h1 className="text-h2 text-gray-700 font-semibold">Customer Service </h1>
       <h3 className="text-h6 text-gray-700 font-medium">
-        Get help with utilities, billing, and property <br /> services
+        Get help with utilities, billing, and property  <br /> services
       </h3>
       <div className="w-full mt-10 flex justify-between">
-        <Tabs defaultValue="account" className="w-full">
+        <Tabs defaultValue="request" className="w-full">
           <TabsList>
-            <TabsTrigger value="account">New Request</TabsTrigger>
-            <TabsTrigger value="password">Service History</TabsTrigger>
+            <TabsTrigger value="request">New Request</TabsTrigger>
+            <TabsTrigger value="history">Service History</TabsTrigger>
           </TabsList>
-          <TabsContent value="account">
-            <div className="flex gap-6 mt-10 items-start">
-              <ContactUs />
-              <div className="flex-1">
-                <NewRequest />
-              </div>
-            </div>
-          </TabsContent>
-          <TabsContent value="password">
-            <div className="flex gap-6 mt-10 items-start">
-              <ContactUs />
-              <div className="flex-1">
-                <ServiceHistory />
-              </div>
-            </div>
-          </TabsContent>
+          <div className="flex flex-col md:flex-row gap-6 mt-10 items-start">
+            <ContactUs />
+            <TabsContent value="request">
+              <NewRequest />
+            </TabsContent>
+            <TabsContent value="history">
+              <ServiceHistory />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </section>

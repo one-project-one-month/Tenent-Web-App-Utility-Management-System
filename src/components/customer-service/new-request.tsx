@@ -31,8 +31,9 @@ const NewRequest = () => {
     resolver: zodResolver(serviceFormSchema),
     defaultValues: {
       description: "",
-      category: "",
-      priority_level: "",
+      category: "Complain",
+      priority_level: "Low",
+
     },
   });
   // const mutation = useMutation({
@@ -81,32 +82,21 @@ const NewRequest = () => {
                       <Select onValueChange={field.onChange} value={field.value} >
                         <SelectTrigger
                           className={`py-5 px-6 border-2 border-border bg-input w-full  
-                        ${
-                          form.formState.errors.category
-                            ? "border-red-500 focus:ring-red-500"
-                            : ""
-                        }`}
+                        ${form.formState.errors.category
+                              ? "border-red-500 focus:ring-red-500"
+                              : ""
+                            }`}
                         >
                           <SelectValue placeholder="Service Type" />
                         </SelectTrigger>
                         <SelectContent className="bg-input ">
-                          <SelectItem value="electric">
-                            Electric Issue
+                          <SelectItem value="Complain">
+                            Complain
                           </SelectItem>
-                          <SelectItem value="water">Water Issue</SelectItem>
-                          <SelectItem value="wifi">
-                            Wi-Fi/ Internet issue
+                          <SelectItem value="Maintenance">
+                            Maintenance
                           </SelectItem>
-                          <SelectItem value="maintenance">
-                            Maintenance Issue
-                          </SelectItem>
-                          <SelectItem value="security">
-                            Security & Safety
-                          </SelectItem>
-                          <SelectItem value="billing">
-                            Billing & Payment Support
-                          </SelectItem>
-                          <SelectItem value="other">other</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -125,18 +115,17 @@ const NewRequest = () => {
                       <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger
                           className={`py-5 px-6 border-2 border-border bg-input w-full  
-                        ${
-                          form.formState.errors.priority_level
-                            ? "border-red-500 focus:ring-red-500"
-                            : ""
-                        }`}
+                        ${form.formState.errors.priority_level
+                              ? "border-red-500 focus:ring-red-500"
+                              : ""
+                            }`}
                         >
                           <SelectValue placeholder="Priority Level" />
                         </SelectTrigger>
                         <SelectContent className="bg-input ">
-                          <SelectItem value="low">Low</SelectItem>
-                          <SelectItem value="medium">Medium</SelectItem>
-                          <SelectItem value="high">High</SelectItem>
+                          <SelectItem value="Low">Low</SelectItem>
+                          <SelectItem value="Medium">Medium</SelectItem>
+                          <SelectItem value="High">High</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -166,11 +155,10 @@ const NewRequest = () => {
                 type="submit"
                 size={"lg"}
                 className={`cursor-pointer text-accent 
-              ${
-                isLoading
-                  ? "cursor-not-allowed bg-muted text-muted-foreground"
-                  : ""
-              }`}
+              ${isLoading
+                    ? "cursor-not-allowed bg-muted text-muted-foreground"
+                    : ""
+                  }`}
               >
                 {isLoading ? (
                   <>
