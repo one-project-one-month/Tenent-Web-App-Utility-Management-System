@@ -50,7 +50,7 @@ const InvoiceTable = ({
         {headerField.map((items, index) => (
           <TableHead
             key={index}
-            className="w-[156px] h-[44px] p-2 text-h5 text-center text-[#333333]"
+            className="w-[156px] h-11 p-2 text-h5 text-center text-[#333333]"
             scope="col"
           >
             {items.tableHead}
@@ -72,7 +72,7 @@ const InvoiceTable = ({
           </TableCell>
           <TableCell className={tableCellStyle}>
             <Badge
-              className={`rounded-[8px] px-2 py-1 text-base ${
+              className={`rounded-lg px-2 py-1 text-base ${
                 statusColors[item.status as Status]
               }`}
             >

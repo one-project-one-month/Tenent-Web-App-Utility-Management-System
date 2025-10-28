@@ -22,7 +22,7 @@ const OverviewCard = ({ totalAmount, dueDate, status }: OverviewCardProps) => {
   const showDueMessage = status !== "Paid";
 
   return (
-    <article className="flex flex-col gap-6 bg-[#FFFAFA] rounded-[8px] px-6 py-8 shadow-double border border-[#E0E0E0] lg:flex-row lg:justify-between lg:items-center">
+    <article className="flex flex-col gap-6 bg-[#FFFAFA] rounded-lg px-6 py-8 shadow-double border border-[#E0E0E0] lg:flex-row lg:justify-between lg:items-center">
       <div className="flex flex-col gap-2">
         <p className="text-lg text-[#4F4F4F]">Current Bill</p>
         <h3 className="text-[#1955FF] text-2xl font-medium">
