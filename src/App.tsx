@@ -3,7 +3,7 @@ import MainPage from "@/layouts/main-page";
 import CustomerService from "@/pages/customer-service/customer-service";
 import Login from "@/pages/auth/login";
 import MyBilling from "@/pages/my-billing";
-import Profile from "@/pages/profile/profile";
+import Profile from "@/pages/profile";
 import Overview from "@/pages/overview/overview";
 import ElectricUsagePage from "@/pages/monthly-pages/pages/electric-usage-page";
 import WaterUsagePage from "@/pages/monthly-pages/pages/water-usage-page";
