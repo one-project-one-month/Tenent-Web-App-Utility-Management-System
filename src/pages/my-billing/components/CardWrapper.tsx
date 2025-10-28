@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 const cardStyle =
-  "flex flex-col gap-6 lg:gap-8 p-4 lg:py-8 rounded-[8px] shadow-double bg-[#FFFAFA] border border-[#E0E0E0]";
+  "flex flex-col gap-6 lg:gap-8 p-4 lg:py-8 rounded-lg shadow-double bg-[#FFFAFA] border border-[#E0E0E0]";
 
 interface CardWrapperProps {
   icon: string;

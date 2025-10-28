@@ -36,7 +36,7 @@ const TabsContentCard = ({
       {data.map((item, index) => (
         <div
           key={index}
-          className="py-3 px-4 rounded-[8px] bg-[#F5F5F5] border border-[#3E70FF]"
+          className="py-3 px-4 rounded-lg bg-[#F5F5F5] border border-[#3E70FF]"
         >
           <h3 className="text-base text-[#4F4F4F]">{item.title}</h3>
           <p className="text-lg font-medium text-[#333333]">
@@ -47,7 +47,7 @@ const TabsContentCard = ({
     </div>
 
     {/* chart */}
-    <div className="-mx-4 lg:-mx-0">
+    <div className="-mx-4 lg:mx-0">
       <MonthlyUsageChart
         title={title}
         subTitle="Usage Trend"

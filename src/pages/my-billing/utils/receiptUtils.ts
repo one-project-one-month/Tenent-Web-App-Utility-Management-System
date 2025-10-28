@@ -104,7 +104,7 @@ export const generateReceiptPDF = ({
   fees.forEach((f, index) => {
     const rowHeight = 7;
     if (index % 2 === 0) {
-      doc.setFillColor(240);
+      doc.setFillColor("240");
       doc.rect(margin, currentY, pageWidth - 2 * margin, rowHeight, "F");
     }
     doc.text(f.name, margin + 2, currentY + 4.5);

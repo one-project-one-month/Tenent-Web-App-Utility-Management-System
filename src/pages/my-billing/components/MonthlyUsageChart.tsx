@@ -42,7 +42,7 @@ export const MonthlyUsageChart = ({
   } satisfies ChartConfig;
 
   return (
-    <Card className="shadow-sm border-1 border-gray-200 rounded-sm">
+    <Card className="shadow-sm border border-gray-200 rounded-sm">
       <CardHeader>
         <CardTitle className="flex flex-col gap-1 text-xs font-light text-[#4F4F4F]">
           {title}

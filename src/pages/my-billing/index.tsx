@@ -165,7 +165,7 @@ const Billing = () => {
             {otherFee && (
               <BillingCard icon={infoIcon} title="Other" amount={otherFee} />
             )}
-            <div className="bg-[#F5F5F5] border border-[#E0E0E0] rounded-[8px] flex justify-between items-center px-3 py-4">
+            <div className="bg-[#F5F5F5] border border-[#E0E0E0] rounded-lg flex justify-between items-center px-3 py-4">
               <p className="text-[#3E70FF] text-xl lg:text-2xl font-medium">
                 Total Amount Due
               </p>
