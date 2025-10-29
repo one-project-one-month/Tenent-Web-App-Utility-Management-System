@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import FrequentlyAskedQuestions from "./frequently-asked-questions";
-// import { useMutation } from "@tanstack/react-query"
 import {
   Form,
   FormField,
@@ -19,46 +18,39 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-// import { sumbitServiceForm } from "@/service/customer-service"
-import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import { useSubmitForm } from "@/hooks/use-service";
+import { useTenantQuery } from "@/hooks/use-tenant";
 
 
 
-const NewRequest = () => {
-  //React hook form
+const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) => {
+
+  const isLoading = false;
   const form = useForm<serviceFormValue>({
     resolver: zodResolver(serviceFormSchema),
     defaultValues: {
-      description: "",
-      category: "Complain",
-      priority_level: "Low",
-
-    },
+      status: "Pending",
+    }
   });
-  // const mutation = useMutation({
-  //   mutationFn: sumbitServiceForm,
-  //   onSuccess: () => {
-  //     toast.success("Request submitted successfully.");
-  //   },
-  //   onError: () => {
-  //     toast.error("Something went wrong. Try again.")
-  //   }
-  // })
 
-  const isLoading = form.formState.isLoading; //Track loading
+  const mutation = useSubmitForm()
+
+  // const isLoading = form.formState.isLoading; //Track loading
 
   //submit form to server
   const onSubmit = (data: serviceFormValue) => {
-    console.log(data);
+    if (!tenantId) return;
+    console.log(data)
+    mutation.mutate({ data, tenantId, roomId })
     form.reset();
-    toast.success("Request submitted successfully");
-    // mutation.mutate(data);
   };
 
   return (
     <div className="text-text-primary">
-      <div className="border-1 border-gray-300 rounded-sm shadow-sm p-4 bg-card">
+      <div className="border border-gray-300 rounded-sm shadow-sm p-4 bg-card">
         <h3 className="text-2xl font-semibold mb-3">Submit New Request</h3>
         <p className="mb-3">
           Fill out the form below and we'll get back to you as soon as possible
@@ -108,14 +100,14 @@ const NewRequest = () => {
               {/* Priprity select box */}
               <FormField
                 control={form.control}
-                name="priority_level"
+                name="priorityLevel"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger
                           className={`py-5 px-6 border-2 border-border bg-input w-full  
-                        ${form.formState.errors.priority_level
+                        ${form.formState.errors.priorityLevel
                               ? "border-red-500 focus:ring-red-500"
                               : ""
                             }`}
