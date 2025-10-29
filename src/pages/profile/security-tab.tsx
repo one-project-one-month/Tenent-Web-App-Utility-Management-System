@@ -1,8 +1,57 @@
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { LockKeyhole } from "lucide-react"
+import { updatePasswordService } from "@/service/profile-service"
+import { LockKeyhole, RotateCcwKey } from "lucide-react"
+import { useEffect } from "react"
+import { useForm, Controller, type SubmitHandler } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+
+import { useSelector } from "react-redux"
+import { toast } from "sonner"
+import type { RootState } from "@/store/store"
+import type { UpdatePasswordPayload } from "@/types/tenant"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+
+const formSchema = z.object({
+  current: z.string().min(1, { message: "Current Password is required." }),
+  new: z.string().min(8, "Password must be at least 8 characters long").max(32, "Password must be at most 32 characters long"),
+  confirm: z.string().min(8, "Password must be at least 8 characters long").max(32, "Password must be at most 32 characters long")
+}).refine((data) => data.new === data.confirm, {
+  message: "Passwords do not match",
+  path: ["confirm"]
+})
 
 const SecurityTab = () => {
+  // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  const userId = useSelector((state: RootState) => state.auth.user?.id);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      current: "",
+      new: "",
+      confirm: "",
+    }
+  })
+
+  const onSubmit = async (value: z.infer<typeof formSchema>) => {
+    if (!userId) {
+      toast.error("Something went wrong. Try again.");
+      return
+    }
+
+    const payload: UpdatePasswordPayload = {
+      userId,
+      currentPassword: value.current,
+      newPassword: value.new
+    }
+    const res = await updatePasswordService(payload);
+
+    console.log("Update res: ", res);
+  }
+
   return (
     <>
       <div className="mb-6">
@@ -10,24 +59,95 @@ const SecurityTab = () => {
         <p className="text-mu ted-foreground text-body-1">Update you password to keep your account secure</p>
       </div>
 
-      <form action="" className="flex flex-col gap-4 my-4">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2 md:gap-4">
-          <fieldset>
-            <Label htmlFor="current" className="text-[20px] text-gray-700 mb-1">Current Password</Label>
-            <Input id="current" />
-          </fieldset>
+      <Form {...form}>
+        <form className="my-4 pb-8" onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="current"
+            render={({ field }) => (
+              <FormItem className="mb-4">
+                <FormLabel className="text-[20px] text-gray-700 mb-1">Current Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="••••••••" {...field}  className="shadow border-foreground/40 py-6 text-slate-500" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
+          <FormField
+            control={form.control}
+            name="new"
+            render={({ field }) => (
+              <FormItem className="mb-4">
+                <FormLabel className="text-[20px] text-gray-700 mb-1">New Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="••••••••" {...field}  className="shadow border-foreground/40 py-6 text-slate-500" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="confirm"
+            render={({ field }) => (
+              <FormItem className="mb-4">
+                <FormLabel className="text-[20px] text-gray-700 mb-1">Confirm New Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="••••••••" {...field}  className="shadow border-foreground/40 py-6 text-slate-500" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* <Label htmlFor="current" className="text-[20px] text-gray-700 mb-1">Current Password</Label>
+              <Controller
+                name="current"
+                control={control}
+                rules={{ required: "Current Password is required.", minLength: 3 }}
+                render={({ field, fieldState }) =>
+                  <Input
+                    {...field}
+                    className="shadow border-foreground/40 py-6 text-slate-500"
+                    placeholder="Enter Your Current Password"
+                    aria-invalid={fieldState.invalid}
+                  />
+                }
+              />
+              {errors.current && <p className="text-red-500 text-sm mt-1">{errors.current.message}</p>} */}
+{/* 
           <fieldset>
             <Label htmlFor="new" className="text-[20px] text-gray-700 mb-1">New Password</Label>
-            <Input id="new" />
+            <div className="relative">
+              <Controller
+                name="new"
+                control={control}
+                render={({ field }) => <Input {...field} className="shadow border-foreground/40 py-6 text-slate-500" placeholder="Enter Your New Password" />}
+              />
+            </div>
           </fieldset>
 
           <fieldset>
             <Label htmlFor="confirm" className="text-[20px] text-gray-700 mb-1">Confirm New Password</Label>
-            <Input id="confirm" />
-          </fieldset>
-        </div>
-      </form>
+            <div className="relative">
+              <Controller
+                name="confirm"
+                control={control}
+                render={({ field }) => <Input {...field} className="shadow border-foreground/40 py-6 text-slate-500" placeholder="Confirm New Password" />}
+              />
+            </div>
+          </fieldset> */}
+
+          <Button
+            className="w-full text-white p-6 font-light"
+          >
+            <RotateCcwKey className="scale-[1.5] mr-2" /> Update Password
+          </Button>
+        </form>
+      </Form>
     </>
   )
 }

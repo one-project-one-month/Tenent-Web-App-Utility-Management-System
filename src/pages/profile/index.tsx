@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { useLogout } from "@/hooks/use-auth";
-import { useTenantQuery } from "@/hooks/use-tenant";
+import { useTenantQuery } from "@/hooks/use-profile";
 import type { RootState } from "@/store/store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -92,8 +92,8 @@ const profile = () => {
 
       <Card>
         <CardContent>
-          <Tabs defaultValue="account" className="w-full">
-            <TabsList className="w-full mb-10">
+          <Tabs defaultValue="profile" className="w-full">
+            <TabsList className="w-full mb-10" >
               <TabsTrigger value="profile"><CircleUser />Profile</TabsTrigger>
               <TabsTrigger value="security"><Shield />Security</TabsTrigger>
             </TabsList>

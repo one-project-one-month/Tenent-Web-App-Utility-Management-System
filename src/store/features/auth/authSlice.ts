@@ -10,7 +10,8 @@ export interface AuthStateType {
 const initialState: AuthStateType = {
   user:  localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null,
   accessToken: localStorage.getItem("accessToken") || "",
-  isAuthenticated: localStorage.getItem("accessToken") ? true : false,
+  // isAuthenticated: localStorage.getItem("accessToken") ? true : false,
+  isAuthenticated: true
 };
 
 export const authSlice = createSlice({
