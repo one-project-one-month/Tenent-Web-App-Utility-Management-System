@@ -1,6 +1,6 @@
 import type { ApiResponse } from "@/types/api";
 import apiClient from "./api-client"
-import type { Tenant } from "@/types/tenant";
+import type { Tenant, UpdatePasswordPayload } from "@/types/tenant";
 
 
 export const getTenantService = async (tenant_id: string): Promise<ApiResponse<Tenant>> => {
@@ -24,4 +24,10 @@ export const getTenantService = async (tenant_id: string): Promise<ApiResponse<T
   };
 
   return {...data, content };
+}
+
+export const updatePasswordService = async (payload: UpdatePasswordPayload): Promise<ApiResponse<Tenant>> => {
+  const { data } = await apiClient.put(`/tenants/${payload.userId}/update-password`, payload);
+
+  return data;
 }
