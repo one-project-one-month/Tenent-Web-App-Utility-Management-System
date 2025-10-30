@@ -1,8 +1,21 @@
 
-import { getServiceHistory } from "@/service/contract-service";
-import { submitServiceForm } from "@/service/customer-service";
+
+import { getRoomId, getServiceHistory, submitServiceForm } from "@/service/customer-service";
+import type { ApiResponse } from "@/types/api";
+import type { serviceParamtype } from "@/types/service";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+
+export const useServiceRoom = (tenantId: string) => {
+    return useQuery({
+        queryKey: ['tenant', tenantId],
+        queryFn: () => getRoomId(tenantId),
+        enabled: !!tenantId
+    })
+}
+
+
+// const roomId = data?.content?.data.roomId
 
 export const useSubmitForm = () => {
     return useMutation({
@@ -18,28 +31,11 @@ export const useSubmitForm = () => {
 
 }
 
-// export const useServiceHistory = ({ tenantId, status }: { tenantId: string, status: string }) => {
-//     const historyQuery = useQuery({
-//         queryKey: ["billing-history", tenantId, status],
-//         queryFn: () => getServiceHistory(tenantId!, status, { page: 1, limit: 30 }),
-//         enabled: !!tenantId,
-//     });
+export const useServiceHistory = ({ tenantId, params }: serviceParamtype) => {
+    return useQuery({
+        queryKey: ["service-history", tenantId, params],
+        queryFn: () => getServiceHistory({ tenantId, params }),
+        enabled: !!tenantId,
+    });
 
-//     if (!tenantId) {
-//         return {
-//             history: [],
-//             historyStatus: "error",
-//             isLoading: false,
-//             isError: true,
-//             error: new Error("tenantId is required"),
-//         };
-//     }
-
-//     return {
-//         history: historyQuery.data ?? [],
-//         historyStatus: historyQuery.status,
-//         isLoading: historyQuery.isLoading,
-//         isError: historyQuery.isError,
-//         error: historyQuery.error || null,
-//     };
-// };
+};

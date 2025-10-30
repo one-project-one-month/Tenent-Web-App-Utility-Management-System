@@ -43,9 +43,8 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
   //submit form to server
   const onSubmit = (data: serviceFormValue) => {
     if (!tenantId) return;
-    console.log(data)
-    mutation.mutate({ data, tenantId, roomId })
     form.reset();
+    mutation.mutate({ data, tenantId, roomId })
   };
 
   return (
@@ -165,10 +164,10 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
           </Form>
         </div>
       </div>
-      <div className="border-1 border-gray-300 rounded-sm p-3 bg-card mt-10 shadow-sm">
+      <div className="border border-gray-300 rounded-sm p-3 bg-card mt-10 shadow-sm">
         <h3 className="text-2xl font-semibold mb-5">
           Frequently Asked Questions
-        </h3>{" "}
+        </h3>
         <FrequentlyAskedQuestions />
       </div>
     </div>
