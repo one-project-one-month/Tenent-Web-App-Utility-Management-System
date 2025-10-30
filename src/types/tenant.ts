@@ -8,3 +8,9 @@ export interface Tenant {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface UpdatePasswordPayload {
+  userId: string;
+  currentPassword: string;
+  newPassword: string;
+}
