@@ -1,65 +1,69 @@
 export interface Bill {
-  id: string;
-  rentalFee: string | null;
-  electricityFee: string | null;
-  waterFee: string | null;
-  fineFee: string | null;
-  serviceFee: string | null;
-  groundFee: string | null;
-  carParkingFee: string | null;
-  wifiFee: string | null;
-  totalAmount: string | null;
-  dueDate: string | null;
-  createdAt: string | null;
-  updatedAt: string | null;
-  roomId: string;
-  room?: {
-    id: string;
-    roomNo: number;
-    floor: number;
-    dimension: string;
-    noOfBedRoom: number;
-    status: string;
-    sellingPrice: string | null;
-    maxNoOfPeople: number;
-    description: string;
+    id: number;
+    roomId: string;
+    rentalFee: string;
+    electricityFee: string;
+    waterFee: string;
+    fineFee: string;
+    serviceFee: string;
+    groundFee: string;
+    carParkingFee: string;
+    wifiFee: string;
+    totalAmount: string;
+    dueDate: string;
     createdAt: string;
     updatedAt: string;
+
+    totalUnit?: {
+        id: number;
+        billId: number;
+        electricityUnits: string;
+        waterUnits: string;
+        tenantName: string;
+        roomNo: number;
+        totalAmount: string;
+    };
+
     tenant?: {
-      id: string;
-      name: string;
-      email: string;
-      nrc: string;
-      phoneNo: string;
-      emergencyNo: string;
-      createdAt: string;
-      updatedAt: string;
-      roomId: string;
+        id: number;
+        roomId: string;
+        name: string;
+        nrc: string;
+        email: string;
+        phNumber: string;
+        emergencyNo: string;
     };
-  };
-  totalUnit?: {
-    id: string;
-    electricityUnits: string;
-    waterUnits: string;
-    createdAt: string;
-    updatedAt: string;
-    billId: string;
-  };
-  invoice?: {
-    id: string;
-    invoiceNo: string;
-    status: "Paid" | "Pending" | "Overdue";
-    receiptSent: boolean;
-    billId: string;
-    createdAt: string;
-    updatedAt: string;
+
+    room?: {
+        id: string;
+        roomNo: number;
+        floor: number;
+        dimension: string;
+        noOfBedRoom: number;
+        status: string;
+        sellingPrice: string;
+        maxNoOfPeople: number;
+        description: string;
+        createdAt: string;
+        updatedAt: string;
+    };
+
+    invoice?: {
+        id: number;
+        invoiceNo: string;
+        status: "Paid" | "Pending" | "Overdue";
+        createdAt: string;
+        receiptSent?: boolean;
+        billId?: number;
+        updatedAt?: string;
+    };
+
     receipt?: {
-      id: string;
-      paymentMethod: string;
-      paidDate: string;
-      createdAt: string;
-      updatedAt: string;
-      invoiceId: string;
+        id: number;
+        paidDate: string;
+        paymentMethod: string;
+        createdAt?: string;
+        updatedAt?: string;
+        invoiceId?: number;
     };
-  };
 }
