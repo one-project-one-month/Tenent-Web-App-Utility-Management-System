@@ -3,7 +3,7 @@ import axios from "axios";
 
 const BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  "https://node-utility-management-system.onrender.com/api/v1";
+  "https://laravel-utility-management-system.aperturecampaign.com/api/v1";
 
 const apiClient = axios.create({
   baseURL: BASE_URL,

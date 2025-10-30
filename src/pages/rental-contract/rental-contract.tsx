@@ -21,7 +21,7 @@ import ContractPDF from "./contract-pdf/contract-pdf";
 
 const RentalContract = () => {
   const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
-  // const tenantId = "018147a4-bf5e-45e5-a3a1-a3e0fea3e070";
+
   const {
     data: contract,
     isLoading,
