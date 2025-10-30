@@ -103,44 +103,6 @@ const SecurityTab = () => {
             )}
           />
 
-          {/* <Label htmlFor="current" className="text-[20px] text-gray-700 mb-1">Current Password</Label>
-              <Controller
-                name="current"
-                control={control}
-                rules={{ required: "Current Password is required.", minLength: 3 }}
-                render={({ field, fieldState }) =>
-                  <Input
-                    {...field}
-                    className="shadow border-foreground/40 py-6 text-slate-500"
-                    placeholder="Enter Your Current Password"
-                    aria-invalid={fieldState.invalid}
-                  />
-                }
-              />
-              {errors.current && <p className="text-red-500 text-sm mt-1">{errors.current.message}</p>} */}
-{/* 
-          <fieldset>
-            <Label htmlFor="new" className="text-[20px] text-gray-700 mb-1">New Password</Label>
-            <div className="relative">
-              <Controller
-                name="new"
-                control={control}
-                render={({ field }) => <Input {...field} className="shadow border-foreground/40 py-6 text-slate-500" placeholder="Enter Your New Password" />}
-              />
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <Label htmlFor="confirm" className="text-[20px] text-gray-700 mb-1">Confirm New Password</Label>
-            <div className="relative">
-              <Controller
-                name="confirm"
-                control={control}
-                render={({ field }) => <Input {...field} className="shadow border-foreground/40 py-6 text-slate-500" placeholder="Confirm New Password" />}
-              />
-            </div>
-          </fieldset> */}
-
           <Button
             className="w-full text-white p-6 font-light"
           >

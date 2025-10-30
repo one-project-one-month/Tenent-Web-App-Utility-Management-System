@@ -10,21 +10,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-interface profileFormFields {
-  fullName: string
-  email: string
-  phoneNo: string
-  location: string
-  roomNo: string
-  role: string
-  memberSince: Date
-  status: string
-}
-
 const formSchema = z.object({
   fullName: z.string().min(1, { message: "Full name is required." }),
   email: z.string().min(1, { message: "Email is required." }),
   phoneNo: z.string().min(1, { message: "Phone number is required." }),
+  location: z.string().min(1, { message: "Location is required." }),
+  roomNo: z.string().min(1, { message: "Room number is required." }),
+  role: z.string().min(1, { message: "Role is required." }),
+  memberSince: z.date(),
+  status: z.string().min(1, { message: "Status is required." }),
 })
 
 const ProfileTab = () => {
@@ -36,7 +30,12 @@ const ProfileTab = () => {
       fullName: "Jenny Wilson",
       email: "Jenny4207@gmail.com",
       phoneNo: "09 123 456 789",
-    }
+      location: "456 Riverside Apartment, Unit 3B San Francisco, CA 94102",
+      roomNo: "A-104",
+      role: "Tenant",
+      memberSince: new Date(),
+      status: "Active",
+    },
   })
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
@@ -85,7 +84,7 @@ const ProfileTab = () => {
           {/* Action Buttons */}
           {renderActionButtons()}
 
-          {/* Editable Form Fields */}
+          {/* Mutable Form Fields */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-2 md:gap-4">
             <FormField
               control={form.control}
@@ -96,7 +95,7 @@ const ProfileTab = () => {
                   <FormControl>
                     <div className="relative">
                       <Input type="text" placeholder="Jenny Wilson" {...field} disabled={!editMode} className="shadow border-foreground/40 py-6 text-slate-500" />
-                      { editMode && <Pencil className="absolute right-3 top-1/2 -translate-y-1/2 w-4" /> }
+                      {editMode && <Pencil className="absolute right-3 top-1/2 -translate-y-1/2 w-4" />}
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -113,7 +112,7 @@ const ProfileTab = () => {
                   <FormControl>
                     <div className="relative">
                       <Input type="text" placeholder="Jenny Wilson" {...field} disabled={!editMode} className="shadow border-foreground/40 py-6 text-slate-500" />
-                      { editMode && <Pencil className="absolute right-3 top-1/2 -translate-y-1/2 w-4" /> }
+                      {editMode && <Pencil className="absolute right-3 top-1/2 -translate-y-1/2 w-4" />}
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -130,7 +129,7 @@ const ProfileTab = () => {
                   <FormControl>
                     <div className="relative">
                       <Input type="text" placeholder="Jenny Wilson" {...field} disabled={!editMode} className="shadow border-foreground/40 py-6 text-slate-500" />
-                      { editMode && <Pencil className="absolute right-3 top-1/2 -translate-y-1/2 w-4" /> }
+                      {editMode && <Pencil className="absolute right-3 top-1/2 -translate-y-1/2 w-4" />}
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -139,11 +138,13 @@ const ProfileTab = () => {
             />
           </div>
 
+          {/* Immutable Form Fields */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div className="sm:col-span-2">
               <Label htmlFor="location" className="text-[20px] text-gray-700 mb-1">Location</Label>
               <Controller
                 name="location"
+                control={form.control}
                 render={({ field }) => <Textarea {...field} disabled className="shadow border-foreground/40 py-6 text-slate-500 wrap-text whitespae-pre-line" />}
               />
             </div>
@@ -152,6 +153,7 @@ const ProfileTab = () => {
               <Label htmlFor="roomNo" className="text-[20px] text-gray-700 mb-1">Room No</Label>
               <Controller
                 name="roomNo"
+                control={form.control}
                 render={({ field }) => <Input {...field} disabled className="shadow border-foreground/40 py-6 text-slate-500" />}
               />
             </div>
@@ -162,6 +164,7 @@ const ProfileTab = () => {
               <Label htmlFor="role" className="text-[20px] text-gray-700 mb-1">Role</Label>
               <Controller
                 name="role"
+                control={form.control}
                 render={({ field }) => <Input {...field} disabled className="shadow border-foreground/40 py-6 text-slate-500" />}
               />
             </div>
@@ -170,6 +173,7 @@ const ProfileTab = () => {
               <Label htmlFor="memberSince" className="text-[20px] text-gray-700 mb-1">Member Since</Label>
               <Controller
                 name="memberSince"
+                control={form.control}
                 render={({ field }) =>
                   <Input type="date" {...field}
                     value={field.value ? field.value.toISOString().split("T")[0] : ""}
@@ -184,6 +188,7 @@ const ProfileTab = () => {
               <Label htmlFor="status" className="text-[20px] text-gray-700 mb-1">Account Status</Label>
               <Controller
                 name="status"
+                control={form.control}
                 render={({ field }) => <Input {...field} disabled className="shadow border-foreground/40 py-6 text-slate-500" />}
               />
             </div>
