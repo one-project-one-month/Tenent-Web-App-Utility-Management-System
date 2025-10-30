@@ -23,10 +23,12 @@ const RentalContract = () => {
   const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
 
   const {
-    data: contract,
+    data: contracts,
     isLoading,
     isError,
   } = useTenantContractQuery(tenantId as string);
+
+  const contract = Array.isArray(contracts) ? contracts[0] : contracts;
 
   if (isLoading) {
     return (
