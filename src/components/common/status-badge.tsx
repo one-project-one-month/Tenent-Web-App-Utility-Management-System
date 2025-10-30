@@ -1,24 +1,24 @@
 import { Badge } from "@/components/ui/badge";
+import type { ServiceStatus } from "@/types/customer-service";
 import { Loader } from "lucide-react";
 import { CircleEllipsis } from "lucide-react";
 import { CircleCheck } from "lucide-react";
 
-export type Status = "Pending" | "In-progress" | "Resolved";
 
 type StatusBadgeProps = {
-  status: Status;
+  status: ServiceStatus;
   className?: string;
 };
 
-const STATUS_STYLES: Record<Status, string> = {
+const STATUS_STYLES: Record<ServiceStatus, string> = {
   Pending: "bg-yellow-100 text-yellow-800  ",
-  "In-progress": "bg-blue-100 text-blue-800 ",
+  Ongoing: "bg-blue-100 text-blue-800 ",
   Resolved: "bg-green-100 text-green-800 ",
 };
 
-const STATUS_ICONS: Record<Status, React.ReactNode> = {
+const STATUS_ICONS: Record<ServiceStatus, React.ReactNode> = {
   Pending: <Loader />,
-  "In-progress": <CircleEllipsis />,
+  Ongoing: <CircleEllipsis />,
   Resolved: <CircleCheck />,
 };
 

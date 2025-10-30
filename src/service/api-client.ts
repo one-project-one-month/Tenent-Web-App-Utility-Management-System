@@ -1,110 +1,120 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import store from "@/store/store";
-import axios from "axios";
+import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 
-const BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  "https://node-utility-management-system-fye1.onrender.com/api/v1";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const apiClient = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true, // This is crucial for sending HttpOnly cookies (for refresh token)
-});
-
-// retrieve the access token from the auth store
-let ACCESS_TOKEN: string | null = null;
-
-let isRefreshing = false;
-// Varible to queue requests while the token is being refreshed
-const failedQueue: any = [];
-
-// Function to resolve the waiting api queues after the token is refreshed
-const processQueue = (error: any, token: null | string = null) => {
-  failedQueue.forEach((prom: any) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
+const createApiClient = () => {
+  const apiClient = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
   });
 
-  failedQueue.length = 0;
-};
+  // Local state encapsulated inside this function
+  let isRefreshing = false;
+  let failedQueue: {
+    resolve: (value?: unknown) => void;
+    reject: (reason?: any) => void;
+  }[] = [];
 
-apiClient.interceptors.request.use((config) => {
-  ACCESS_TOKEN = store.getState().auth.accessToken;
+  const processQueue = (error: any, token: string | null = null) => {
+    failedQueue.forEach((prom) => {
+      if (error) prom.reject(error);
+      else prom.resolve(token);
+    });
+    failedQueue = [];
+  };
 
-  if (ACCESS_TOKEN) {
-    config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
-  }
-
-  return config;
-});
-
-apiClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      if (
-        originalRequest.url.includes("auth/refresh-token") ||
-        originalRequest.url.includes("auth/login") ||
-        originalRequest.url.includes("auth/logout")
-      ) {
-        return Promise.reject(error);
-      }
-
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        }).then((token) => {
-          originalRequest.headers["Authorization"] = "Bearer " + token;
-          return apiClient(originalRequest);
-        });
-      }
-
-      originalRequest._retry = true;
-      isRefreshing = true;
-
-      return new Promise((resolve, reject) => {
-        axios
-          .post(`${BASE_URL}/auth/refresh-token`)
-          .then(({ data }) => {
-            ACCESS_TOKEN = data.accessToken;
-            apiClient.defaults.headers.common["Authorization"] =
-              "Bearer " + ACCESS_TOKEN;
-            originalRequest.headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
-            processQueue(null, ACCESS_TOKEN);
-            resolve(apiClient(originalRequest));
-          })
-          .catch((err) => {
-            processQueue(err, null);
-            ACCESS_TOKEN = null;
-            reject(err);
-          })
-          .finally(() => {
-            isRefreshing = false;
-          });
-      });
+  apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+    const ACCESS_TOKEN: string | null = store.getState().auth.accessToken;
+    if (ACCESS_TOKEN) {
+      config.headers = config.headers ?? ({} as Record<string, string>);
+      (config.headers as Record<string, string>).Authorization = `Bearer ${ACCESS_TOKEN}`;
     }
-    return Promise.reject(error);
-  }
-);
+    return config;
+  });
 
-// Function to be called on app startup to get the initial access token.
-export const silentRefresh = async () => {
-  try {
-    const { data } = await apiClient.post("/auth/refresh");
-    ACCESS_TOKEN = data.accessToken;
-  } catch (error) {
-    console.error("Could not silently refresh token:", error);
-    ACCESS_TOKEN = null;
-  }
+  // Response interceptor → handle token refresh
+  apiClient.interceptors.response.use(
+    (response) => response,
+    async (error: AxiosError) => {
+      const originalRequest: any = error.config;
+
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        const url = originalRequest.url || "";
+
+        if (
+          url.includes("auth/refresh-token") ||
+          url.includes("auth/login") ||
+          url.includes("auth/logout")
+        ) {
+          return Promise.reject(error);
+        }
+
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          }).then((token) => {
+            originalRequest.headers.Authorization = "Bearer " + token;
+            return apiClient(originalRequest);
+          });
+        }
+
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        try {
+          const { data } = await axios.post(
+            `${BASE_URL}/auth/refresh-token`,
+            null,
+            {
+              withCredentials: true,
+            }
+          );
+
+          const ACCESS_TOKEN = data.accessToken;
+          apiClient.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${ACCESS_TOKEN}`;
+          originalRequest.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
+          processQueue(null, ACCESS_TOKEN);
+
+          return apiClient(originalRequest);
+        } catch (refreshError) {
+          processQueue(refreshError, null);
+          return Promise.reject(refreshError);
+        } finally {
+          isRefreshing = false;
+        }
+      }
+
+      return Promise.reject(error);
+    }
+  );
+
+  // Silent refresh helper
+  const silentRefresh = async () => {
+    try {
+      const { data } = await apiClient.post("/auth/refresh");
+      const ACCESS_TOKEN = data.accessToken;
+      apiClient.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${ACCESS_TOKEN}`;
+      return ACCESS_TOKEN;
+    } catch (error) {
+      console.error("Could not silently refresh token:", error);
+      return null;
+    }
+  };
+
+  return { apiClient, silentRefresh };
 };
 
+// Export initialized instance
+const { apiClient, silentRefresh } = createApiClient();
+
+export { silentRefresh };
 export default apiClient;

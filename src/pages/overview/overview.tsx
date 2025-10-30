@@ -4,8 +4,12 @@ import { Button } from "@/components/ui/button";
 import { BadgeCheckIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import NewBillAlert from "@/components/overview/new-bill-alert";
+import store from "@/store/store";
 
 const Overview = () => {
+  const { user } = store.getState().auth
+
+  console.log('current user', user)
   return (
     <div className="h-full text-text-primary">
       <NewBillAlert />
