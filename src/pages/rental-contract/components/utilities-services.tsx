@@ -31,7 +31,6 @@ const UtilitiesServices = ({ facilities }: UtilitiesProps) => {
           >
             <div className="text-sm text-muted-foreground space-y-1">
               <h3 className="text-foreground text-lg font-bold">{facility}</h3>
-              <p>Average: 15,000 MMK/per month</p>
               <p>Frequency: Monthly</p>
             </div>
             <Button className="bg-chart-2/40 hover:bg-chart-2/30">

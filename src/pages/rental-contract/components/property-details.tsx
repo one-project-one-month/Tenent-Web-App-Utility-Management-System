@@ -15,14 +15,6 @@ const PropertyDetails = ({ room }: PropertyDetailsProp) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        {/* <div>
-          <h3 className="text-muted-foreground">Address</h3>
-          <div className="font-bold space-y-1">
-            <p>456 Riverside Apartment, Unit 3B</p>
-            <p>San Francisco, CA 94102</p>
-          </div>
-        </div>
-        <hr /> */}
         <div className="flex justify-between items-center">
           <div className="w-1/2">
             <h3 className="text-muted-foreground">Room No</h3>

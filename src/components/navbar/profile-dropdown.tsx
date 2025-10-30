@@ -20,7 +20,7 @@ const ProfileDropdown = () => {
           Hi, <span className="text-foreground">{user?.userName}</span>
         </h3>
         <Avatar className="w-9 h-9 ring-2 ring-ring shadow-sm hover:scale-105 transition">
-          <AvatarImage src={""} />
+          <AvatarImage src={"/profile.png"} />
           <AvatarFallback className="bg-gray-200 text-foreground font-bold">
             {user?.userName?.charAt(0)}
             {user?.userName?.charAt(1)}
