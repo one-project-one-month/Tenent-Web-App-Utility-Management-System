@@ -21,7 +21,7 @@ const MobileNavlink = () => {
             {/* Profile */}
             <div className="flex items-center gap-3 mt-14">
               <Avatar className="w-12 h-12 ring-2 ring-gray-300 shadow-sm">
-                <AvatarImage src={""} />
+                <AvatarImage src={"/profile.png"} />
                 <AvatarFallback className="bg-gray-200 text-black font-bold">
                   {user?.userName?.charAt(0)}
                   {user?.userName?.charAt(1)}

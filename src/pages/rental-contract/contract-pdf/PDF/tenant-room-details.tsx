@@ -20,7 +20,7 @@ export default function TenantAndRoomDetails({ tenant, room }: Props) {
           <Text style={styles.value}>{tenant.email}</Text>
 
           <Text style={styles.label}>Phone:</Text>
-          <Text style={styles.value}>{tenant.phoneNo}</Text>
+          <Text style={styles.value}>{tenant.phNumber}</Text>
         </View>
 
         <View style={styles.column}>

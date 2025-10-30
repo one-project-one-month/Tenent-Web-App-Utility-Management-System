@@ -17,7 +17,7 @@ export default function ContractHeader({ tenant, contractId }: Props) {
           {"\n"}
           {tenant.nrc}
           {"\n"}
-          Phone: {tenant.phoneNo}
+          Phone: {tenant.phNumber}
           {"\n"}
           Email: {tenant.email}
         </Text>

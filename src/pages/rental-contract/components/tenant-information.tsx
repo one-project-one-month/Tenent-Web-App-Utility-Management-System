@@ -35,7 +35,7 @@ const TenantInformation = ({
         <hr />
         <div>
           <h3 className="text-muted-foreground">Phone</h3>
-          <h2 className="font-bold">{tenant.phoneNo}</h2>
+          <h2 className="font-bold">{tenant.phNumber}</h2>
         </div>
         <hr />
         <div>
