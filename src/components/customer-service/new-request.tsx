@@ -19,34 +19,29 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2Icon } from "lucide-react";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store/store";
 import { useSubmitForm } from "@/hooks/use-service";
-import { useTenantQuery } from "@/hooks/use-tenant";
+
 
 
 
 const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) => {
 
-  const isLoading = false;
   const form = useForm<serviceFormValue>({
     resolver: zodResolver(serviceFormSchema),
-    defaultValues: {
-      status: "Pending",
-    }
   });
 
   const mutation = useSubmitForm()
 
-  // const isLoading = form.formState.isLoading; //Track loading
 
   //submit form to server
   const onSubmit = (data: serviceFormValue) => {
     if (!tenantId) return;
     form.reset();
+    form.resetField
     mutation.mutate({ data, tenantId, roomId })
   };
 
+  const isLoading = mutation.isPending
   return (
     <div className="text-text-primary">
       <div className="border border-gray-300 rounded-sm shadow-sm p-4 bg-card">
@@ -87,7 +82,7 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
                           <SelectItem value="Maintenance">
                             Maintenance
                           </SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

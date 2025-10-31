@@ -5,6 +5,7 @@ export interface Tenant {
   phoneNo: string;
   emergencyNo: string;
   roomNo: string;
+  roomId: string;
   createdAt: string;
   updatedAt: string;
 }

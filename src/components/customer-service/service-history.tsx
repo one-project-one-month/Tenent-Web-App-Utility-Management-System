@@ -16,15 +16,6 @@ import apiClient from "@/service/api-client";
 import { useServiceHistory } from "@/hooks/use-service";
 
 
-type cardProps = {
-  id: number;
-  title: string;
-  priority: "Low" | "Medium" | "High";
-  issueDate: string;
-  status: string;
-  description: string;
-};
-
 const priorityToVariant = {
   High: "default",
   Medium: "outline",
@@ -34,13 +25,13 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
 
 
 
-  const { data, isLoading, error, isError } = useServiceHistory({ tenantId })
+  const { data: services, isLoading, error, isError } = useServiceHistory({ tenantId })
 
   if (isLoading) {
     return <>Loading.....</>
   }
-  const { total, currentPage } = data?.content.meta
-  console.log(data, isLoading, isError, error)
+
+
   return (
     <div className="text-text-primary">
       <div className="flex-1 flex flex-col items-start border border-gray-300 bg-card rounded-sm shadow-sm p-5 max-w-lg">
@@ -49,7 +40,7 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
           The status of your submitted requests
         </p>
         <div className=" flex flex-col w-fit gap-4 ">
-          {data?.content.data.map((card) => (
+          {services?.data.map((card) => (
             <div
               className=" flex flex-col gap-3 border-b border-gray-500 "
               key={card.id}
@@ -81,7 +72,7 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
           ))}
         </div>
       </div>
-      <Pagination className="my-5">
+      {/* <Pagination className="my-5">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
@@ -115,7 +106,7 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
             />
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination> */}
     </div>
   );
 };

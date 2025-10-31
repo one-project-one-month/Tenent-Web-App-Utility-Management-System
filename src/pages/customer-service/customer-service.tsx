@@ -12,9 +12,9 @@ import { useServiceRoom } from "@/hooks/use-service";
 
 const CustomerService = () => {
   const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
-
+  console.log(tenantId)
   const { data: roomId } = useServiceRoom(tenantId!)
-
+  console.log(roomId, "in ")
   return (
     <section className="mt-10 text-text-primary">
       <h1 className="text-h2 text-gray-700 font-semibold">Customer Service </h1>

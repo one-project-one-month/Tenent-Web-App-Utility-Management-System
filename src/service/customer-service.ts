@@ -1,14 +1,15 @@
 
-import type { serviceApiResponse, serviceParamtype, submitFormType } from "@/types/service";
+import type { ServiceType, ApiResponse, serviceParamtype, submitFormType } from "@/types/service";
+import type { ApiResponse as ApiFetchResponse } from "@/types/api";
 import apiClient from "./api-client"
+import type { Tenant } from "@/types/tenant";
 
 
 
 //Get Room Id from teanant
 export const getRoomId = async (tenantId: string) => {
-    const { data } = await apiClient.get(`/tenants/${tenantId}`)
-    const roomId = data.content.data.roomId
-    return roomId;
+    const { data } = await apiClient.get<ApiFetchResponse<Tenant>>(`/tenants/${tenantId}`)
+    return data.content.roomId
 }
 
 //submit service form
@@ -21,29 +22,24 @@ export const submitServiceForm = async (
     if (!roomId) {
         throw new Error("Room Id is required.")
     }
-    const formData = new FormData();
-    formData.append("description", data.description);
-    formData.append("category", data.category);
-    formData.append("priorityLevel", data.priorityLevel);
-    formData.append("status", "Pending");
-    formData.append("roomId", roomId);
+    const issuedDate = new Date(Date.now()).toLocaleDateString()
 
-    const res = await apiClient.post(`/tenants/${tenantId}/customer-services/create`, formData)
-    return res.data
+    const formData = { ...data, roomId, status: "Pending", issuedDate }
+    const res = await apiClient.post<ApiResponse<ServiceType>>
+        (`/tenants/${tenantId}/customer-services/create`, formData)
+    return res.data.content
 
 }
 
 
-
-
 export const getServiceHistory = async (
     { tenantId, params }: serviceParamtype
-): Promise<serviceApiResponse> => {
+) => {
     if (!tenantId) {
         throw new Error("Tenant Id is required.")
     }
 
-    const { data } = await apiClient.get(`/tenants/${tenantId}/customer-services/history?`,
+    const { data } = await apiClient.get<ApiResponse<ServiceType[]>>(`/tenants/${tenantId}/customer-services/history?`,
         {
             params: {
                 page: params?.page || 1,
@@ -55,5 +51,5 @@ export const getServiceHistory = async (
         throw new Error(data.message);
     }
 
-    return data;
+    return data.content;
 }
