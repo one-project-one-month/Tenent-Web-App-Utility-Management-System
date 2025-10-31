@@ -1,12 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ContactUs from "@/components/customer-service/contact-us";
-import NewRequest from "@/components/customer-service/new-request";
-import ServiceHistory from "@/components/customer-service/service-history";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-
-
 import { useServiceRoom } from "@/hooks/use-service";
+import NewRequest from "./components/new-request";
+import ContactUs from "./components/contact-us";
+import ServiceHistory from "./components/service-history";
 
 
 

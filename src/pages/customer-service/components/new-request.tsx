@@ -37,7 +37,6 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
   const onSubmit = (data: serviceFormValue) => {
     if (!tenantId) return;
     form.reset();
-    form.resetField
     mutation.mutate({ data, tenantId, roomId })
   };
 
