@@ -7,6 +7,7 @@ import ErrorBoundary from "./error-boundary";
 
 const ProtectedRoute = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
+
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -4,8 +4,6 @@ export type ContractType = {
   duration: number;
   price: string;
   facilities: string[];
-  createdAt: string;
-  updatedAt: string;
 };
 
 export type Room = {
@@ -23,26 +21,20 @@ export type Room = {
 };
 
 export type Tenant = {
-  id: string;
   name: string;
-  email: string;
   nrc: string;
-  phoneNo: string;
+  email: string;
+  phNumber: string;
   emergencyNo: string;
-  createdAt: string;
-  updatedAt: string;
-  roomId: string;
 };
 
 export type Contract = {
   id: string;
-  expiryDate: string;
-  createdDate: string;
-  updatedDate: string;
   roomId: string;
-  tenantId: string;
-  contractTypeId: string;
-  tenant: Tenant;
+  tenantId: number;
+  createdDate: string;
+  expiryDate: string;
   room: Room;
+  tenant: Tenant;
   contractType: ContractType;
 };

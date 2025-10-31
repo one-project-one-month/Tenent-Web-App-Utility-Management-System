@@ -1,43 +1,43 @@
 import apiClient from "@/service/api-client";
-import type { Bill } from "@/types/bill";
+import type {Bill} from "@/types/bill";
 
-interface ApiResponse {
-  success: boolean;
-  message: string;
-  content: {
+interface ApiContent {
     data: Bill[];
     meta: {
-      total: number;
-      currentPage: number;
-      lastPage: number;
-      perPage: number;
+        total: number;
+        currentPage: number;
+        lastPage: number;
+        perPage: number;
     };
     links: {
-      next: string | null;
-      prev: string | null;
+        next: string | null;
+        prev: string | null;
     };
-  };
-  status: number;
 }
 
-interface PaginationParams {
-  page?: number;
-  limit?: number;
+interface ApiResponse {
+    success: boolean;
+    message: string;
+    content: ApiContent;
+    status: number;
 }
 
 export const getHistoryBill = async (
-  tenantId: string,
-  params: PaginationParams = {}
-): Promise<Bill[]> => {
-  const response = await apiClient.get<ApiResponse>(
-    `/tenants/${tenantId}/bills/history`,
-    {
-      params: {
-        page: params.page || 1,
-        limit: params.limit || 100,
-      },
-    }
-  );
+    tenantId: string,
+    params: { limit?: number } = {}
+): Promise<{ data: Bill[] }> => {
+    const response = await apiClient.get<ApiResponse>(
+        `/tenants/${tenantId}/bills/history`,
+        {
+            params: {
+                limit: params.limit ?? 10,
+            },
+        }
+    );
 
-  return response.data.content?.data ?? [];
+    if (!response.data.success) {
+        throw new Error(response.data.message || "Failed");
+    }
+
+    return response.data.content;
 };
