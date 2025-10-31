@@ -38,35 +38,25 @@ export type serviceQueryType = {
     page?: number,
     limit?: number,
 }
-export type serviceParamtype = {
+export interface serviceParamtype extends serviceQueryType {
     tenantId: string,
-    params?: serviceQueryType
 }
+
 
 export interface ServiceType {
     "id": string,
     "description": string,
-    "category": 'Complain' | 'Maintenance' | 'Other',
-    "status": "Pending" | "Ongoing" | "Resolved",
-    "priorityLevel": "Low" | "Medium" | "High",
+    "category": ServiceCategory,
+    "status": ServiceStatus
+    "priorityLevel": PriorityLevel
     "issuedDate": Date,
     "createdAt": Date,
     "updatedAt": Date,
     "roomId": string,
     "roomNo": number,
 }
-export type serviceApiResponse = {
-    content: {
-        data: ServiceType[];
-        meta: {
-            total: number;
-            currentPage: number;
-            lastPage: number;
-            perPage: number;
-        };
-        links: {
-            next: string | null;
-            prev: string | null;
-        };
-    }
-}
+export type ServiceCategory = "Complain" | "Maintenance" | "Other"
+
+export type ServiceStatus = "Pending" | "Ongoing" | "Resolved"
+
+export type PriorityLevel = "High" | "Medium" | "Low"

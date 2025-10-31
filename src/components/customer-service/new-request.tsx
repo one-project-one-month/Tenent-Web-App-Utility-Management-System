@@ -65,7 +65,7 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value} >
+                      <Select onValueChange={field.onChange} value={field.value ?? ""} >
                         <SelectTrigger
                           className={`py-5 px-6 border-2 border-border bg-input w-full  
                         ${form.formState.errors.category
@@ -98,7 +98,7 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value ?? ''}>
                         <SelectTrigger
                           className={`py-5 px-6 border-2 border-border bg-input w-full  
                         ${form.formState.errors.priorityLevel

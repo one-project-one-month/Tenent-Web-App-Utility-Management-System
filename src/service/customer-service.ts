@@ -16,15 +16,20 @@ export const getRoomId = async (tenantId: string) => {
 export const submitServiceForm = async (
     { data, tenantId, roomId }: submitFormType
 ) => {
+
     if (!tenantId) {
         throw new Error("Tenant Id is required.")
     }
     if (!roomId) {
         throw new Error("Room Id is required.")
     }
+
+    //Generate local date string
     const issuedDate = new Date(Date.now()).toLocaleDateString()
 
+    //Add necessary fileds
     const formData = { ...data, roomId, status: "Pending", issuedDate }
+
     const res = await apiClient.post<ApiResponse<ServiceType>>
         (`/tenants/${tenantId}/customer-services/create`, formData)
     return res.data.content
@@ -33,19 +38,19 @@ export const submitServiceForm = async (
 
 
 export const getServiceHistory = async (
-    { tenantId, params }: serviceParamtype
+    { tenantId, status, page, limit }: serviceParamtype
 ) => {
     if (!tenantId) {
         throw new Error("Tenant Id is required.")
     }
+    console.log(status, page, limit)
+    const { data } =
+        await apiClient.get<ApiResponse<ServiceType[]>>
+            (`/tenants/${tenantId}/customer-services/history?
+            ${status && `status=${status}`}
+            &page=${page || 1}
+            &limit=${limit || 10}`);
 
-    const { data } = await apiClient.get<ApiResponse<ServiceType[]>>(`/tenants/${tenantId}/customer-services/history?`,
-        {
-            params: {
-                page: params?.page || 1,
-                limit: params?.limit || 10,
-            }
-        });
 
     if (!data.success) {
         throw new Error(data.message);

@@ -6,73 +6,45 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import StatusBadge, { type Status } from "@/components/common/status-badge";
-import { Badge } from "../ui/badge";
-import { useMemo, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store/store";
-import apiClient from "@/service/api-client";
 import { useServiceHistory } from "@/hooks/use-service";
+import ServiceCard from "./serviceCard";
+import { useState } from "react";
 
 
-const priorityToVariant = {
-  High: "default",
-  Medium: "outline",
-  Low: "secondary",
-} as const
+
 const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
 
-
-
-  const { data: services, isLoading, error, isError } = useServiceHistory({ tenantId })
+  const [status, setStatus] = useState(undefined)
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data: services, isLoading } = useServiceHistory({ tenantId, status, page: currentPage })
 
   if (isLoading) {
     return <>Loading.....</>
   }
 
+  const totalPages = services?.meta?.lastPage;
 
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages!) return;
+    setCurrentPage(page);
+  };
   return (
-    <div className="text-text-primary">
-      <div className="flex-1 flex flex-col items-start border border-gray-300 bg-card rounded-sm shadow-sm p-5 max-w-lg">
+    <div className="w-full text-text-primary ">
+      <div className="flex flex-col items-start border border-gray-300 bg-card rounded-sm shadow-sm p-5">
         <h3 className="text-2xl font-semibold mb-3">My Service History</h3>
         <p className="mb-10">
           The status of your submitted requests
         </p>
-        <div className=" flex flex-col w-fit gap-4 ">
-          {services?.data.map((card) => (
-            <div
-              className=" flex flex-col gap-3 border-b border-gray-500 "
-              key={card.id}
-            >
-              <div className="flex justify-between items-start md:items-center gap-2">
-                <div className="flex flex-col sm:flex-row gap-2 ">
-                  <p className=" font-semibold">{card.category}</p>
-                  <div className="flex items-center gap-2">
-
-                    <StatusBadge
-                      className="px-2 py-1"
-                      status={card.status as Status}
-                    />
-                    <Badge
-                      className="text-badge-text"
-                      variant={priorityToVariant[card.priorityLevel]}
-                    >
-                      {card.priorityLevel}
-                    </Badge>
-                  </div>
-                </div>
-                <p className=" text-gray-700">{new Date(card.issuedDate).toLocaleDateString()}</p>
-              </div>
-              <p className=" text-slate-500 text-sm bg-background rounded-sm px-2 py-4 mb-2 text-wrap">
-                {card.description}
-              </p>
-
-            </div>
-          ))}
+        <div className="w-full space-y-4">
+          {
+            services?.data.map((service) => (
+              <ServiceCard key={service.id} service={service} />
+            ))
+          }
         </div>
+
       </div>
-      {/* <Pagination className="my-5">
+      <Pagination className="my-5">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
@@ -80,33 +52,39 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
               className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
               onClick={(e) => {
                 e.preventDefault();
+                goToPage(currentPage - 1);
               }}
             />
           </PaginationItem>
-
-          <PaginationItem >
-            <PaginationLink
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-            >
-              {total}
-            </PaginationLink>
-          </PaginationItem>
-
+          {Array.from({ length: totalPages! }).map((_, index) => {
+            const page = index + 1;
+            return (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  href="#"
+                  isActive={page === currentPage}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    goToPage(page);
+                  }}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            );
+          })}
           <PaginationItem>
             <PaginationNext
               href="#"
-              className={currentPage === total ? "pointer-events-none opacity-50" : ""}
+              className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
               onClick={(e) => {
                 e.preventDefault();
-                // goToPage(currentPage + 1);
+                goToPage(currentPage + 1);
               }}
             />
           </PaginationItem>
         </PaginationContent>
-      </Pagination> */}
+      </Pagination>
     </div>
   );
 };

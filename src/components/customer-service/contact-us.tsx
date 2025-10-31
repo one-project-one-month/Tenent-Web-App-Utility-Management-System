@@ -3,7 +3,7 @@ import { Phone } from "lucide-react";
 
 const ContactUs = () => {
   return (
-    <div className="max-w-sm flex flex-col gap-3 border border-gray-300 rounded-sm shadow-sm p-3 bg-card text-text-primary">
+    <div className="w-full  md:max-w-sm flex flex-col gap-3 border border-gray-300 rounded-sm shadow-sm p-3 bg-card text-text-primary">
       <div className="flex gap-3 my-2">
         <Contact />
         <p>Contact Us</p>

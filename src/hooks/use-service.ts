@@ -1,7 +1,5 @@
 
-
 import { getRoomId, getServiceHistory, submitServiceForm } from "@/service/customer-service";
-import type { ApiResponse } from "@/types/api";
 import type { serviceParamtype } from "@/types/service";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -14,8 +12,6 @@ export const useServiceRoom = (tenantId: string) => {
     })
 }
 
-
-// const roomId = data?.content?.data.roomId
 
 export const useSubmitForm = () => {
     return useMutation({
@@ -31,10 +27,10 @@ export const useSubmitForm = () => {
 
 }
 
-export const useServiceHistory = ({ tenantId, params }: serviceParamtype) => {
+export const useServiceHistory = ({ tenantId, status, page, limit }: serviceParamtype) => {
     return useQuery({
-        queryKey: ["service-history", tenantId, params],
-        queryFn: () => getServiceHistory({ tenantId, params }),
+        queryKey: ["service-history", tenantId, status, page, limit],
+        queryFn: () => getServiceHistory({ tenantId, status, page, limit }),
         enabled: !!tenantId,
     });
 
