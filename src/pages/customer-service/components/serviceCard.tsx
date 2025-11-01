@@ -2,10 +2,6 @@ import StatusBadge from "@/components/common/status-badge"
 import { Badge } from "@/components/ui/badge"
 import type { ServiceStatus, ServiceType } from "@/types/service"
 
-
-
-
-
 type ServiceCardProp = {
     service: ServiceType
 }
@@ -15,7 +11,6 @@ const priorityToVariant = {
     Medium: "outline",
     Low: "secondary",
 } as const
-
 
 const ServiceCard = ({ service }: ServiceCardProp) => {
     return (

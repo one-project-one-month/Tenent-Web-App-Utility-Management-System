@@ -28,9 +28,9 @@ const CustomerService = () => {
           <TabsTrigger value="request">New Request</TabsTrigger>
           <TabsTrigger value="history">Service History</TabsTrigger>
         </TabsList>
-        <div className="flex flex-col md:flex-row gap-6  items-start mt-4">
+        <div className="flex flex-col md:flex-row gap-6 items-start mt-4">
           <ContactUs />
-          <div className="flex-1">
+          <div className="flex-1 w-full">
             <TabsContent value="request">
               <NewRequest tenantId={tenantId!} roomId={roomId!} />
             </TabsContent>

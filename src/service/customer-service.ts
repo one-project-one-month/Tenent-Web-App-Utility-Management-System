@@ -1,9 +1,7 @@
-
 import apiClient from "./api-client"
 import type { ServiceType, ApiResponse, serviceParamtype, submitFormType } from "@/types/service";
 import type { ApiResponse as ApiFetchResponse } from "@/types/api";
 import type { Tenant } from "@/types/tenant";
-
 
 
 //Get Room Id from teanant
@@ -50,7 +48,6 @@ export const getServiceHistory = async (
             ${status && `status=${status}`}
             &page=${page || 1}
             &limit=${limit || 10}`);
-
 
     if (!data.success) {
         throw new Error(data.message);

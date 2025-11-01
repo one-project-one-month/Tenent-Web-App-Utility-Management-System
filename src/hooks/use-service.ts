@@ -1,11 +1,11 @@
-
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { getRoomId, getServiceHistory, submitServiceForm } from "@/service/customer-service";
 import type { serviceParamtype } from "@/types/service";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const queryClient = new QueryClient()
 
+//get roomId from tenant
 export const useServiceRoom = (tenantId: string) => {
     return useQuery({
         queryKey: ['tenant', tenantId],
@@ -13,8 +13,7 @@ export const useServiceRoom = (tenantId: string) => {
         enabled: !!tenantId
     })
 }
-
-
+//submit form 
 export const useSubmitForm = () => {
     return useMutation({
         mutationFn: submitServiceForm,
@@ -29,7 +28,7 @@ export const useSubmitForm = () => {
     });
 
 }
-
+//get service history
 export const useServiceHistory = ({ tenantId, status, page, limit }: serviceParamtype) => {
     return useQuery({
         queryKey: ["service-history", tenantId, status, page, limit],

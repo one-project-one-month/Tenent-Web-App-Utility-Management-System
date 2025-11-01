@@ -1,5 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import FrequentlyAskedQuestions from "./frequently-asked-questions";
+import { useSubmitForm } from "@/hooks/use-service";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormField,
@@ -8,8 +11,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { serviceFormSchema, type serviceFormValue } from "@/lib/validation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Select,
   SelectContent,
@@ -19,40 +20,28 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2Icon } from "lucide-react";
-import { useSubmitForm } from "@/hooks/use-service";
-import { useEffect } from "react";
-
-
-
 
 const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) => {
-
   const form = useForm<serviceFormValue>({
     resolver: zodResolver(serviceFormSchema),
   });
-
+  //custom hook submit form
   const mutation = useSubmitForm()
-
 
   //submit form to server
   const onSubmit = (data: serviceFormValue) => {
     if (!tenantId) return;
+    form.reset({
+      description: "",
+      category: undefined,
+      priorityLevel: undefined,
+    });
     mutation.mutate({ data, tenantId, roomId })
   };
 
   //track loading indicator
   const isLoading = mutation.isPending
 
-  //Clean up form data after success.
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      form.reset({
-        description: "",
-        category: undefined,
-        priorityLevel: undefined,
-      });
-    }
-  }, [mutation.isSuccess]);
 
   return (
     <div className="text-text-primary">

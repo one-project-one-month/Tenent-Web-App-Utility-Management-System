@@ -22,18 +22,20 @@ import ServiceLoading from "@/pages/customer-service/components/service-loading"
 
 
 const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
-
   const [status, setStatus] = useState<ServiceStatus | string>('')
   const [currentPage, setCurrentPage] = useState(1);
   const { data: services, isLoading } = useServiceHistory({ tenantId, status, page: currentPage })
 
+  //tracking loading
   if (isLoading) {
     return <ServiceLoading />
   }
 
+  //tracking service history data
   if (!services?.data || services?.data.length === 0) {
     return <NotFoundService onReset={() => setStatus('')} />
   }
+  //total page for pagination
   const totalPages = services?.meta?.lastPage;
 
   const goToPage = (page: number) => {
@@ -49,7 +51,7 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
         }}
         value={status ?? ''}
       >
-        <SelectTrigger className="w-[180px] border-2 border-border bg-input">
+        <SelectTrigger className="w-40 border-2 border-border bg-input">
           <SelectValue placeholder="All Statuses" />
         </SelectTrigger>
         <SelectContent className="bg-input">
