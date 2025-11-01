@@ -1,52 +1,135 @@
-import { data } from "@/data/mock-data";
 import MonthlyUsageChart from "@/components/common/monthly-usage-chart";
 import { Button } from "@/components/ui/button";
 import { BadgeCheckIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import NewBillAlert from "@/components/overview/new-bill-alert";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import useChartData from "@/hooks/use-chart-data";
+import { useMemo } from "react";
+import { useNavigate } from "react-router";
 
 const Overview = () => {
+  const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
+  const navigate = useNavigate();
+  const { data, isLoading, isError } = useChartData(tenantId);
+
+  // Format date to month name (e.g., "September 2025")
+  const formatMonth = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  };
+
+  // Transform bills data for electricity consumption chart
+  const electricityChartData = useMemo(() => {
+    if (!data || data.length === 0) return [];
+
+    return data
+      .slice(0, 4) // Get last 4 months
+      .map((bill) => ({
+        month: formatMonth(bill.createdAt),
+        value: bill.totalUnit?.electricityUnits
+          ? parseFloat(bill.totalUnit.electricityUnits)
+          : 0,
+      }))
+      .reverse(); // Show oldest to newest
+  }, [data]);
+
+  // Transform bills data for monthly spending chart (in lakhs)
+  const monthlySpendingChartData = useMemo(() => {
+    if (!data || data.length === 0) return [];
+
+    return data
+      .slice(0, 4) // Get last 4 months
+      .map((bill) => ({
+        month: formatMonth(bill.createdAt),
+        value: parseFloat(bill.totalAmount) / 100000, // Convert to lakhs
+      }))
+      .reverse(); // Show oldest to newest
+  }, [data]);
+
+  // Get latest bill for summary
+  const latestBill = data?.[0];
+
+  if (isLoading) {
+    return (
+      <div className="h-full text-text-primary flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="h-full text-text-primary flex items-center justify-center">
+        <p>Error loading data. Please try again later.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="h-full text-text-primary">
       <NewBillAlert />
-      <div className="flex justify-between items-center my-10 ">
+      <div className="flex justify-between items-center my-5 ">
         <div>
-          <h1 className="text-h2 text-gray-700 font-semibold">Overview</h1>
-          <h3 className="text-h6 text-gray-700 font-medium">
-            Your utility usage and billing summary for  <br /> September 2025
-          </h3>
+          <div className="flex flex-col gap-3">
+            <h1 className="text-2xl font-bold">Overview</h1>
+            <p className="text-md">
+              Your utility usage and billing summary for <br />{" "}
+              {latestBill
+                ? formatMonth(latestBill.createdAt)
+                : "September 2025"}
+            </p>
+          </div>
         </div>
         <Badge
           variant="default"
           className="bg-secondary text-black font-light text-sm font-normal px-4 py-2"
         >
-          <BadgeCheckIcon style={{width:"15px", height:"15px"}} />
+          <BadgeCheckIcon style={{ width: "15px", height: "15px" }} />
           All Payment Current
         </Badge>
       </div>
       <div className="flex justify-between items-center border-1 border-gray-200 p-4 mb-10 rounded-sm shadow-sm w-full bg-card">
         <div className="flex flex-col gap-2">
           <p className="text-md text-gray-500">Total Amount Due</p>
-          <p className="text-body-1">642,000 MMK</p>
-          <p className="text-md text-gray-500">Due Date: October 25, 2025</p>
+          <p className="text-body-1">
+            {latestBill
+              ? `${parseFloat(latestBill.totalAmount).toLocaleString()} MMK`
+              : "0 MMK"}
+          </p>
+          <p className="text-md text-gray-500">
+            Due Date:{" "}
+            {latestBill
+              ? new Date(latestBill.dueDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : ""}
+          </p>
         </div>
-        <Button className="text-white text-sm font-light">
+        <Button onClick={() => navigate("/my-billing")} className="text-white text-sm font-light">
           View Billing Details
         </Button>
       </div>
       <div className="mb-10 flex gap-3">
-        <MonthlyUsageChart
-          title="Last 4 Months Electric Consumption"
-          subTitle="Usage Trends"
-          chartData={data.electricUsage}
-          unit="Units"
-        />
-        <MonthlyUsageChart
-          title="Total monthly charges including all utilities"
-          subTitle="Monthly Spending"
-          chartData={data.monthlySpending}
-          unit="Lakhs"
-        />
+        {electricityChartData.length > 0 && (
+          <MonthlyUsageChart
+            title="Last 4 Months Electric Consumption"
+            subTitle="Usage Trends"
+            chartData={electricityChartData}
+            unit="Units"
+          />
+        )}
+        {monthlySpendingChartData.length > 0 && (
+          <MonthlyUsageChart
+            title="Total monthly charges including all utilities"
+            subTitle="Monthly Spending"
+            chartData={monthlySpendingChartData}
+            unit="Lakhs"
+          />
+        )}
       </div>
     </div>
   );
