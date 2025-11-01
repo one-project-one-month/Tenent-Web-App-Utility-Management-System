@@ -20,6 +20,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2Icon } from "lucide-react";
 import { useSubmitForm } from "@/hooks/use-service";
+import { useEffect } from "react";
 
 
 
@@ -36,11 +37,23 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
   //submit form to server
   const onSubmit = (data: serviceFormValue) => {
     if (!tenantId) return;
-    form.reset();
     mutation.mutate({ data, tenantId, roomId })
   };
 
+  //track loading indicator
   const isLoading = mutation.isPending
+
+  //Clean up form data after success.
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      form.reset({
+        description: "",
+        category: undefined,
+        priorityLevel: undefined,
+      });
+    }
+  }, [mutation.isSuccess]);
+
   return (
     <div className="text-text-primary">
       <div className="border border-gray-300 rounded-sm shadow-sm p-4 bg-card">

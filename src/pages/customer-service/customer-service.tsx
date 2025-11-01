@@ -15,11 +15,11 @@ const CustomerService = () => {
   const { data: roomId } = useServiceRoom(tenantId!)
 
   return (
-    <section className="mt-10 text-text-primary space-y-5">
+    <section className="mt-10 text-text-primary space-y-5 px-4">
       <div>
-        <h1 className="text-xl text-gray-700 font-semibold">Customer Service </h1>
-        <h3 className="text-h6 text-gray-700 font-medium">
-          Get help with utilities, billing, and property  <br /> services
+        <h1 className="text-2xl font-bold">Customer Service </h1>
+        <h3 className="text-md">
+          Get help with utilities, billing, and property  services
         </h3>
       </div>
 

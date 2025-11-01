@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -7,10 +8,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useServiceHistory } from "@/hooks/use-service";
-
-import { useState } from "react";
-
-
 import {
   Select,
   SelectTrigger,
@@ -21,7 +18,7 @@ import {
 import type { ServiceStatus } from "@/types/service";
 import NotFoundService from "./no-service";
 import ServiceCard from "./serviceCard";
-import ServiceLoading from "@/components/customer-service/service-loading";
+import ServiceLoading from "@/pages/customer-service/components/service-loading";
 
 
 const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
@@ -62,13 +59,14 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
         </SelectContent>
       </Select>
 
-
-      <div className="w-full text-text-primary mt-4">
+      {/* Service history container */}
+      <div className="w-full text-text-primary mt-3">
         <div className="flex flex-col items-start border border-gray-300 bg-card rounded-sm shadow-sm p-5">
           <h3 className="text-2xl font-semibold mb-3">My Service History</h3>
           <p className="mb-10">
             The status of your submitted requests
           </p>
+          {/* Service history card */}
           <div className="w-full space-y-4">
             {
               services?.data.map((service) => (
@@ -78,6 +76,8 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
           </div>
 
         </div>
+        {/* 
+        Pagination */}
         <Pagination className="my-5">
           <PaginationContent>
             <PaginationItem>
@@ -101,6 +101,7 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
                       e.preventDefault();
                       goToPage(page);
                     }}
+                    className={`${page === currentPage && "bg-primary text-white"}`}
                   >
                     {page}
                   </PaginationLink>

@@ -1,7 +1,7 @@
 
+import apiClient from "./api-client"
 import type { ServiceType, ApiResponse, serviceParamtype, submitFormType } from "@/types/service";
 import type { ApiResponse as ApiFetchResponse } from "@/types/api";
-import apiClient from "./api-client"
 import type { Tenant } from "@/types/tenant";
 
 
@@ -36,14 +36,14 @@ export const submitServiceForm = async (
 
 }
 
-
+// Get service history
 export const getServiceHistory = async (
     { tenantId, status, page, limit }: serviceParamtype
 ) => {
     if (!tenantId) {
         throw new Error("Tenant Id is required.")
     }
-    console.log(status, page, limit)
+
     const { data } =
         await apiClient.get<ApiResponse<ServiceType[]>>
             (`/tenants/${tenantId}/customer-services/history?
