@@ -32,13 +32,13 @@ interface HeaderField {
 
 interface InvoiceTableProps {
     headerField: HeaderField[];
-    paginatedData: InvoiceField[];
+    invoiceData: InvoiceField[];
     onAction?: (id: string | undefined) => void;
 }
 
 const InvoiceTable = ({
                           headerField,
-                          paginatedData,
+                          invoiceData,
                           onAction,
                       }: InvoiceTableProps) => (
     <Table
@@ -59,7 +59,7 @@ const InvoiceTable = ({
             </TableRow>
         </TableHeader>
         <TableBody className="bg-[#FFFAFA]">
-            {paginatedData.map((item) => (
+            {invoiceData.map((item) => (
                 <TableRow
                     key={item.ID}
                     className="h-[52px] border-none transition-opacity duration-300 opacity-100"
