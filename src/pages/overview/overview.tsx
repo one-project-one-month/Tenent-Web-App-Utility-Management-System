@@ -27,7 +27,7 @@ const Overview = () => {
     return data
       .slice(0, 4) // Get last 4 months
       .map((bill) => ({
-        month: formatMonth(bill.createdAt),
+        month: formatMonth(bill?.createdAt ?? ""),
         value: bill.totalUnit?.electricityUnits
           ? parseFloat(bill.totalUnit.electricityUnits)
           : 0,
@@ -42,10 +42,10 @@ const Overview = () => {
     return data
       .slice(0, 4) // Get last 4 months
       .map((bill) => ({
-        month: formatMonth(bill.createdAt),
-        value: parseFloat(bill.totalAmount) / 100000, // Convert to lakhs
+        month: formatMonth(bill?.createdAt ?? ""),
+        value: parseFloat(bill.totalAmount ?? "0") / 100000, // Convert to lakhs
       }))
-      .reverse(); // Show oldest to newest
+      .reverse(); // Show oldest to newest  
   }, [data]);
 
   // Get latest bill for summary
@@ -77,7 +77,7 @@ const Overview = () => {
             <p className="text-md">
               Your utility usage and billing summary for <br />{" "}
               {latestBill
-                ? formatMonth(latestBill.createdAt)
+                ? formatMonth(latestBill?.createdAt ?? "")
                 : "September 2025"}
             </p>
           </div>
@@ -95,13 +95,13 @@ const Overview = () => {
           <p className="text-md text-gray-500">Total Amount Due</p>
           <p className="text-body-1">
             {latestBill
-              ? `${parseFloat(latestBill.totalAmount).toLocaleString()} MMK`
+              ? `${parseFloat(latestBill?.totalAmount ?? "0").toLocaleString()} MMK`
               : "0 MMK"}
           </p>
           <p className="text-md text-gray-500">
             Due Date:{" "}
             {latestBill
-              ? new Date(latestBill.dueDate).toLocaleDateString("en-US", {
+              ? new Date(latestBill?.dueDate ?? "" ).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
