@@ -13,7 +13,7 @@ import { useLogout } from "@/hooks/use-auth";
 import type { FormEvent } from "react";
 import { LogOut } from "lucide-react";
 
-const LogoutAlert = () => {
+const LogoutAlert = ({ props }: { props?: string }) => {
   const { mutate: logout } = useLogout();
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -26,9 +26,9 @@ const LogoutAlert = () => {
         <DialogTrigger asChild>
           <Button
             variant={"destructive"}
-            className="text-gray-100 cursor-pointer hover:bg-chart-1 transition-all active:scale-95 w-full"
+            className={`text-gray-100 cursor-pointer hover:bg-chart-1 transition-all active:scale-95 w-full ${props}`}
           >
-            Logout <LogOut className="w-4 h-4 ml-auto text-white" />
+            Logout <LogOut className="w-4 h-4 text-white" />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] py-8">

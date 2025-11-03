@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import ProfileTab from "./profile-tab";
 import SecurityTab from "./security-tab";
+import LogoutAlert from "@/components/navbar/logout-alert";
 
 type ProfileFieldType = {
   field: string;
@@ -85,7 +86,8 @@ const profile = () => {
             </CardTitle>
           </div>
           <CardAction className="mt-6 w-full sm:w-auto">
-            <Button className="w-full bg-destructive/70 flex items-center justify-center p-6 text-background gap-2 hover:bg-destructive focus:bg-destructive"><LogOutIcon /> Logout</Button>
+            {/* <Button className="w-full bg-destructive/70 flex items-center justify-center cursor-pointer p-6 text-background gap-2 hover:bg-destructive focus:bg-destructive"><LogOutIcon /> Logout</Button> */}
+            <LogoutAlert props="w-full bg-destructive/70 flex items-center justify-center cursor-pointer p-6 text-background gap-2 hover:bg-destructive focus:bg-destructive" />
           </CardAction>
         </CardContent>
       </Card>
