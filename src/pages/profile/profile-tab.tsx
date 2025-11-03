@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { Profile } from "@/types/profile";
 
 const formSchema = z.object({
   fullName: z.string().min(1, { message: "Full name is required." }),
@@ -21,20 +22,20 @@ const formSchema = z.object({
   status: z.string().min(1, { message: "Status is required." }),
 })
 
-const ProfileTab = () => {
+const ProfileTab = ({ profile }: { profile: Profile}) => {
   const [editMode, setEditMode] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "Jenny Wilson",
-      email: "Jenny4207@gmail.com",
-      phoneNo: "09 123 456 789",
+      fullName: profile.name,
+      email: profile.email,
+      phoneNo: profile.phNumber,
       location: "456 Riverside Apartment, Unit 3B San Francisco, CA 94102",
-      roomNo: "A-104",
-      role: "Tenant",
-      memberSince: new Date(),
-      status: "Active",
+      roomNo: profile.roomId,
+      role: profile.role,
+      memberSince: profile.createdAt,
+      status: profile.isActive ? "Active" : "Inactive",
     },
   })
 
@@ -175,8 +176,8 @@ const ProfileTab = () => {
                 name="memberSince"
                 control={form.control}
                 render={({ field }) =>
-                  <Input type="date" {...field}
-                    value={field.value ? field.value.toISOString().split("T")[0] : ""}
+                  <Input type="text" {...field}
+                    value={field.value ? new Date(field.value).toLocaleDateString() : ""}
                     disabled
                     className="shadow border-foreground/40 py-6 text-slate-500"
                   />
