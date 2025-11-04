@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Contact, Pencil, UserCog } from "lucide-react"
 import { useState } from "react"
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod"
 
 import { Input } from "@/components/ui/input";
@@ -10,37 +10,39 @@ import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Profile } from "@/types/profile";
+import { useUpdateProfileQuery } from "@/hooks/use-profile";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  fullName: z.string().min(1, { message: "Full name is required." }),
-  email: z.string().min(1, { message: "Email is required." }),
-  phoneNo: z.string().min(1, { message: "Phone number is required." }),
-  location: z.string().min(1, { message: "Location is required." }),
-  roomNo: z.string().min(1, { message: "Room number is required." }),
-  role: z.string().min(1, { message: "Role is required." }),
-  memberSince: z.date(),
-  status: z.string().min(1, { message: "Status is required." }),
+  userName: z.string().min(1, { message: "Full name is required." }).min(5, { message: "Full name must be at least 5 characters long." }),
+  email: z.email().min(1, { message: "Email is required." }),
+  phoneNo: z.string().min(1, { message: "Phone number is required." })
 })
 
-const ProfileTab = ({ profile }: { profile: Profile}) => {
+const ProfileTab = ({ profile }: { profile: Profile }) => {
+  const tenantId = useSelector((store: RootState) => store.auth.user?.tenantId!);
+  const userId = useSelector((store: RootState) => store.auth.user?.id!);
+
   const [editMode, setEditMode] = useState<boolean>(false);
+  const { mutate: updateProfile } = useUpdateProfileQuery(tenantId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: profile.name,
+      userName: profile.name,
       email: profile.email,
       phoneNo: profile.phNumber,
-      location: "456 Riverside Apartment, Unit 3B San Francisco, CA 94102",
-      roomNo: profile.roomId,
-      role: profile.role,
-      memberSince: profile.createdAt,
-      status: profile.isActive ? "Active" : "Inactive",
     },
   })
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    updateProfile({ userId, ...data });
+  }
+
+  const onError = async (error: Error) => {
+    toast.error(error.message || "Something went wrong. Try again.");
   }
 
   const renderActionButtons = () => {
@@ -50,6 +52,7 @@ const ProfileTab = ({ profile }: { profile: Profile}) => {
           editMode ? (
             <div className="grid grid-cols-2 gap-4">
               <Button
+                type="submit"
                 className="text-white p-6 font-light"
               >
                 Update
@@ -81,7 +84,7 @@ const ProfileTab = ({ profile }: { profile: Profile}) => {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 my-4 pb-8">
+        <form onSubmit={form.handleSubmit(onSubmit, onError)} className="flex flex-col gap-8 my-4 pb-8">
           {/* Action Buttons */}
           {renderActionButtons()}
 
@@ -89,7 +92,7 @@ const ProfileTab = ({ profile }: { profile: Profile}) => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-2 md:gap-4">
             <FormField
               control={form.control}
-              name="fullName"
+              name="userName"
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel className="text-[20px] text-gray-700 mb-1">Full Name</FormLabel>
@@ -143,55 +146,29 @@ const ProfileTab = ({ profile }: { profile: Profile}) => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div className="sm:col-span-2">
               <Label htmlFor="location" className="text-[20px] text-gray-700 mb-1">Location</Label>
-              <Controller
-                name="location"
-                control={form.control}
-                render={({ field }) => <Textarea {...field} disabled className="shadow border-foreground/40 py-6 text-slate-500 wrap-text whitespae-pre-line" />}
-              />
+              <Textarea disabled placeholder="456 Riverside Apartment, Unit 3B San Francisco, CA 94102" className="shadow border-foreground/40 py-6 text-slate-500 wrap-text whitespae-pre-line" />
             </div>
 
             <div>
               <Label htmlFor="roomNo" className="text-[20px] text-gray-700 mb-1">Room No</Label>
-              <Controller
-                name="roomNo"
-                control={form.control}
-                render={({ field }) => <Input {...field} disabled className="shadow border-foreground/40 py-6 text-slate-500" />}
-              />
+              <Input type="text" disabled placeholder={profile.roomId} className="shadow border-foreground/40 py-6 text-slate-500" />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-2 md:gap-4">
             <div>
               <Label htmlFor="role" className="text-[20px] text-gray-700 mb-1">Role</Label>
-              <Controller
-                name="role"
-                control={form.control}
-                render={({ field }) => <Input {...field} disabled className="shadow border-foreground/40 py-6 text-slate-500" />}
-              />
+              <Input type="text" disabled placeholder={profile.role} className="shadow border-foreground/40 py-6 text-slate-500" />
             </div>
 
             <div>
               <Label htmlFor="memberSince" className="text-[20px] text-gray-700 mb-1">Member Since</Label>
-              <Controller
-                name="memberSince"
-                control={form.control}
-                render={({ field }) =>
-                  <Input type="text" {...field}
-                    value={field.value ? new Date(field.value).toLocaleDateString() : ""}
-                    disabled
-                    className="shadow border-foreground/40 py-6 text-slate-500"
-                  />
-                }
-              />
+              <Input type="text" disabled placeholder={new Date(profile.createdAt).toLocaleDateString()} className="shadow border-foreground/40 py-6 text-slate-500" />
             </div>
 
             <div>
               <Label htmlFor="status" className="text-[20px] text-gray-700 mb-1">Account Status</Label>
-              <Controller
-                name="status"
-                control={form.control}
-                render={({ field }) => <Input {...field} disabled className="shadow border-foreground/40 py-6 text-slate-500" />}
-              />
+              <Input type="text" disabled placeholder={profile.isActive ? "Active" : "Inactive"} className="shadow border-foreground/40 py-6 text-slate-500" />
             </div>
           </div>
 

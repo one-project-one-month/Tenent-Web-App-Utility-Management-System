@@ -10,3 +10,16 @@ export interface Profile {
 	createdAt: Date;
 	updatedAt: Date;
 }
+
+export interface updateProfilePayload {
+	userId: string;
+	userName?: string;
+	email?: string;
+	phNumber?: string;
+}
+
+export interface UpdatePasswordPayload {
+	userId: string;
+	oldPassword: string;
+	newPassword: string;
+}

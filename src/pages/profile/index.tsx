@@ -29,10 +29,10 @@ const profile = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-  const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
+  const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId!);
 
   const { mutate: logout } = useLogout();
-  const { tenant, isLoading } = useTenantQuery(tenantId!);
+  const { tenant, isLoading } = useTenantQuery(tenantId);
   const { room } = useFetchRoomQuery(tenant?.roomId!);
 
   console.log("room: ", room);
