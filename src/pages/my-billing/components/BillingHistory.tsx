@@ -64,7 +64,7 @@ const BillingHistory = ({history}: { history: Bill[] }) => {
                 >
                     <InvoiceTable
                         headerField={headerField}
-                        paginatedData={tableData}
+                        invoiceData={tableData}
                         onAction={handleAction}
                     />
 

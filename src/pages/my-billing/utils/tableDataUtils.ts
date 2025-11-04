@@ -29,14 +29,3 @@ export const getInvoiceTableData = (bills: Bill[] = []): InvoiceField[] => {
             status: (bill.invoice?.status as Status) ?? "Pending",
         }));
 };
-
-export const paginateInvoiceData = (
-    data: InvoiceField[],
-    page: number,
-    itemsPerPage: number = 10
-): { paginatedData: InvoiceField[]; totalPages: number } => {
-    const startIndex = (page - 1) * itemsPerPage;
-    const paginatedData = data.slice(startIndex, startIndex + itemsPerPage);
-    const totalPages = Math.ceil(data.length / itemsPerPage);
-    return {paginatedData, totalPages};
-};
