@@ -14,11 +14,11 @@ const FrequentlyAskedQuestions = () => {
           type="single"
           collapsible
           key={index}
-          className="border-1 border-gray-300 rounded-sm px-3 bg-card mb-3 shadow-sm"
+          className="border border-gray-300 rounded-sm px-3 bg-card mb-3 shadow-sm"
         >
           <AccordionItem value={faq.question}>
             <AccordionTrigger className="text-lg">{faq.question}</AccordionTrigger>
-            <AccordionContent className="border-t-1 border-gray-300">
+            <AccordionContent className="border-t border-gray-300">
               {typeof faq.answer === "string" ? (
                 faq.answer
               ) : (

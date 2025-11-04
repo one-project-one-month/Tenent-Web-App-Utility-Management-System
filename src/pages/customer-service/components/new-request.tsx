@@ -1,6 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import FrequentlyAskedQuestions from "./frequently-asked-questions";
-// import { useMutation } from "@tanstack/react-query"
+import { useSubmitForm } from "@/hooks/use-service";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormField,
@@ -9,8 +11,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { serviceFormSchema, type serviceFormValue } from "@/lib/validation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Select,
   SelectContent,
@@ -19,45 +19,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-// import { sumbitServiceForm } from "@/service/customer-service"
-import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 
-
-
-const NewRequest = () => {
-  //React hook form
+const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) => {
   const form = useForm<serviceFormValue>({
     resolver: zodResolver(serviceFormSchema),
-    defaultValues: {
-      description: "",
-      category: "",
-      priority_level: "",
-    },
   });
-  // const mutation = useMutation({
-  //   mutationFn: sumbitServiceForm,
-  //   onSuccess: () => {
-  //     toast.success("Request submitted successfully.");
-  //   },
-  //   onError: () => {
-  //     toast.error("Something went wrong. Try again.")
-  //   }
-  // })
-
-  const isLoading = form.formState.isLoading; //Track loading
+  //custom hook submit form
+  const mutation = useSubmitForm()
 
   //submit form to server
   const onSubmit = (data: serviceFormValue) => {
-    console.log(data);
-    form.reset();
-    toast.success("Request submitted successfully");
-    // mutation.mutate(data);
+    if (!tenantId) return;
+    form.reset({
+      description: "",
+      category: undefined,
+      priorityLevel: undefined,
+    });
+    mutation.mutate({ data, tenantId, roomId })
   };
+
+  //track loading indicator
+  const isLoading = mutation.isPending
+
 
   return (
     <div className="text-text-primary">
-      <div className="border-1 border-gray-300 rounded-sm shadow-sm p-4 bg-card">
+      <div className="border border-gray-300 rounded-sm shadow-sm p-4 bg-card">
         <h3 className="text-2xl font-semibold mb-3">Submit New Request</h3>
         <p className="mb-3">
           Fill out the form below and we'll get back to you as soon as possible
@@ -78,35 +66,24 @@ const NewRequest = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value} >
+                      <Select onValueChange={field.onChange} value={field.value ?? ""} >
                         <SelectTrigger
                           className={`py-5 px-6 border-2 border-border bg-input w-full  
-                        ${
-                          form.formState.errors.category
-                            ? "border-red-500 focus:ring-red-500"
-                            : ""
-                        }`}
+                        ${form.formState.errors.category
+                              ? "border-red-500 focus:ring-red-500"
+                              : ""
+                            }`}
                         >
                           <SelectValue placeholder="Service Type" />
                         </SelectTrigger>
                         <SelectContent className="bg-input ">
-                          <SelectItem value="electric">
-                            Electric Issue
+                          <SelectItem value="Complain">
+                            Complain
                           </SelectItem>
-                          <SelectItem value="water">Water Issue</SelectItem>
-                          <SelectItem value="wifi">
-                            Wi-Fi/ Internet issue
+                          <SelectItem value="Maintenance">
+                            Maintenance
                           </SelectItem>
-                          <SelectItem value="maintenance">
-                            Maintenance Issue
-                          </SelectItem>
-                          <SelectItem value="security">
-                            Security & Safety
-                          </SelectItem>
-                          <SelectItem value="billing">
-                            Billing & Payment Support
-                          </SelectItem>
-                          <SelectItem value="other">other</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -118,25 +95,24 @@ const NewRequest = () => {
               {/* Priprity select box */}
               <FormField
                 control={form.control}
-                name="priority_level"
+                name="priorityLevel"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value ?? ''}>
                         <SelectTrigger
                           className={`py-5 px-6 border-2 border-border bg-input w-full  
-                        ${
-                          form.formState.errors.priority_level
-                            ? "border-red-500 focus:ring-red-500"
-                            : ""
-                        }`}
+                        ${form.formState.errors.priorityLevel
+                              ? "border-red-500 focus:ring-red-500"
+                              : ""
+                            }`}
                         >
                           <SelectValue placeholder="Priority Level" />
                         </SelectTrigger>
                         <SelectContent className="bg-input ">
-                          <SelectItem value="low">Low</SelectItem>
-                          <SelectItem value="medium">Medium</SelectItem>
-                          <SelectItem value="high">High</SelectItem>
+                          <SelectItem value="Low">Low</SelectItem>
+                          <SelectItem value="Medium">Medium</SelectItem>
+                          <SelectItem value="High">High</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -166,11 +142,10 @@ const NewRequest = () => {
                 type="submit"
                 size={"lg"}
                 className={`cursor-pointer text-accent 
-              ${
-                isLoading
-                  ? "cursor-not-allowed bg-muted text-muted-foreground"
-                  : ""
-              }`}
+              ${isLoading
+                    ? "cursor-not-allowed bg-muted text-muted-foreground"
+                    : ""
+                  }`}
               >
                 {isLoading ? (
                   <>
@@ -185,10 +160,10 @@ const NewRequest = () => {
           </Form>
         </div>
       </div>
-      <div className="border-1 border-gray-300 rounded-sm p-3 bg-card mt-10 shadow-sm">
+      <div className="border border-gray-300 rounded-sm p-3 bg-card mt-10 shadow-sm">
         <h3 className="text-2xl font-semibold mb-5">
           Frequently Asked Questions
-        </h3>{" "}
+        </h3>
         <FrequentlyAskedQuestions />
       </div>
     </div>
