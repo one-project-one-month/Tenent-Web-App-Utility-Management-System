@@ -1,3 +1,4 @@
+import { logout } from "@/store/features/auth/authSlice";
 import store from "@/store/store";
 import axios from "axios";
 
@@ -52,7 +53,7 @@ apiClient.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (
-        originalRequest.url.includes("auth/refresh-token") ||
+        originalRequest.url.includes("auth/refresh") ||
         originalRequest.url.includes("auth/login") ||
         originalRequest.url.includes("auth/logout")
       ) {
@@ -72,8 +73,8 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       return new Promise((resolve, reject) => {
-        axios
-          .post(`${BASE_URL}/auth/refresh-token`)
+        apiClient
+          .post(`${BASE_URL}/auth/refresh`, {}, { withCredentials: true })
           .then(({ data }) => {
             ACCESS_TOKEN = data.accessToken;
             apiClient.defaults.headers.common["Authorization"] =
@@ -83,6 +84,7 @@ apiClient.interceptors.response.use(
             resolve(apiClient(originalRequest));
           })
           .catch((err) => {
+            store.dispatch(logout());
             processQueue(err, null);
             ACCESS_TOKEN = null;
             reject(err);
@@ -99,7 +101,7 @@ apiClient.interceptors.response.use(
 // Function to be called on app startup to get the initial access token.
 export const silentRefresh = async () => {
   try {
-    const { data } = await apiClient.post("/auth/refresh");
+    const { data } = await apiClient.post("/auth/refresh", {}, { withCredentials: true });
     ACCESS_TOKEN = data.accessToken;
   } catch (error) {
     console.error("Could not silently refresh token:", error);
