@@ -1,23 +1,20 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { updatePasswordService } from "@/service/profile-service"
 import { LockKeyhole, RotateCcwKey } from "lucide-react"
-import { useEffect } from "react"
-import { useForm, Controller, type SubmitHandler } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
 import { useSelector } from "react-redux"
 import { toast } from "sonner"
 import type { RootState } from "@/store/store"
-import type { UpdatePasswordPayload } from "@/types/tenant"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { useUpdatePasswordQuery } from "@/hooks/use-profile"
 
 const formSchema = z.object({
-  current: z.string().min(1, { message: "Current Password is required." }),
-  new: z.string().min(8, "Password must be at least 8 characters long").max(32, "Password must be at most 32 characters long"),
-  confirm: z.string().min(8, "Password must be at least 8 characters long").max(32, "Password must be at most 32 characters long")
+  old: z.string().min(1, { message: "Current Password is required." }),
+  new: z.string().min(8, { message: "Password must be at least 8 characters long." }),
+  confirm: z.string().min(1, { message: "Confirm Password is required." }),
 }).refine((data) => data.new === data.confirm, {
   message: "Passwords do not match",
   path: ["confirm"]
@@ -25,12 +22,13 @@ const formSchema = z.object({
 
 const SecurityTab = () => {
   // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  const userId = useSelector((state: RootState) => state.auth.user?.id);
+  const userId = useSelector((state: RootState) => state.auth.user?.id!);
+  const { mutate: updatePassword } = useUpdatePasswordQuery(userId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      current: "",
+      old: "",
       new: "",
       confirm: "",
     }
@@ -42,14 +40,9 @@ const SecurityTab = () => {
       return
     }
 
-    const payload: UpdatePasswordPayload = {
-      userId,
-      currentPassword: value.current,
-      newPassword: value.new
-    }
-    const res = await updatePasswordService(payload);
-
-    console.log("Update res: ", res);
+    console.log("Password data: ", value);
+    updatePassword({ userId, oldPassword: value.old, newPassword: value.new });
+    
   }
 
   return (
@@ -63,7 +56,7 @@ const SecurityTab = () => {
         <form className="my-4 pb-8" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
-            name="current"
+            name="old"
             render={({ field }) => (
               <FormItem className="mb-4">
                 <FormLabel className="text-[20px] text-gray-700 mb-1">Current Password</FormLabel>

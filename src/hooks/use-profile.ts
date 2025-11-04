@@ -1,11 +1,16 @@
-import { getTenantService, updatePasswordService } from "@/service/profile-service";
-import type { UpdatePasswordPayload } from "@/types/tenant";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+	getTenantService,
+	updateProfileService,
+} from "@/service/profile-service";
+import type { UpdatePasswordPayload, updateProfilePayload } from "@/types/profile";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export const useTenantQuery = (tenant_id: string) => {
 	const tenantQuery = useQuery({
-		queryKey: ["tenant"],
+		queryKey: ["tenant", tenant_id],
 		queryFn: () => getTenantService(tenant_id),
+		enabled: !!tenant_id,
 	});
 
 	if (!tenantQuery.data) {
@@ -27,7 +32,7 @@ export const useTenantQuery = (tenant_id: string) => {
 		role: tenantQuery.data.content.user.role,
 		isActive: tenantQuery.data.content.user.isActive,
 		createdAt: tenantQuery.data.content.user.createdAt,
-		updatedAt: tenantQuery.data.content.user.updatedAt
+		updatedAt: tenantQuery.data.content.user.updatedAt,
 	};
 
 	return {
@@ -35,11 +40,35 @@ export const useTenantQuery = (tenant_id: string) => {
 		isLoading: tenantQuery.isLoading,
 		isError: tenantQuery.isError,
 		error: tenantQuery.error ?? null,
-	}
+	};
 };
 
-export const usePasswordUpdateQuery = () => {
+export const useUpdateProfileQuery = (tenant_id: string) => {
+	const queryClient = useQueryClient();
+
 	return useMutation({
-		mutationFn: (payload: UpdatePasswordPayload) => updatePasswordService(payload),
-	})
+		mutationFn: (payload: updateProfilePayload) => updateProfileService(payload),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["tenant", tenant_id] });
+			toast.success("Profile updated successfully.");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Something went wrong with profile udpate. Try again.");
+		},
+	});
+};
+
+export const useUpdatePasswordQuery = (userId: string) => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (payload: UpdatePasswordPayload) => updateProfileService(payload),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["tenant", userId] });
+			toast.success("Password updated successfully.");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Something went wrong with password udpate. Try again.");
+		},
+	});
 }

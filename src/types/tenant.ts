@@ -12,9 +12,3 @@ export interface Tenant {
 		updatedAt: Date;
 	};
 }
-
-export interface UpdatePasswordPayload {
-	userId: string;
-	currentPassword: string;
-	newPassword: string;
-}
