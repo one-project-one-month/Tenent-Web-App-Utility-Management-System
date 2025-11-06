@@ -1,24 +1,12 @@
 import { useState } from "react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { useServiceHistory } from "@/hooks/use-service";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "@/components/ui/select";
 import type { ServiceStatus } from "@/types/service";
 import NotFoundService from "./no-service";
 import ServiceCard from "./serviceCard";
 import ServiceLoading from "@/pages/customer-service/components/service-loading";
+import SelectBox from "./select-box";
+import { statusValue } from "../utils";
+import ServicePagination from "./service-pagination";
 
 
 const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
@@ -26,104 +14,50 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data: services, isLoading } = useServiceHistory({ tenantId, status, page: currentPage })
 
-  //tracking loading
-  if (isLoading) {
-    return <ServiceLoading />
-  }
 
-  //tracking service history data
-  if (!services?.data || services?.data.length === 0) {
-    return <NotFoundService onReset={() => setStatus('')} />
-  }
+  const notFound = !services?.data || services?.data.length === 0
   //total page for pagination
   const totalPages = services?.meta?.lastPage;
 
-  const goToPage = (page: number) => {
-    if (page < 1 || page > totalPages!) return;
-    setCurrentPage(page);
-  };
+  const onChange = (value: string) => {
+    setStatus(value);
+    setCurrentPage(1);
+  }
   return (
-    <div>
-      <Select
-        onValueChange={(value) => {
-          setStatus(value);
-          setCurrentPage(1);
-        }}
-        value={status ?? ''}
-      >
-        <SelectTrigger className="w-40 border-2 border-border bg-input">
-          <SelectValue placeholder="All Statuses" />
-        </SelectTrigger>
-        <SelectContent className="bg-input">
-          <SelectItem value="Pending">Pending</SelectItem>
-          <SelectItem value="Ongoing">Ongoing</SelectItem>
-          <SelectItem value="Resolved">Resolved</SelectItem>
-        </SelectContent>
-      </Select>
+    <section>
+      <SelectBox
+        value={status}
+        onChange={onChange}
+        placeholder="All statuses"
+        items={statusValue}
+        className="w-40 border-2 border-border bg-input"
+      />
 
       {/* Service history container */}
       <div className="w-full text-text-primary mt-3">
         <div className="flex flex-col items-start border border-gray-300 bg-card rounded-sm shadow-sm p-5">
           <h3 className="text-2xl font-semibold mb-3">My Service History</h3>
-          <p className="mb-10">
+          <p>
             The status of your submitted requests
           </p>
           {/* Service history card */}
-          <div className="w-full space-y-4">
+          <div className="w-full space-y-4 mt-4">
             {
-              services?.data.map((service) => (
-                <ServiceCard key={service.id} service={service} />
-              ))
+              isLoading ?
+                <ServiceLoading /> :
+                notFound ? <NotFoundService onReset={() => setStatus('')} /> :
+                  <ServiceCard services={services.data} />
             }
           </div>
-
         </div>
-        {/* 
-        Pagination */}
-        <Pagination className="my-5">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                onClick={(e) => {
-                  e.preventDefault();
-                  goToPage(currentPage - 1);
-                }}
-              />
-            </PaginationItem>
-            {Array.from({ length: totalPages! }).map((_, index) => {
-              const page = index + 1;
-              return (
-                <PaginationItem key={page}>
-                  <PaginationLink
-                    href="#"
-                    isActive={page === currentPage}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      goToPage(page);
-                    }}
-                    className={`${page === currentPage && "bg-primary text-white"}`}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            })}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                onClick={(e) => {
-                  e.preventDefault();
-                  goToPage(currentPage + 1);
-                }}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        {/* Pagination */}
+        <ServicePagination
+          totalPages={totalPages!}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
-    </div>
+    </section>
   );
 };
 

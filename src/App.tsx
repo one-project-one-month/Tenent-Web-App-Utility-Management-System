@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MainPage from "@/layouts/main-page";
-import CustomerService from "@/pages/customer-service/customer-service";
+import CustomerService from "@/pages/customer-service";
 import Login from "@/pages/auth/login";
 import MyBilling from "@/pages/my-billing";
 import Profile from "@/pages/profile";
