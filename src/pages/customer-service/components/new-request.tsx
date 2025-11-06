@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2Icon } from "lucide-react";
+import SelectBox from "./select-box";
+import { categoryValue, priorityLevelValue } from "../utils";
 
 const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) => {
   const form = useForm<serviceFormValue>({
@@ -63,29 +65,19 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
               <FormField
                 control={form.control}
                 name="category"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value ?? ""} >
-                        <SelectTrigger
-                          className={`py-5 px-6 border-2 border-border bg-input w-full  
-                        ${form.formState.errors.category
-                              ? "border-red-500 focus:ring-red-500"
-                              : ""
-                            }`}
-                        >
-                          <SelectValue placeholder="Service Type" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-input ">
-                          <SelectItem value="Complain">
-                            Complain
-                          </SelectItem>
-                          <SelectItem value="Maintenance">
-                            Maintenance
-                          </SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <SelectBox
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Service type"
+                        items={categoryValue}
+                        className={`py-5 px-6 border-2 border-border bg-input w-full  
+                        ${fieldState.error ? "border-red-500 focus:ring-red-500" : ""
+                          }`}
+                      />
+
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -96,25 +88,18 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
               <FormField
                 control={form.control}
                 name="priorityLevel"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value ?? ''}>
-                        <SelectTrigger
-                          className={`py-5 px-6 border-2 border-border bg-input w-full  
-                        ${form.formState.errors.priorityLevel
-                              ? "border-red-500 focus:ring-red-500"
-                              : ""
-                            }`}
-                        >
-                          <SelectValue placeholder="Priority Level" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-input ">
-                          <SelectItem value="Low">Low</SelectItem>
-                          <SelectItem value="Medium">Medium</SelectItem>
-                          <SelectItem value="High">High</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <SelectBox
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Service type"
+                        items={priorityLevelValue}
+                        className={`py-5 px-6 border-2 border-border bg-input w-full  
+                        ${fieldState.error ? "border-red-500 focus:ring-red-500" : ""
+                          }`}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -125,12 +110,14 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
               <FormField
                 control={form.control}
                 name="description"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
                         placeholder="Describe your request..."
-                        className="py-2 px-4 min-h-40 border-2 border-border bg-input focus:outline-none focus:ring-0 focus-visible:ring-0"
+                        className={`py-2 px-4 min-h-40 border-2 border-border bg-input focus:outline-none focus:ring-0 focus-visible:ring-0
+                          ${fieldState.error ? "border-red-500 focus:ring-red-500" : ""
+                          }`}
                         {...field}
                       />
                     </FormControl>

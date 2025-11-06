@@ -6,7 +6,7 @@ import { AlertCircle, Undo2 } from 'lucide-react'
 
 const NotFoundService = ({ onReset }: { onReset: () => void }) => {
     return (
-        <Card className={cn("w-full md:h-[400px] border border-gray-300 rounded-sm  text-center py-10 flex justify-center items-center")}>
+        <Card className="w-full  border border-gray-300 rounded-sm  text-center py-8 flex justify-center items-center">
             <CardContent className="flex flex-col items-center justify-center gap-3">
                 <AlertCircle className="w-10 h-10 text-muted-foreground" />
                 <h3 className="text-lg font-semibold text-muted-foreground">
