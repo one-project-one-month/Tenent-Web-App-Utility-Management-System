@@ -19,8 +19,6 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
   //total page for pagination
   const totalPages = services?.meta?.lastPage;
 
-
-
   const onChange = (value: string) => {
     setStatus(value);
     setCurrentPage(1);
@@ -52,16 +50,13 @@ const ServiceHistory = ({ tenantId }: { tenantId: string }) => {
             }
           </div>
         </div>
-        {/* 
-        Pagination */}
+        {/* Pagination */}
         <ServicePagination
           totalPages={totalPages!}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
-
       </div>
-
     </section>
   );
 };

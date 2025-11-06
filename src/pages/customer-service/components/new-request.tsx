@@ -11,13 +11,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { serviceFormSchema, type serviceFormValue } from "@/lib/validation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2Icon } from "lucide-react";
 import SelectBox from "./select-box";

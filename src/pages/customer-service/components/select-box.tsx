@@ -6,7 +6,6 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-
 export type itemType = {
     value: string,
     label: string
