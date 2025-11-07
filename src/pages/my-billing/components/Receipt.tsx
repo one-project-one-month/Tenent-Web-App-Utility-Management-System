@@ -38,7 +38,7 @@ const Receipt = ({
                  }: ReceiptProps) => {
     return (
         <DialogContent
-            className="bg-[#FFFAFA] flex flex-col gap-5 p-4 overflow-y-auto max-h-[95vh]"
+            className="bg-[#FFFAFA] flex flex-col gap-5 p-4 max-h-[95vh] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-400 pr-2"
             aria-describedby="receipt-description"
         >
             <section className={`flex flex-col gap-5 ${sectionPadding} mt-7`}>
