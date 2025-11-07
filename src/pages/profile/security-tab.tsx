@@ -22,8 +22,8 @@ const formSchema = z.object({
 
 const SecurityTab = () => {
   // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  const userId = useSelector((state: RootState) => state.auth.user?.id!);
-  const { mutate: updatePassword } = useUpdatePasswordQuery(userId);
+  const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId!);
+  const { mutate: updatePassword } = useUpdatePasswordQuery(tenantId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,13 +35,13 @@ const SecurityTab = () => {
   })
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
-    if (!userId) {
+    if (!tenantId) {
       toast.error("Something went wrong. Try again.");
       return
     }
 
     console.log("Password data: ", value);
-    updatePassword({ userId, oldPassword: value.old, newPassword: value.new });
+    updatePassword({ tenantId, oldPassword: value.old, newPassword: value.new });
     
   }
 
