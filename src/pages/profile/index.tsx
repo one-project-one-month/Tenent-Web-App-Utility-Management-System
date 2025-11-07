@@ -1,17 +1,15 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router";
-import { CircleUser, Contact, LogOut, LogOutIcon, MoveLeft, Pencil, Shield, User, UserCog } from "lucide-react";
+import { useNavigate } from "react-router";
+import { CircleUser, Shield, User } from "lucide-react";
 import { FourSquare } from "react-loading-indicators";
 
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardTitle,
 } from "@/components/ui/card"
-import { useLogout } from "@/hooks/use-auth";
 import { useTenantQuery } from "@/hooks/use-profile";
 import type { RootState } from "@/store/store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,7 +19,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileTab from "./profile-tab";
 import SecurityTab from "./security-tab";
 import LogoutAlert from "@/components/navbar/logout-alert";
-import { useFetchRoomQuery } from "@/hooks/use-room";
 
 const profile = () => {
   const navigate = useNavigate();
@@ -31,21 +28,11 @@ const profile = () => {
   );
   const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId!);
 
-  const { mutate: logout } = useLogout();
   const { tenant, isLoading } = useTenantQuery(tenantId);
-  const { room } = useFetchRoomQuery(tenant?.roomId!);
-
-  console.log("room: ", room);
-
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/login");
   }, [isAuthenticated, navigate]);
-
-  const handleFormSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    logout();
-  };
 
   if (isLoading) {
     return (
@@ -86,7 +73,6 @@ const profile = () => {
             </CardTitle>
           </div>
           <CardAction className="mt-6 w-full sm:w-auto">
-            {/* <Button className="w-full bg-destructive/70 flex items-center justify-center cursor-pointer p-6 text-background gap-2 hover:bg-destructive focus:bg-destructive"><LogOutIcon /> Logout</Button> */}
             <LogoutAlert props="w-full bg-destructive/70 flex items-center justify-center cursor-pointer p-6 text-background gap-2 hover:bg-destructive focus:bg-destructive" />
           </CardAction>
         </CardContent>

@@ -1,25 +1,31 @@
-export interface Profile {
+export interface Tenant {
 	id: string;
 	name: string;
 	email: string;
 	phNumber: string;
 	emergencyNo: string;
 	roomId: string;
-	role: string;
-	isActive: boolean;
-	createdAt: Date;
-	updatedAt: Date;
+	nrc: string;
+	user?: {
+		role: string;
+		isActive: boolean;
+		createdAt: Date;
+		updatedAt: Date;
+	}
 }
 
 export interface updateProfilePayload {
-	userId: string;
-	userName?: string;
+	tenantId: string;
+	roomId: string;
+	nrc?: string;
+	name?: string;
 	email?: string;
 	phNumber?: string;
+	emergencyNo?: string;
 }
 
 export interface UpdatePasswordPayload {
-	userId: string;
+	tenantId: string;
 	oldPassword: string;
 	newPassword: string;
 }

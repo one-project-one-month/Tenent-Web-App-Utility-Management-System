@@ -1,5 +1,6 @@
 import {
 	getTenantService,
+	updatePasswordService,
 	updateProfileService,
 } from "@/service/profile-service";
 import type { UpdatePasswordPayload, updateProfilePayload } from "@/types/profile";
@@ -28,11 +29,12 @@ export const useTenantQuery = (tenant_id: string) => {
 		email: tenantQuery.data.content.email,
 		phNumber: tenantQuery.data.content.phNumber,
 		emergencyNo: tenantQuery.data.content.emergencyNo,
+		nrc: tenantQuery.data.content.nrc,
 		roomId: tenantQuery.data.content.roomId,
-		role: tenantQuery.data.content.user.role,
-		isActive: tenantQuery.data.content.user.isActive,
-		createdAt: tenantQuery.data.content.user.createdAt,
-		updatedAt: tenantQuery.data.content.user.updatedAt,
+		role: tenantQuery.data.content.user?.role,
+		isActive: tenantQuery.data.content.user?.isActive,
+		createdAt: tenantQuery.data.content.user?.createdAt,
+		updatedAt: tenantQuery.data.content.user?.updatedAt,
 	};
 
 	return {
@@ -58,14 +60,15 @@ export const useUpdateProfileQuery = (tenant_id: string) => {
 	});
 };
 
-export const useUpdatePasswordQuery = (userId: string) => {
+export const useUpdatePasswordQuery = (tenantId: string) => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: (payload: UpdatePasswordPayload) => updateProfileService(payload),
+		mutationFn: (payload: UpdatePasswordPayload) => updatePasswordService(payload),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["tenant", userId] });
+			queryClient.invalidateQueries({ queryKey: ["tenant", tenantId] });
 			toast.success("Password updated successfully.");
+			enabled: !!tenantId;
 		},
 		onError: (error: Error) => {
 			toast.error(error.message || "Something went wrong with password udpate. Try again.");

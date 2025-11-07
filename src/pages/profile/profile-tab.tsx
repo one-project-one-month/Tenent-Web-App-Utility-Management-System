@@ -9,40 +9,42 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Profile } from "@/types/profile";
+import type { Tenant } from "@/types/profile";
 import { useUpdateProfileQuery } from "@/hooks/use-profile";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store/store";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  userName: z.string().min(1, { message: "Full name is required." }).min(5, { message: "Full name must be at least 5 characters long." }),
+  name: z.string().min(1, { message: "Full name is required." }).min(5, { message: "Full name must be at least 5 characters long." }),
   email: z.email().min(1, { message: "Email is required." }),
-  phoneNo: z.string().min(1, { message: "Phone number is required." })
+  phNumber: z.string().min(1, { message: "Phone number is required." }),
+  emergencyNo: z.string().min(1, { message: "Emergency number is required." }),
+  roomId: z.string().min(1, { message: "Room ID is required." }),
+  nrc: z.string().min(1, { message: "NRC is required." }),
 })
 
-const ProfileTab = ({ profile }: { profile: Profile }) => {
-  const tenantId = useSelector((store: RootState) => store.auth.user?.tenantId!);
-  const userId = useSelector((store: RootState) => store.auth.user?.id!);
-
+const ProfileTab = ({ profile }: { profile: Tenant }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
-  const { mutate: updateProfile } = useUpdateProfileQuery(tenantId);
+  const { mutate: updateProfile } = useUpdateProfileQuery(profile.id);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userName: profile.name,
+      name: profile.name,
       email: profile.email,
-      phoneNo: profile.phNumber,
+      phNumber: profile.phNumber,
+      emergencyNo: profile.emergencyNo,
+      roomId: profile.roomId,
+      nrc: profile.nrc
     },
   })
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    updateProfile({ userId, ...data });
+    console.log("Upate submit: ", data)
+    updateProfile({ tenantId: profile.id, ...data });
   }
 
-  const onError = async (error: Error) => {
-    toast.error(error.message || "Something went wrong. Try again.");
+  const onError = (error: any) => {
+    toast.error(error.name || "Something went wrong. Try again.");
   }
 
   const renderActionButtons = () => {
@@ -92,7 +94,7 @@ const ProfileTab = ({ profile }: { profile: Profile }) => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-2 md:gap-4">
             <FormField
               control={form.control}
-              name="userName"
+              name="name"
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel className="text-[20px] text-gray-700 mb-1">Full Name</FormLabel>
@@ -126,7 +128,7 @@ const ProfileTab = ({ profile }: { profile: Profile }) => {
 
             <FormField
               control={form.control}
-              name="phoneNo"
+              name="phNumber"
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel className="text-[20px] text-gray-700 mb-1">Phone Number</FormLabel>
@@ -158,17 +160,17 @@ const ProfileTab = ({ profile }: { profile: Profile }) => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-2 md:gap-4">
             <div>
               <Label htmlFor="role" className="text-[20px] text-gray-700 mb-1">Role</Label>
-              <Input type="text" disabled placeholder={profile.role} className="shadow border-foreground/40 py-6 text-slate-500" />
+              <Input type="text" disabled placeholder={profile.user?.role} className="shadow border-foreground/40 py-6 text-slate-500" />
             </div>
 
             <div>
               <Label htmlFor="memberSince" className="text-[20px] text-gray-700 mb-1">Member Since</Label>
-              <Input type="text" disabled placeholder={new Date(profile.createdAt).toLocaleDateString()} className="shadow border-foreground/40 py-6 text-slate-500" />
+              <Input type="text" disabled placeholder={new Date(profile.user?.createdAt!).toLocaleDateString()} className="shadow border-foreground/40 py-6 text-slate-500" />
             </div>
 
             <div>
               <Label htmlFor="status" className="text-[20px] text-gray-700 mb-1">Account Status</Label>
-              <Input type="text" disabled placeholder={profile.isActive ? "Active" : "Inactive"} className="shadow border-foreground/40 py-6 text-slate-500" />
+              <Input type="text" disabled placeholder={profile.user?.isActive ? "Active" : "Inactive"} className="shadow border-foreground/40 py-6 text-slate-500" />
             </div>
           </div>
 
