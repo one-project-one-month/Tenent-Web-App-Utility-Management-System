@@ -1,11 +1,11 @@
 import { getRoomByIdService } from "@/service/room-service";
 import { useQuery } from "@tanstack/react-query";
 
-export const useFetchRoomQuery = (roomId: string) => {
+export const useFetchRoomQuery = (tenantId: string) => {
   const roomQuery = useQuery({
-    queryKey: ["rooms", roomId],
-    queryFn: () => getRoomByIdService(roomId),
-    enabled: !!roomId,
+    queryKey: ["rooms", tenantId],
+    queryFn: () => getRoomByIdService(tenantId),
+    enabled: !!tenantId,
   });
 
   if (!roomQuery.data) {
@@ -17,7 +17,6 @@ export const useFetchRoomQuery = (roomId: string) => {
     };  
   }
   
-  console.log("room query: ", roomQuery);
   return {
     room: roomQuery.data.content,
     isLoading: roomQuery.isLoading,

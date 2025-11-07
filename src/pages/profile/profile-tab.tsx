@@ -12,39 +12,44 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Tenant } from "@/types/profile";
 import { useUpdateProfileQuery } from "@/hooks/use-profile";
 import { toast } from "sonner";
+import { useFetchRoomQuery } from "@/hooks/use-room";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Full name is required." }).min(5, { message: "Full name must be at least 5 characters long." }),
   email: z.email().min(1, { message: "Email is required." }),
   phNumber: z.string().min(1, { message: "Phone number is required." }),
   emergencyNo: z.string().min(1, { message: "Emergency number is required." }),
-  roomId: z.string().min(1, { message: "Room ID is required." }),
+  roomNo: z.number().min(1, { message: "Room ID is required." }),
   nrc: z.string().min(1, { message: "NRC is required." }),
 })
 
 const ProfileTab = ({ profile }: { profile: Tenant }) => {
+  const { mutate: updateProfile, isPending } = useUpdateProfileQuery(profile.id);
+  const { room, isLoading } = useFetchRoomQuery(profile.id);
+  const roomNo = room?.roomNo;
+
   const [editMode, setEditMode] = useState<boolean>(false);
-  const { mutate: updateProfile } = useUpdateProfileQuery(profile.id);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: profile.name,
-      email: profile.email,
-      phNumber: profile.phNumber,
-      emergencyNo: profile.emergencyNo,
-      roomId: profile.roomId,
-      nrc: profile.nrc
-    },
+    name: profile.name,
+    email: profile.email,
+    phNumber: profile.phNumber,
+    emergencyNo: profile.emergencyNo,
+    roomNo,
+    nrc: profile.nrc
+  },
   })
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log("Upate submit: ", data)
-    updateProfile({ tenantId: profile.id, ...data });
+    updateProfile({ tenantId: profile.id, roomId: profile.roomId, ...data });
+    setEditMode(false);
   }
 
   const onError = (error: any) => {
-    toast.error(error.name || "Something went wrong. Try again.");
+    console.error(error);
+    toast.error(error.name.message || "Something went wrong. Try again.");
   }
 
   const renderActionButtons = () => {
@@ -56,6 +61,7 @@ const ProfileTab = ({ profile }: { profile: Tenant }) => {
               <Button
                 type="submit"
                 className="text-white p-6 font-light"
+                disabled={isPending}
               >
                 Update
               </Button>
@@ -153,7 +159,7 @@ const ProfileTab = ({ profile }: { profile: Tenant }) => {
 
             <div>
               <Label htmlFor="roomNo" className="text-[20px] text-gray-700 mb-1">Room No</Label>
-              <Input type="text" disabled placeholder={profile.roomId} className="shadow border-foreground/40 py-6 text-slate-500" />
+              <Input type="text" disabled placeholder={isLoading ? "Loading..." : String(roomNo) || "N/A"} className="shadow border-foreground/40 py-6 text-slate-500" />
             </div>
           </div>
 
