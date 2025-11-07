@@ -15,7 +15,6 @@ export const getTenantService = async (tenant_id: string) => {
 }
 
 export const updateProfileService = async (payload: updateProfilePayload) => {
-  console.log("Update p roifle payload: ", payload);
   const response = await apiClient.put<ApiResponse<Tenant>>(`/tenants/${payload.tenantId}/update`, payload);
 
   if (!response.data.success) {

@@ -5,8 +5,9 @@ export interface Tenant {
 	phNumber: string;
 	emergencyNo: string;
 	roomId: string;
+	roomNo?: number;
 	nrc: string;
-	user?: {
+	user: {
 		role: string;
 		isActive: boolean;
 		createdAt: Date;
@@ -26,6 +27,6 @@ export interface updateProfilePayload {
 
 export interface UpdatePasswordPayload {
 	tenantId: string;
-	oldPassword: string;
+	currentPassword: string;
 	newPassword: string;
 }

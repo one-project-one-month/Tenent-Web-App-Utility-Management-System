@@ -20,14 +20,14 @@ import ProfileTab from "./profile-tab";
 import SecurityTab from "./security-tab";
 import LogoutAlert from "@/components/navbar/logout-alert";
 
-const profile = () => {
+const Profile = () => {
   const navigate = useNavigate();
 
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
   const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId!);
-
+  
   const { tenant, isLoading } = useTenantQuery(tenantId);
 
   useEffect(() => {
@@ -99,4 +99,4 @@ const profile = () => {
   );
 };
 
-export default profile;
+export default Profile;

@@ -12,10 +12,10 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useUpdatePasswordQuery } from "@/hooks/use-profile"
 
 const formSchema = z.object({
-  old: z.string().min(1, { message: "Current Password is required." }),
-  new: z.string().min(8, { message: "Password must be at least 8 characters long." }),
+  currentPassword: z.string().min(1, { message: "Current Password is required." }),
+  newPassword: z.string().min(8, { message: "Password must be at least 8 characters long." }),
   confirm: z.string().min(1, { message: "Confirm Password is required." }),
-}).refine((data) => data.new === data.confirm, {
+}).refine((data) => data.newPassword === data.confirm, {
   message: "Passwords do not match",
   path: ["confirm"]
 })
@@ -23,13 +23,13 @@ const formSchema = z.object({
 const SecurityTab = () => {
   // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
   const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId!);
-  const { mutate: updatePassword } = useUpdatePasswordQuery(tenantId);
+  const { mutate: updatePassword, isPending } = useUpdatePasswordQuery(tenantId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      old: "",
-      new: "",
+      currentPassword: "",
+      newPassword: "",
       confirm: "",
     }
   })
@@ -40,9 +40,8 @@ const SecurityTab = () => {
       return
     }
 
-    console.log("Password data: ", value);
-    updatePassword({ tenantId, oldPassword: value.old, newPassword: value.new });
-    
+    updatePassword({ tenantId, currentPassword: value.currentPassword, newPassword: value.newPassword });
+    form.reset();
   }
 
   return (
@@ -56,7 +55,7 @@ const SecurityTab = () => {
         <form className="my-4 pb-8" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
-            name="old"
+            name="currentPassword"
             render={({ field }) => (
               <FormItem className="mb-4">
                 <FormLabel className="text-[20px] text-gray-700 mb-1">Current Password</FormLabel>
@@ -70,7 +69,7 @@ const SecurityTab = () => {
 
           <FormField
             control={form.control}
-            name="new"
+            name="newPassword"
             render={({ field }) => (
               <FormItem className="mb-4">
                 <FormLabel className="text-[20px] text-gray-700 mb-1">New Password</FormLabel>
@@ -98,6 +97,8 @@ const SecurityTab = () => {
 
           <Button
             className="w-full text-white p-6 font-light"
+            type="submit"
+            disabled={isPending}
           >
             <RotateCcwKey className="scale-[1.5] mr-2" /> Update Password
           </Button>
