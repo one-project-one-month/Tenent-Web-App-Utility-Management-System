@@ -15,8 +15,12 @@ const NewBillAlert = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const hasSeenAlert = localStorage.getItem("hasSeenNewBillAlert") === "true";
+    if (hasSeenAlert) return;
+
     const timer = setTimeout(() => {
       setOpen(true);
+      localStorage.setItem("hasSeenNewBillAlert", "true");
     }, 3000);
 
     return () => clearTimeout(timer);
