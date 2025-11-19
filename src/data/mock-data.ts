@@ -1,9 +1,3 @@
-type Data = {
-  monthlySpending: { month: string; value: number }[];
-  electricUsage: { month: string; value: number }[];
-  waterUsage: { month: string; value: number }[];
-  wifiUsage: { month: string; value: number }[];
-};
 type Answer = {
   tip: string; bullets: string[]
 }

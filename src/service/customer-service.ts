@@ -1,8 +1,7 @@
 import apiClient from "./api-client"
 import type { ServiceType, ApiResponse, serviceParamtype, submitFormType } from "@/types/service";
 import type { ApiResponse as ApiFetchResponse } from "@/types/api";
-import type { Tenant } from "@/types/tenant";
-
+import type { Tenant } from "@/types/profile";
 
 //Get Room Id from teanant
 export const getRoomId = async (tenantId: string) => {
