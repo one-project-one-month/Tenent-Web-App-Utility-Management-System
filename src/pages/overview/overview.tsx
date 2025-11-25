@@ -8,6 +8,7 @@ import type { RootState } from "@/store/store";
 import useChartData from "@/hooks/use-chart-data";
 import { useMemo } from "react";
 import { useNavigate } from "react-router";
+import { FourSquare } from "react-loading-indicators";
 
 const Overview = () => {
   const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId);
@@ -53,8 +54,13 @@ const Overview = () => {
 
   if (isLoading) {
     return (
-      <div className="h-full text-text-primary flex items-center justify-center">
-        <p>Loading...</p>
+      <div className="h-full w-full flex items-center justify-center">
+        <FourSquare
+          color="#2563eb"
+          size="medium"
+          text="Loading Contract..."
+          textColor=""
+        />
       </div>
     );
   }
@@ -70,7 +76,7 @@ const Overview = () => {
   return (
     <div className="h-full text-text-primary">
       <NewBillAlert />
-      <div className="flex justify-between items-center my-5 ">
+      <div className="flex flex-col sm:flex-row gap-4 items-start md:items-center justify-between enter my-5 ">
         <div>
           <div className="flex flex-col gap-3">
             <h1 className="text-2xl font-bold">Overview</h1>
@@ -84,13 +90,14 @@ const Overview = () => {
         </div>
         <Badge
           variant="default"
-          className="bg-secondary text-black font-light text-sm font-normal px-4 py-2"
+          className="bg-secondary text-black  text-sm font-normal px-4 py-2"
         >
           <BadgeCheckIcon style={{ width: "15px", height: "15px" }} />
           All Payment Current
         </Badge>
       </div>
-      <div className="flex justify-between items-center border-1 border-gray-200 p-4 mb-10 rounded-sm shadow-sm w-full bg-card">
+      {/* Billing overview */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start md:items-center border border-gray-200 p-4 mb-10 rounded-sm shadow-sm w-full bg-card">
         <div className="flex flex-col gap-2">
           <p className="text-md text-gray-500">Total Amount Due</p>
           <p className="text-body-1">
@@ -101,19 +108,20 @@ const Overview = () => {
           <p className="text-md text-gray-500">
             Due Date:{" "}
             {latestBill
-              ? new Date(latestBill?.dueDate ?? "" ).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
+              ? new Date(latestBill?.dueDate ?? "").toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
               : ""}
           </p>
         </div>
-        <Button onClick={() => navigate("/my-billing")} className="text-white text-sm font-light">
+        <Button onClick={() => navigate("/my-billing")} className="text-white text-sm font-light w-xs sm:w-fit ">
           View Billing Details
         </Button>
       </div>
-      <div className="mb-10 flex gap-3">
+      {/* Chart overview */}
+      <div className="mb-10 flex flex-col md:flex-row gap-3">
         {electricityChartData.length > 0 && (
           <MonthlyUsageChart
             title="Last 4 Months Electric Consumption"

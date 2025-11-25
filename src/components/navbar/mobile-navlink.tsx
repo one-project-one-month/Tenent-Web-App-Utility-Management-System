@@ -39,8 +39,7 @@ const MobileNavlink = () => {
                   key={page.name}
                   to={page.path}
                   className={({ isActive }) =>
-                    `hover:text-primary ${
-                      isActive ? "font-bold text-primary" : ""
+                    `hover:text-primary ${isActive ? "font-bold text-primary" : ""
                     }`
                   }
                 >
@@ -60,9 +59,9 @@ const MobileNavlink = () => {
                 <ChevronRight className="w-4 h-4" />
               </Link>
 
-              <button className="w-full flex items-center justify-center gap-2 bg-destructive text-secondary py-2 rounded-md hover:bg-destructive/90">
+              <div className="w-full flex items-center justify-center gap-2 bg-destructive text-secondary py-2 rounded-md hover:bg-destructive/90">
                 <LogoutAlert />
-              </button>
+              </div>
             </div>
           </div>
         </SheetContent>

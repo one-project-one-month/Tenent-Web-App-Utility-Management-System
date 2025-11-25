@@ -35,7 +35,7 @@ const ProfileDropdown = () => {
         </DropdownMenuItem>
         <DropdownMenuItem
           asChild
-          className="cursor-pointer !bg-destructive focus:!bg-destructive/90 text-white"
+          className="cursor-pointer bg-destructive! focus:bg-destructive/90! text-white"
         >
           <LogoutAlert />
         </DropdownMenuItem>

@@ -31,12 +31,19 @@ const LogoutAlert = ({ props }: { props?: string }) => {
             Logout <LogOut className="w-4 h-4 text-white" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] py-8">
+        <DialogContent
+          aria-labelledby="logout-dialog-title"
+          aria-describedby="logout-dialog-desc"
+          className="sm:max-w-[425px] py-8">
           <DialogHeader>
-            <DialogTitle className="text-center">
+            <DialogTitle
+              id="logout-dialog-title"
+              className="text-center">
               Are you sure you want to log out?
             </DialogTitle>
-            <DialogDescription className="text-center my-3">
+            <DialogDescription
+              id="logout-dialog-desc"
+              className="text-center my-3">
               We’ll keep your data safe. You can log back in anytime.
             </DialogDescription>
           </DialogHeader>

@@ -18,6 +18,7 @@ const ServiceCard = ({ services }: ServiceCardProp) => {
             {
                 services?.map((service) => (
                     <div
+                        key={service.id}
                         className=" border-b p-3  space-y-2 " >
                         <div className="flex justify-between items-start md:items-center gap-2">
                             <div className="flex flex-col sm:flex-row gap-2 ">
