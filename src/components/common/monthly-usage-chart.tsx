@@ -39,10 +39,10 @@ const MonthlyUsageChart = ({
 
   return (
     <div className="w-full">
-      <Card className="bg-card shadow-sm border-1 border-gray-200 rounded-sm">
+      <Card className="bg-card shadow-sm border border-gray-200 rounded-sm">
         <CardHeader>
           <CardTitle className="text-base font-medium">
-             {title} 
+            {title}
             <span className="block text-muted-foreground text-sm mt-1">
               {subTitle}
             </span>
@@ -50,7 +50,7 @@ const MonthlyUsageChart = ({
         </CardHeader>
 
         <CardContent>
-          <ChartContainer config={chartConfig} className=" h-[300px] w-[500px]">
+          <ChartContainer config={chartConfig} className="h-[300px]  w-full max-w-[500px]">
             <BarChart accessibilityLayer data={chartData}>
               <CartesianGrid vertical={false} />
               <XAxis dataKey="month" />
@@ -65,7 +65,7 @@ const MonthlyUsageChart = ({
                         className="flex items-center justify-between w-[70%] text-xs"
                       >
                         <div className="text-muted-foreground">
-                          {month} 
+                          {month}
                         </div>
                         <div className="text-muted-foreground">
                           {value} {unit}

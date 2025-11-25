@@ -52,7 +52,7 @@ const NewRequest = ({ tenantId, roomId }: { tenantId: string, roomId: string }) 
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-4 min-w-xs w-full max-w-2xl"
+              className="flex flex-col gap-4 w-full max-w-2xl"
             >
               {/* category select box */}
               <FormField
