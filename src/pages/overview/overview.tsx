@@ -18,7 +18,7 @@ const Overview = () => {
   // Format date to month name (e.g., "September 2025")
   const formatMonth = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    return date.toLocaleDateString("en-US", { month: "long" });
   };
 
   // Transform bills data for electricity consumption chart
@@ -58,7 +58,7 @@ const Overview = () => {
         <FourSquare
           color="#2563eb"
           size="medium"
-          text="Loading Contract..."
+          text="Loading Overview..."
           textColor=""
         />
       </div>
@@ -83,8 +83,8 @@ const Overview = () => {
             <p className="text-md">
               Your utility usage and billing summary for <br />{" "}
               {latestBill
-                ? formatMonth(latestBill?.createdAt ?? "")
-                : "September 2025"}
+                && formatMonth(latestBill?.createdAt ?? "")
+              }
             </p>
           </div>
         </div>
@@ -97,7 +97,7 @@ const Overview = () => {
         </Badge>
       </div>
       {/* Billing overview */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start md:items-center border border-gray-200 p-4 mb-10 rounded-sm shadow-sm w-full bg-card">
+      <div className="flex flex-wrap gap-4 justify-between items-start md:items-center border border-gray-200 p-4 mb-10 rounded-sm shadow-sm w-full bg-card">
         <div className="flex flex-col gap-2">
           <p className="text-md text-gray-500">Total Amount Due</p>
           <p className="text-body-1">
@@ -116,12 +116,10 @@ const Overview = () => {
               : ""}
           </p>
         </div>
-        <Button onClick={() => navigate("/my-billing")} className="text-white text-sm font-light w-xs sm:w-fit ">
-          View Billing Details
-        </Button>
+        <Button onClick={() => navigate("/my-billing")} className="text-white text-sm font-light w-full md:w-fit">View Billing Details</Button>
       </div>
       {/* Chart overview */}
-      <div className="mb-10 flex flex-col md:flex-row gap-3">
+      <div className="mb-10 flex w-full flex-col gap-4 md:flex-row md:flex-wrap">
         {electricityChartData.length > 0 && (
           <MonthlyUsageChart
             title="Last 4 Months Electric Consumption"

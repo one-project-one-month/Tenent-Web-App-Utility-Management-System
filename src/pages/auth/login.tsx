@@ -93,7 +93,7 @@ const Login = () => {
                 />
                 <Button
                   type="submit"
-                  className="w-full bg-primary text-secondary hover:bg-primary/90"
+                  className="w-full bg-primary text-white hover:bg-primary/90"
                   disabled={isPending}
                 >
                   Login
