@@ -4,12 +4,7 @@ import { useNavigate } from "react-router";
 import { CircleUser, Shield, User } from "lucide-react";
 import { FourSquare } from "react-loading-indicators";
 
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardAction, CardContent, CardTitle } from "@/components/ui/card";
 import { useTenantQuery } from "@/hooks/use-profile";
 import type { RootState } from "@/store/store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -26,8 +21,10 @@ const Profile = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-  const tenantId = useSelector((state: RootState) => state.auth.user?.tenantId!);
-  
+  const tenantId = useSelector(
+    (state: RootState) => state.auth.user?.tenantId!
+  );
+
   const { tenant, isLoading } = useTenantQuery(tenantId);
 
   useEffect(() => {
@@ -63,8 +60,10 @@ const Profile = () => {
         <CardContent className="flex flex-col sm:flex-row justify-between align-start">
           <div className="flex gap-4 justify-start items-end">
             <Avatar className="w-2/5 h-auto sm:w-40 rounded-sm">
-              <AvatarImage src="https://github.com/shadcn.png" alt="Tenant" />
-              <AvatarFallback><User /></AvatarFallback>
+              <AvatarImage src={"/profile.png"} alt="Tenant" />
+              <AvatarFallback>
+                <User />
+              </AvatarFallback>
             </Avatar>
             <CardTitle>
               <h1 className="text-h3">{tenant?.name}</h1>
@@ -81,9 +80,15 @@ const Profile = () => {
       <Card>
         <CardContent>
           <Tabs defaultValue="profile" className="w-full">
-            <TabsList className="w-full mb-10" >
-              <TabsTrigger value="profile"><CircleUser />Profile</TabsTrigger>
-              <TabsTrigger value="security"><Shield />Security</TabsTrigger>
+            <TabsList className="w-full mb-10">
+              <TabsTrigger value="profile">
+                <CircleUser />
+                Profile
+              </TabsTrigger>
+              <TabsTrigger value="security">
+                <Shield />
+                Security
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="profile">
               <ProfileTab profile={tenant} />
