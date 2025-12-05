@@ -1,16 +1,14 @@
 import type { LoginSchema } from "@/types/auth";
-import apiClient from "./apiClient";
+import apiClient from "./api-client";
 
 export const loginService = async (payload: LoginSchema) => {
-  const { data } = await apiClient.post("/auth/login", payload);
+	const { data } = await apiClient.post("/auth/login", payload);
 
-  return data.content;
-}
+	return data.content;
+};
 
 export const logoutService = async () => {
-  const { data } = await apiClient.post("auth/logout");
+	const { data } = await apiClient.post("auth/logout");
 
-  console.log("Logout res data: ", data);
-  
-  return data;
-}
+	return data.content;
+};

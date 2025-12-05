@@ -1,0 +1,112 @@
+import { logout } from "@/store/features/auth/authSlice";
+import store from "@/store/store";
+import axios from "axios";
+
+const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://laravel-utility-management-system.aperturecampaign.com/api/v1";
+
+const apiClient = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true, // This is crucial for sending HttpOnly cookies (for refresh token)
+});
+
+// retrieve the access token from the auth store
+let ACCESS_TOKEN: string | null = null;
+
+let isRefreshing = false;
+// Varible to queue requests while the token is being refreshed
+const failedQueue: any = [];
+
+// Function to resolve the waiting api queues after the token is refreshed
+const processQueue = (error: any, token: null | string = null) => {
+  failedQueue.forEach((prom: any) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+
+  failedQueue.length = 0;
+};
+
+apiClient.interceptors.request.use((config) => {
+  ACCESS_TOKEN = store.getState().auth.accessToken;
+
+  if (ACCESS_TOKEN) {
+    config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
+  }
+
+  return config;
+});
+
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (
+        originalRequest.url.includes("auth/refresh") ||
+        originalRequest.url.includes("auth/login") ||
+        originalRequest.url.includes("auth/logout")
+      ) {
+        return Promise.reject(error);
+      }
+
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then((token) => {
+          originalRequest.headers["Authorization"] = "Bearer " + token;
+          return apiClient(originalRequest);
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      return new Promise((resolve, reject) => {
+        apiClient
+          .post(`${BASE_URL}/auth/refresh`, {}, { withCredentials: true })
+          .then(({ data }) => {
+            ACCESS_TOKEN = data.accessToken;
+            apiClient.defaults.headers.common["Authorization"] =
+              "Bearer " + ACCESS_TOKEN;
+            originalRequest.headers["Authorization"] = "Bearer " + ACCESS_TOKEN;
+            processQueue(null, ACCESS_TOKEN);
+            resolve(apiClient(originalRequest));
+          })
+          .catch((err) => {
+            store.dispatch(logout());
+            processQueue(err, null);
+            ACCESS_TOKEN = null;
+            reject(err);
+          })
+          .finally(() => {
+            isRefreshing = false;
+          });
+      });
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Function to be called on app startup to get the initial access token.
+export const silentRefresh = async () => {
+  try {
+    const { data } = await apiClient.post("/auth/refresh", {}, { withCredentials: true });
+    ACCESS_TOKEN = data.accessToken;
+  } catch (error) {
+    console.error("Could not silently refresh token:", error);
+    ACCESS_TOKEN = null;
+  }
+};
+
+export default apiClient;

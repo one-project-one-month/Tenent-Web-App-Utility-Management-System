@@ -4,9 +4,9 @@ import Footer from "./footer";
 
 const MainPage = () => {
   return (
-    <section>
+    <section className="min-h-screen max-w-6xl mx-auto flex flex-col justify-between">
       <Navbar />
-      <main className="max-w-6xl mx-auto">
+      <main className="">
         <Outlet />
       </main>
       <Footer />

@@ -1,10 +1,15 @@
 import { pages } from "@/lib/pages";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link, NavLink } from "react-router";
-import { ChevronRight, LogOut, Menu } from "lucide-react";
+import { ChevronRight, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import LogoutAlert from "./logout-alert";
 
 const MobileNavlink = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <>
       <Sheet>
@@ -16,13 +21,14 @@ const MobileNavlink = () => {
             {/* Profile */}
             <div className="flex items-center gap-3 mt-14">
               <Avatar className="w-12 h-12 ring-2 ring-gray-300 shadow-sm">
-                <AvatarImage src={""} />
+                <AvatarImage src={"/profile.png"} />
                 <AvatarFallback className="bg-gray-200 text-black font-bold">
-                  JW
+                  {user?.userName?.charAt(0)}
+                  {user?.userName?.charAt(1)}
                 </AvatarFallback>
               </Avatar>
               <h3 className="text-blue-500">
-                Hi, <span className="text-black">Jenny Wilson</span>
+                Hi, <span className="text-black">{user?.userName}</span>
               </h3>
             </div>
 
@@ -33,8 +39,7 @@ const MobileNavlink = () => {
                   key={page.name}
                   to={page.path}
                   className={({ isActive }) =>
-                    `hover:text-primary ${
-                      isActive ? "font-bold text-primary" : ""
+                    `hover:text-primary ${isActive ? "font-bold text-primary" : ""
                     }`
                   }
                 >
@@ -54,10 +59,9 @@ const MobileNavlink = () => {
                 <ChevronRight className="w-4 h-4" />
               </Link>
 
-              <button className="w-full flex items-center justify-center gap-2 bg-destructive text-secondary py-2 rounded-md hover:bg-destructive/90">
-                Logout
-                <LogOut className="w-4 h-4" />
-              </button>
+              <div className="w-full flex items-center justify-center gap-2 bg-destructive text-secondary py-2 rounded-md hover:bg-destructive/90">
+                <LogoutAlert />
+              </div>
             </div>
           </div>
         </SheetContent>

@@ -10,12 +10,21 @@ import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginSchema } from "@/types/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useLogin from "@/hooks/auth/useLogin";
+import { useLogin } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
 
 const Login = () => {
-  const { mutate: login } = useLogin();
+  // const { mutate: login } = useLogin();
+  const { mutate: login, isPending } = useLogin();
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated, navigate])
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -25,14 +34,8 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (data: LoginSchema) => {
-
-    try {
-      login(data);
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
+  const onSubmit = async (data: LoginSchema) => {
+    login(data);
   };
 
   return (
@@ -90,7 +93,8 @@ const Login = () => {
                 />
                 <Button
                   type="submit"
-                  className="w-full bg-primary text-secondary hover:bg-primary/90"
+                  className="w-full bg-primary text-white hover:bg-primary/90"
+                  disabled={isPending}
                 >
                   Login
                 </Button>
